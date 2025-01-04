@@ -2,8 +2,8 @@
 name: BUG_ISSUE_TEMPLATE
 about: 버그 관련 이슈를 작성해주세요.
 title: "[ BUG ]"
-labels: bug
-assignees: danajlim, kayeon2, nar0ng, Yeondu428
+labels: "\U0001F41E BugFix"
+assignees: nar0ng, kayeon2, danajlim, Yeondu428
 
 ---
 
