@@ -14,22 +14,9 @@
 		94FFAC592D290D8D006F4810 /* Nupi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nupi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		94FFAC6B2D290D8E006F4810 /* Exceptions for "Nupi" folder in "Nupi" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 94FFAC582D290D8D006F4810 /* Nupi */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		94FFAC5B2D290D8D006F4810 /* Nupi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				94FFAC6B2D290D8E006F4810 /* Exceptions for "Nupi" folder in "Nupi" target */,
-			);
 			path = Nupi;
 			sourceTree = "<group>";
 		};
