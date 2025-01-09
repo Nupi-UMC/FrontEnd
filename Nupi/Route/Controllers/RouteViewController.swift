@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class RouteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
