@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Nupi
 //
-//  Created by Dana Lim on 1/4/25.
+//  Created by 신연주 on 1/4/25.
 //
 
 import UIKit
@@ -10,5 +10,11 @@ import UIKit
 class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view = homeView
     }
+    
+    private lazy var homeView: HomeView = {
+        let view = HomeView()
+        return view
+    }()
 }
