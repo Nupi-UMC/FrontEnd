@@ -11,7 +11,7 @@ import SnapKit
 class CreatePasswordView : UIView {
     override init (frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.backgroundColor = .bg
         
         addComponents()
     }
@@ -20,34 +20,68 @@ class CreatePasswordView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private lazy var circleView1 : UIView = {
+        let circleView = UIView()
+        circleView.backgroundColor = .blue1
+        circleView.layer.cornerRadius = 4
+        circleView.clipsToBounds = true
+        return circleView
+    }()
+    
+    private lazy var circleView2 : UIView = {
+        let circleView = UIView()
+        circleView.backgroundColor = .blue2
+        circleView.layer.cornerRadius = 6
+        circleView.clipsToBounds = true
+        return circleView
+    }()
+    
+    private lazy var circleView3 : UIView = {
+        let circleView = UIView()
+        circleView.backgroundColor = .blue1
+        circleView.layer.cornerRadius = 4
+        circleView.clipsToBounds = true
+        return circleView
+    }()
+    
     private lazy var passwordLabel : UILabel = {
         let label = UILabel()
         label.text = "비밀번호 입력"
-        label.font = .systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = .black
+        label.font = .heading1
+        label.textColor = .blue3
         label.textAlignment = .left
         return label
     }()
     
     private lazy var passwordTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "영문, 숫자 조합"
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "영문, 숫자 조합",
+            attributes: [
+                .font: UIFont.body2,
+                NSAttributedString.Key.foregroundColor: UIColor.grey2
+            ]
+        )
+        textField.font = .body2
+        textField.textColor = .blue3
+        textField.textAlignment = .left
         textField.layer.borderColor = UIColor.clear.cgColor
         textField.layer.backgroundColor = UIColor.clear.cgColor
+        
         return textField
     }()
     
     private lazy var line1 : UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .icon2
         return view
     }()
     
     private lazy var confirmPasswordLabel : UILabel = {
         let label = UILabel()
         label.text = "비밀번호 확인"
-        label.font = .systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = .black
+        label.font = .heading1
+        label.textColor = .blue3
         label.textAlignment = .left
 
         return label
@@ -55,15 +89,25 @@ class CreatePasswordView : UIView {
     
     private lazy var confirmPasswordTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "다시 한번 입력해주세요."
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "다시 한번 확인해주세요.",
+            attributes: [
+                .font: UIFont.body2,
+                NSAttributedString.Key.foregroundColor: UIColor.grey2
+            ]
+        )
+        textField.font = .body2
+        textField.textColor = .blue3
+        textField.textAlignment = .left
         textField.layer.borderColor = UIColor.clear.cgColor
         textField.layer.backgroundColor = UIColor.clear.cgColor
+        
         return textField
     }()
     
     private lazy var line2 : UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .icon2
         return view
     }()
     
@@ -71,20 +115,26 @@ class CreatePasswordView : UIView {
         let label = UILabel()
         label.text = "다음이 마지막 단계에요."
         label.font = .systemFont(ofSize: 13, weight: .light)
-        label.textColor = .lightGray
+        label.textColor = .blue4
         return label
     }()
     
     private lazy var continueButton : UIButton = {
         let button = UIButton()
         button.setTitle("계속하기", for: .normal)
-        button.setTitleColor(.gray, for: .normal)
-        button.layer.backgroundColor = UIColor.lightGray.cgColor
+        button.titleLabel?.font = .heading2
+        button.setTitleColor(.icon2, for: .normal)
+        button.setTitleColor(.white, for: .selected)
+        button.layer.backgroundColor = UIColor.grey2.cgColor
         button.layer.cornerRadius = 23.5
         return button
     }()
     
     private func addComponents(){
+        self.addSubview(circleView1)
+        self.addSubview(circleView2)
+        self.addSubview(circleView3)
+        
         self.addSubview(passwordLabel)
         self.addSubview(passwordTextField)
         self.addSubview(confirmPasswordLabel)
@@ -93,6 +143,22 @@ class CreatePasswordView : UIView {
         self.addSubview(line2)
         self.addSubview(continueLabel)
         self.addSubview(continueButton)
+        
+        circleView1.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(96)
+            make.leading.equalToSuperview().offset(321)
+            make.width.height.equalTo(8)
+        }
+        circleView2.snp.makeConstraints { make in
+            make.centerY.equalTo(circleView1)
+            make.width.height.equalTo(12)
+            make.leading.equalTo(circleView1.snp.trailing).offset(8)
+        }
+        circleView3.snp.makeConstraints { make in
+            make.centerY.equalTo(circleView1)
+            make.width.height.equalTo(8)
+            make.leading.equalTo(circleView2.snp.trailing).offset(8)
+        }
         
         passwordLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(215)
