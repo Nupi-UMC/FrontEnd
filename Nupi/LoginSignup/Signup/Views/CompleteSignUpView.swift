@@ -59,7 +59,6 @@ class CompleteSignUpView : UIView {
         label.textColor = .blue3
         label.font = .heading1
         label.textAlignment = .center
-        label.text = "스눕도기도기독"
         return label
     }()
     lazy var moveToLoginPageButton : UIButton = {

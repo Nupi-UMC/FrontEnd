@@ -69,7 +69,7 @@ class AddProfilePictureView : UIView {
             }
         }
     
-    private lazy var nicknameTextField : UITextField = {
+    lazy var nicknameTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "닉네임을 입력해주세요. (한글, 영문 사용 가능)",

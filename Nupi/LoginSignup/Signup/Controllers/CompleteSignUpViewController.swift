@@ -29,10 +29,16 @@ class CompleteSignUpViewController: UIViewController {
         } else {
             completeSignUpView.profilePictureView.layer.backgroundColor = UIColor.bg.cgColor
         }
+        
+        if let nickNameLabel = receivedNickName {
+            completeSignUpView.userNicknameLabel.text = nickNameLabel
+        }
     }
     
     //전달받을 프로필이미지 변수
     public var receivedProfileImage: UIImage?
+    //전달받을 닉네임 변수
+    public var receivedNickName : String?
     
     
     @objc private func moveToLoginButtonTap(){

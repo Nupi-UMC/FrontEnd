@@ -53,7 +53,7 @@ class CreatePasswordView : UIView {
         return label
     }()
     
-    private lazy var passwordTextField : UITextField = {
+    lazy var passwordTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "영문, 숫자 조합",
@@ -87,7 +87,7 @@ class CreatePasswordView : UIView {
         return label
     }()
     
-    private lazy var confirmPasswordTextField : UITextField = {
+    lazy var confirmPasswordTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "다시 한번 확인해주세요.",
@@ -130,6 +130,25 @@ class CreatePasswordView : UIView {
         return button
     }()
     
+    lazy var passwordErrorLabel : UILabel = {
+        let label = UILabel()
+        label.font = .caption2
+        label.textColor = .rice
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
+    }()
+    
+    lazy var confirmPasswordErrorLabel : UILabel = {
+        let label = UILabel()
+        label.font = .caption2
+        label.textColor = .rice
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
+    }()
+    
+    
     private func addComponents(){
         self.addSubview(circleView1)
         self.addSubview(circleView2)
@@ -143,6 +162,9 @@ class CreatePasswordView : UIView {
         self.addSubview(line2)
         self.addSubview(continueLabel)
         self.addSubview(continueButton)
+        
+        self.addSubview(passwordErrorLabel)
+        self.addSubview(confirmPasswordErrorLabel)
         
         circleView1.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(96)
@@ -200,6 +222,17 @@ class CreatePasswordView : UIView {
             make.centerX.equalToSuperview()
             make.width.equalTo(329)
             make.height.equalTo(47)
+        }
+        
+        passwordErrorLabel.snp.makeConstraints { make in
+            make.top.equalTo(line1.snp.bottom).offset(2)
+            make.leading.equalTo(line1)
+            make.height.equalTo(16)
+        }
+        confirmPasswordErrorLabel.snp.makeConstraints { make in
+            make.top.equalTo(line2.snp.bottom).offset(2)
+            make.leading.equalTo(line2)
+            make.height.equalTo(16)
         }
     }
 }

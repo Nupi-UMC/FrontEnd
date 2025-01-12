@@ -54,7 +54,7 @@ class BeginSignUpView : UIView {
         return label
     }()
     
-    private lazy var emailTextField : UITextField = {
+    lazy var emailTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "nupi@nupi.com",
@@ -70,6 +70,15 @@ class BeginSignUpView : UIView {
         textField.layer.backgroundColor = UIColor.clear.cgColor
         
         return textField
+    }()
+    
+    lazy var emailErrorLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = .rice
+        label.font = .caption2
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
     }()
     
     private lazy var divideLine : UIView = {
@@ -98,6 +107,7 @@ class BeginSignUpView : UIView {
         self.addSubview(emailTextField)
         self.addSubview(continueButton)
         self.addSubview(divideLine)
+        self.addSubview(emailErrorLabel)
         
         circleView1.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(96)
@@ -124,7 +134,7 @@ class BeginSignUpView : UIView {
         emailTextField.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(414)
             make.leading.equalToSuperview().offset(32)
-            make.width.equalTo(157)
+            make.width.equalTo(329)
             make.height.equalTo(20)
         }
         continueButton.snp.makeConstraints { make in
@@ -138,6 +148,11 @@ class BeginSignUpView : UIView {
             make.centerX.equalToSuperview()
             make.width.equalTo(329)
             make.height.equalTo(1)
+        }
+        emailErrorLabel.snp.makeConstraints { make in
+            make.top.equalTo(divideLine.snp.bottom).offset(2)
+            make.leading.equalTo(divideLine)
+            make.height.equalTo(16)
         }
     }
 }
