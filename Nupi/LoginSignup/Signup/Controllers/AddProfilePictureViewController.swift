@@ -17,7 +17,17 @@ class AddProfilePictureViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = addProfilePictureView
+        
+        setupNavigationBar(action: #selector(customBackButtonTapped))
         addProfilePictureView.selectProfileImageButton.addTarget(self, action: #selector(pickImage), for: .touchUpInside)
+        addProfilePictureView.startButton.addTarget(self, action: #selector(startButtonTap), for: .touchUpInside)
+    }
+    
+    @objc private func startButtonTap(){
+        let completeSignupVC = CompleteSignUpViewController()
+        //프로필 사진 넘겨주기
+        completeSignupVC.receivedProfileImage = addProfilePictureView.selectProfileImageButton.imageView?.image
+        self.navigationController?.pushViewController(completeSignupVC, animated: true)
     }
 }
 

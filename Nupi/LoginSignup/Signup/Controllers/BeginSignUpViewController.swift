@@ -17,9 +17,12 @@ class BeginSignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = beginSignUpView
+        
+        setupNavigationBar(action: #selector(customBackButtonTapped))
+        beginSignUpView.continueButton.addTarget(self, action: #selector(continueButtonTap), for: .touchUpInside)
     }
     
-    private func continueButtonTap(){
+    @objc private func continueButtonTap(){
         let emailVerifyVC = VerifyEmailViewController()
         self.navigationController?.pushViewController(emailVerifyVC, animated: true)
     }

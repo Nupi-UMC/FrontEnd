@@ -44,7 +44,7 @@ class CompleteSignUpView : UIView {
         label.text = "누피와 함께 특별한 하루를 만들어 보세요."
         return label
     }()
-    private lazy var profilePictureView : UIImageView = {
+    lazy var profilePictureView : UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 123/2
@@ -54,7 +54,7 @@ class CompleteSignUpView : UIView {
         return imageView
     }()
     
-    private lazy var userNicknameLabel : UILabel = {
+    lazy var userNicknameLabel : UILabel = {
         let label = UILabel()
         label.textColor = .blue3
         label.font = .heading1
@@ -62,7 +62,7 @@ class CompleteSignUpView : UIView {
         label.text = "스눕도기도기독"
         return label
     }()
-    private lazy var moveToLoginPageButton : UIButton = {
+    lazy var moveToLoginPageButton : UIButton = {
         let button = UIButton()
         button.setTitle("로그인 화면으로 이동", for: .normal)
         button.titleLabel?.font = .heading2

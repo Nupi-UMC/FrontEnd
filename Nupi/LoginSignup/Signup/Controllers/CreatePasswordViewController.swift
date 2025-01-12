@@ -17,5 +17,13 @@ class CreatePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = createPasswordView
+        
+        setupNavigationBar(action: #selector(customBackButtonTapped))
+        createPasswordView.continueButton.addTarget(self, action: #selector(continueButtonTap), for: .touchUpInside)
+    }
+    
+    @objc private func continueButtonTap(){
+        let addProfilePictureVC = AddProfilePictureViewController()
+        self.navigationController?.pushViewController(addProfilePictureVC, animated: true)
     }
 }

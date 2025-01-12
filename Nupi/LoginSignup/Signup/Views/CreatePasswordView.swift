@@ -119,7 +119,7 @@ class CreatePasswordView : UIView {
         return label
     }()
     
-    private lazy var continueButton : UIButton = {
+     lazy var continueButton : UIButton = {
         let button = UIButton()
         button.setTitle("계속하기", for: .normal)
         button.titleLabel?.font = .heading2

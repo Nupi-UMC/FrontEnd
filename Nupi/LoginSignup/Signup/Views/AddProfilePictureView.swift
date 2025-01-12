@@ -92,7 +92,7 @@ class AddProfilePictureView : UIView {
         return view
     }()
     
-    private lazy var startButton : UIButton = {
+    lazy var startButton : UIButton = {
         let button = UIButton()
         button.setTitle("누피 시작하기", for: .normal)
         button.titleLabel?.font = .heading2

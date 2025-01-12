@@ -52,9 +52,10 @@ class LoginView : UIView {
             attributes: [
                 .font: UIFont.button3,
                 NSAttributedString.Key.foregroundColor: UIColor.icon2
+
             ]
         )
-        textField.font = .body2
+        
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.leftView = paddingView
         textField.leftViewMode = .always

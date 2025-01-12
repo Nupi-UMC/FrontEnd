@@ -78,7 +78,7 @@ class VerifyEmailView : UIView {
         return view
     }()
     
-    private lazy var resendVerificationCodeButton : UIButton = {
+     lazy var resendVerificationCodeButton : UIButton = {
         let button = UIButton()
         button.setTitle("재발송", for: .normal)
         button.titleLabel?.font = .heading2
@@ -88,7 +88,7 @@ class VerifyEmailView : UIView {
         return button
     }()
     
-    private lazy var emailVerifyButton : UIButton = {
+     lazy var emailVerifyButton : UIButton = {
         let button = UIButton()
         button.setTitle("이메일 인증하기", for: .normal)
         button.titleLabel?.font = .heading2
