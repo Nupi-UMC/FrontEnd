@@ -19,7 +19,7 @@ class CreatePasswordViewController: UIViewController {
         self.view = createPasswordView
         
         // 비밀번호 입력값 변경 감지
-            createPasswordView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)
+        createPasswordView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)
             
         // 비밀번호 확인 입력값 변경 감지
         createPasswordView.confirmPasswordTextField.addTarget(self, action: #selector(confirmPasswordTextFieldDidChange(_:)), for: .editingChanged)
@@ -31,10 +31,23 @@ class CreatePasswordViewController: UIViewController {
         
         setupNavigationBar(action: #selector(customBackButtonTapped))
         createPasswordView.continueButton.addTarget(self, action: #selector(continueButtonTap), for: .touchUpInside)
+        
+        // 비밀번호 입력값 변경 감지
+        createPasswordView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)
+        // hidePasswordButton 동작 추가
+        createPasswordView.hidePasswordButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+        
+        // 비밀번호 재입력값 변경 감지
+        createPasswordView.confirmPasswordTextField.addTarget(self, action: #selector(confirmPasswordTextFieldDidChange(_:)), for: .editingChanged)
+        // hideConfirmPasswordButton 동작 추가
+        createPasswordView.hideConfirmPasswordButton.addTarget(self, action: #selector(toggleConfirmPasswordVisibility), for: .touchUpInside)
+        
     }
     
     @objc private func passwordTextFieldDidChange(_ textField: UITextField) {
         validatePasswordInfo()
+        // 비밀번호 입력값에 따라 버튼 표시
+        createPasswordView.hidePasswordButton.isHidden = textField.text?.isEmpty ?? true
     }
 
     private func validatePasswordInfo() {
@@ -54,6 +67,8 @@ class CreatePasswordViewController: UIViewController {
     //비밀번호 확인 일치 여부 검사
     @objc private func confirmPasswordTextFieldDidChange(_ textField: UITextField) {
         validateConfirmPassword()
+        // 비밀번호 입력값에 따라 버튼 표시
+        createPasswordView.hideConfirmPasswordButton.isHidden = textField.text?.isEmpty ?? true
     }
 
     private func validateConfirmPassword() {
@@ -72,7 +87,7 @@ class CreatePasswordViewController: UIViewController {
         return createPasswordView.passwordTextField.text == createPasswordView.confirmPasswordTextField.text
     }
     
-    //버튼 상태 업데이트
+    //계속하기 버튼 상태 업데이트
     private func updateContinueButton(isEnabled: Bool) {
         createPasswordView.continueButton.isEnabled = isEnabled
         createPasswordView.continueButton.backgroundColor = isEnabled ? .blue3 : .grey2
@@ -82,5 +97,19 @@ class CreatePasswordViewController: UIViewController {
     @objc private func continueButtonTap(){
         let addProfilePictureVC = AddProfilePictureViewController()
         self.navigationController?.pushViewController(addProfilePictureVC, animated: true)
+    }
+
+    // 비밀번호 보기/숨기기 토글
+    @objc private func togglePasswordVisibility() {
+        createPasswordView.passwordTextField.isSecureTextEntry.toggle()
+        let imageName = createPasswordView.passwordTextField.isSecureTextEntry ? "eye_slash" : "eye"
+        createPasswordView.hidePasswordButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+
+    // 비밀번호 재입력 보기/숨기기 토글
+    @objc private func toggleConfirmPasswordVisibility() {
+        createPasswordView.confirmPasswordTextField.isSecureTextEntry.toggle()
+        let imageName = createPasswordView.confirmPasswordTextField.isSecureTextEntry ? "eye_slash" : "eye"
+        createPasswordView.hideConfirmPasswordButton.setImage(UIImage(named: imageName), for: .normal)
     }
 }

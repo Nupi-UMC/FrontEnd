@@ -148,6 +148,22 @@ class CreatePasswordView : UIView {
         return label
     }()
     
+    lazy var hidePasswordButton : UIButton = {
+        let button = UIButton()
+        button.setImage(.eye, for: .normal)
+        button.tintColor = .icon2
+        button.isHidden = true
+        return button
+    }()
+    
+    lazy var hideConfirmPasswordButton : UIButton = {
+        let button = UIButton()
+        button.setImage(.eye, for: .normal)
+        button.tintColor = .icon2
+        button.isHidden = true
+        return button
+    }()
+    
     
     private func addComponents(){
         self.addSubview(circleView1)
@@ -165,6 +181,9 @@ class CreatePasswordView : UIView {
         
         self.addSubview(passwordErrorLabel)
         self.addSubview(confirmPasswordErrorLabel)
+        
+        self.addSubview(hidePasswordButton)
+        self.addSubview(hideConfirmPasswordButton)
         
         circleView1.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(96)
@@ -190,6 +209,7 @@ class CreatePasswordView : UIView {
         passwordTextField.snp.makeConstraints { make in
             make.top.equalTo(passwordLabel.snp.bottom).offset(16)
             make.leading.equalTo(passwordLabel).offset(0)
+            make.trailing.equalTo(hidePasswordButton.snp.leading)
         }
         confirmPasswordLabel.snp.makeConstraints { make in
             make.top.equalTo(line1.snp.bottom).offset(32)
@@ -198,6 +218,7 @@ class CreatePasswordView : UIView {
         confirmPasswordTextField.snp.makeConstraints { make in
             make.top.equalTo(confirmPasswordLabel.snp.bottom).offset(16)
             make.leading.equalTo(passwordLabel).offset(0)
+            make.trailing.equalTo(hidePasswordButton.snp.leading)
         }
         line1.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(9)
@@ -233,6 +254,18 @@ class CreatePasswordView : UIView {
             make.top.equalTo(line2.snp.bottom).offset(2)
             make.leading.equalTo(line2)
             make.height.equalTo(16)
+        }
+        
+        hidePasswordButton.snp.makeConstraints { make in
+            make.centerY.equalTo(passwordTextField)
+            make.trailing.equalTo(line1.snp.trailing)
+            make.width.height.equalTo(23)
+        }
+        
+        hideConfirmPasswordButton.snp.makeConstraints { make in
+            make.centerY.equalTo(confirmPasswordTextField)
+            make.trailing.equalTo(line1.snp.trailing)
+            make.width.height.equalTo(23)
         }
     }
 }

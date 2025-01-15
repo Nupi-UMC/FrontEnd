@@ -54,7 +54,7 @@ class VerifyEmailView : UIView {
         return label
     }()
     
-    private lazy var verificationCodeTextField : UITextField = {
+    lazy var verificationCodeTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "전송된 코드를 입력해주세요.",
@@ -99,6 +99,43 @@ class VerifyEmailView : UIView {
         return button
     }()
     
+    lazy var timerLabel : UILabel = {
+        let label = UILabel()
+        label.font = .caption2
+        label.textColor = .blue5
+        label.textAlignment = .right
+        return label
+    }()
+    
+    lazy var timerButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrow.trianglehead.clockwise"), for: .normal)
+        button.tintColor = .blue5
+        return button
+    }()
+    
+    lazy var codeErrorLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = .rice
+        label.font = .caption2
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
+    }()
+    
+    lazy var toastPopup : UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        label.font = .caption2
+        label.textColor = .white
+        label.textAlignment = .center
+        label.text = "인증번호를 발송했어요."
+        label.layer.cornerRadius = 16
+        label.clipsToBounds = true
+        label.isHidden = true
+        return label
+    }()
+    
     private func addComponents(){
         self.addSubview(circleView1)
         self.addSubview(circleView2)
@@ -110,6 +147,12 @@ class VerifyEmailView : UIView {
         self.addSubview(emailVerifyButton)
         self.addSubview(divideLine)
         
+        self.addSubview(timerLabel)
+        self.addSubview(timerButton)
+        self.addSubview(codeErrorLabel)
+        
+        self.addSubview(toastPopup)
+
         circleView1.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(96)
             make.leading.equalToSuperview().offset(321)
@@ -136,6 +179,7 @@ class VerifyEmailView : UIView {
             make.leading.equalToSuperview().offset(32)
             make.trailing.equalToSuperview().inset(32)
             make.height.equalTo(20)
+            make.width.equalTo(100)
         }
         resendVerificationCodeButton.snp.makeConstraints{ make in
             make.top.equalTo(verificationCodeTextField.snp.bottom).offset(40)
@@ -154,6 +198,32 @@ class VerifyEmailView : UIView {
             make.centerX.equalToSuperview()
             make.width.equalTo(329)
             make.height.equalTo(1)
+        }
+        
+        timerLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(verificationCodeTextField)
+            make.width.equalTo(37)
+            make.height.equalTo(16)
+            make.trailing.equalTo(divideLine.snp.trailing).inset(14)
+        }
+        
+        timerButton.snp.makeConstraints { make in
+            make.centerY.equalTo(verificationCodeTextField)
+            make.trailing.equalTo(divideLine.snp.trailing)
+            make.width.height.equalTo(12)
+        }
+        
+        toastPopup.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(116)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(154)
+            make.height.equalTo(33)
+        }
+        
+        codeErrorLabel.snp.makeConstraints { make in
+            make.top.equalTo(divideLine.snp.bottom).offset(2)
+            make.leading.equalTo(divideLine.snp.leading)
+            make.height.equalTo(16)
         }
     }
 }

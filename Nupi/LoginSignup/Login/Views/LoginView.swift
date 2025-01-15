@@ -68,7 +68,7 @@ class LoginView : UIView {
         return textField
     }()
     
-    private lazy var passwordTextField : UITextField = {
+    lazy var passwordTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "비밀번호를 입력하세요",
@@ -89,6 +89,14 @@ class LoginView : UIView {
         textField.layer.backgroundColor = UIColor.white2.cgColor
         textField.textColor = .icon1
         return textField
+    }()
+    
+    lazy var hidePasswordButton : UIButton = {
+        let button = UIButton()
+        button.setImage(.eye, for: .normal)
+        button.tintColor = .icon2
+        button.isHidden = true
+        return button
     }()
     
     private lazy var findPasswordButton : UIButton = {
@@ -147,6 +155,7 @@ class LoginView : UIView {
         self.addSubview(AppLogoLabel)
         self.addSubview(emailTextField)
         self.addSubview(passwordTextField)
+        self.addSubview(hidePasswordButton)
         self.addSubview(loginButton)
         self.addSubview(findPasswordButton)
         self.addSubview(signUpButton)
@@ -175,6 +184,12 @@ class LoginView : UIView {
             make.centerX.equalToSuperview()
             make.width.equalTo(329)
             make.height.equalTo(47)
+        }
+        
+        hidePasswordButton.snp.makeConstraints { make in
+            make.centerY.equalTo(passwordTextField)
+            make.trailing.equalTo(passwordTextField.snp.trailing).inset(16)
+            make.width.height.equalTo(25)
         }
         
         findPasswordButton.snp.makeConstraints{ make in
