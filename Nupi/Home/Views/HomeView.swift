@@ -108,6 +108,7 @@ class HomeView: UIView {
     private let vectorIcon = UIImageView().then {
         $0.image = UIImage(named: "vector_icon")
     }
+    
     //upcomming 버튼
     private let upcommingButton = UIButton().then {
         $0.setTitle("나님의 생일파티~!!", for: .normal)
@@ -170,12 +171,33 @@ class HomeView: UIView {
         }
     
     // MARK: 어디서 놀지?
-    private let whereTitle = UILabel().then {
-        $0.text = "Upcomming Schedule"
+    //타이틀
+    private let whereToPlayTitle = UILabel().then {
+        $0.text = "어디서 놀지?"
         $0.textColor = .blue3
         $0.font = UIFont(name: "WantedSans-Medium", size: 20)
     }
     // MARK: Our Memories
+    //타이틀
+    private let ourMemoriesTitle = UILabel().then {
+        $0.text = "Our Memories"
+        $0.textColor = .blue3
+        $0.font = UIFont(name: "WantedSans-Medium", size: 20)
+    }
+    
+    //화살표 이미지
+    private let vectorIcon2 = UIImageView().then {
+        $0.image = UIImage(named: "vector_icon")
+    }
+    //컬렉션뷰
+    let ourMemoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        $0.scrollDirection = .horizontal
+        $0.estimatedItemSize = .init(width: 172, height: 186)
+        $0.minimumLineSpacing = 8}).then{
+            $0.backgroundColor = .clear
+            $0.showsHorizontalScrollIndicator = true
+            $0.register(OurMemoriesCollectionViewCell.self, forCellWithReuseIdentifier: OurMemoriesCollectionViewCell.identifier)
+    }
     // MARK: Steady Popular Spot 타이틀
     /*
     private lazy var steadyTitle: UILabel = {
@@ -212,6 +234,10 @@ class HomeView: UIView {
         self.addSubview(dateLabel)
         self.addSubview(whatToPlayTitle)
         self.addSubview(whatToPlayCollectionView)
+        self.addSubview(whereToPlayTitle)
+        self.addSubview(ourMemoriesTitle)
+        self.addSubview(vectorIcon2)
+        self.addSubview(ourMemoriesCollectionView)
         //self.addSubview(steadyTitle)
         //self.addSubview(steadyTableView)
         
@@ -228,6 +254,7 @@ class HomeView: UIView {
             $0.width.equalTo(393)
             $0.height.equalTo(408)
         }
+        /*
         searchButton.snp.makeConstraints{
             $0.top.equalToSuperview().offset(449)
             $0.left.equalToSuperview().offset(58)
@@ -289,6 +316,32 @@ class HomeView: UIView {
             $0.left.equalToSuperview().offset(24)
             $0.height.equalTo(186)
         }
+        */
+        whereToPlayTitle.snp.makeConstraints{
+            $0.top.equalTo(bannerCollectionView.snp.bottom).offset(44)
+            $0.left.equalToSuperview().offset(24)
+        }
+        
+        ourMemoriesTitle.snp.makeConstraints{
+            $0.top.equalTo(whereToPlayTitle.snp.bottom).offset(137)
+            $0.left.equalToSuperview().offset(24)
+            $0.height.equalTo(24)
+        }
+        
+        vectorIcon2.snp.makeConstraints{
+            $0.top.equalTo(ourMemoriesTitle.snp.top).offset(6.66)
+            $0.left.equalTo(ourMemoriesTitle.snp.right).offset(8.53)
+            $0.width.equalTo(5.8)
+            $0.height.equalTo(12.69)
+        }
+        
+        ourMemoriesCollectionView.snp.makeConstraints{
+            $0.top.equalTo(ourMemoriesTitle.snp.bottom).offset(14)
+            $0.left.equalToSuperview().offset(24)
+            $0.height.equalTo(186)
+        }
+    
+
         /*
         steadyTitle.snp.makeConstraints{
             $0.top.equalTo(searchButton.snp.bottom).offset(30)
