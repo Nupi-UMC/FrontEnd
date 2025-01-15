@@ -103,7 +103,11 @@ class HomeView: UIView {
         $0.textColor = .blue3
         $0.font = UIFont(name: "WantedSans-Medium", size: 20)
     }
-
+    
+    //화살표 이미지
+    private let vectorIcon = UIImageView().then {
+        $0.image = UIImage(named: "vector_icon")
+    }
     //upcomming 버튼
     private let upcommingButton = UIButton().then {
         $0.setTitle("나님의 생일파티~!!", for: .normal)
@@ -114,13 +118,33 @@ class HomeView: UIView {
         // 이미지의 위치 조정
         $0.imageEdgeInsets = UIEdgeInsets(top: 18, left: 34, bottom: 18, right: 259)
         // 텍스트의 위치 조정
-        $0.titleEdgeInsets = UIEdgeInsets(top: 24, left: 110, bottom: 44, right: 0)
+        $0.titleEdgeInsets = UIEdgeInsets(top: 24, left: -44, bottom: 44, right: 0)
         // 버튼의 콘텐츠 경계 설정
         //$0.contentEdgeInsets = UIEdgeInsets(top: 18, left: 34, bottom: 0, right: 18)
                 
         $0.layer.borderColor = UIColor.blue1.cgColor
         $0.layer.borderWidth = 2
         $0.layer.cornerRadius = 11
+    }
+    
+    //디데이 라벨
+    private let dDayLabel = UILabel().then {
+        $0.text = "D-7"
+        $0.textColor = .blue4
+        $0.font = UIFont(name: "WantedSans-Medium", size: 13)
+    }
+    
+    //동그라미 이미지
+    private let circleImage = UIImageView().then {
+        $0.image = UIImage(systemName: "circlebadge.fill")
+        $0.tintColor = .blue4
+    }
+    
+    //날짜 라벨
+    private let dateLabel = UILabel().then {
+        $0.text = "~2024.12.24"
+        $0.textColor = .blue4
+        $0.font = UIFont(name: "WantedSans-Medium", size: 13)
     }
     
     @objc func buttonTapped(_ sender: UIButton) {
@@ -181,7 +205,11 @@ class HomeView: UIView {
         self.addSubview(searchButton)
         self.addSubview(myPathButton)
         self.addSubview(upcommingTitle)
+        self.addSubview(vectorIcon)
         self.addSubview(upcommingButton)
+        self.addSubview(dDayLabel)
+        self.addSubview(circleImage)
+        self.addSubview(dateLabel)
         self.addSubview(whatToPlayTitle)
         self.addSubview(whatToPlayCollectionView)
         //self.addSubview(steadyTitle)
@@ -217,13 +245,38 @@ class HomeView: UIView {
         upcommingTitle.snp.makeConstraints{
             $0.top.equalTo(searchButton.snp.bottom).offset(44)
             $0.left.equalToSuperview().offset(24)
+            $0.width.equalTo(209)
+            $0.height.equalTo(24)
         }
         
+        vectorIcon.snp.makeConstraints{
+            $0.top.equalTo(upcommingTitle.snp.top).offset(5.66)
+            $0.left.equalTo(upcommingTitle.snp.right).offset(0)
+            $0.width.equalTo(5.8)
+            $0.height.equalTo(12.69)
+        }
         upcommingButton.snp.makeConstraints{
             $0.top.equalTo(upcommingTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(88)
+        }
+        
+        dDayLabel.snp.makeConstraints{
+            $0.top.equalTo(upcommingButton.snp.top).offset(48)
+            $0.left.equalTo(upcommingButton.snp.left).offset(111)
+        }
+        
+        circleImage.snp.makeConstraints{
+            $0.top.equalTo(upcommingButton.snp.top).offset(54.5)
+            $0.left.equalTo(dDayLabel.snp.right).offset(6)
+            $0.width.equalTo(3)
+            $0.height.equalTo(3)
+        }
+        
+        dateLabel.snp.makeConstraints{
+            $0.top.equalTo(upcommingButton.snp.top).offset(48)
+            $0.left.equalTo(dDayLabel.snp.right).offset(15)
         }
         
         whatToPlayTitle.snp.makeConstraints{
