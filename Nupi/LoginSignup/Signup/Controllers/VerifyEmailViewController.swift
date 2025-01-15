@@ -30,11 +30,14 @@ class VerifyEmailViewController: UIViewController {
         startTimer()
     }
     
+    var email: String?
+    
     private var timer: Timer?
     private var limitTime: Int = 300 // 초기 5분
     
     @objc private func verifyEmailButtonTap(){
         let createPasswordVC = CreatePasswordViewController()
+        createPasswordVC.email = self.email! // 이메일 전달
         self.navigationController?.pushViewController(createPasswordVC, animated: true)
     }
     

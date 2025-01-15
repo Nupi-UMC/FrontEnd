@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreatePasswordViewController: UIViewController {
+class CreatePasswordViewController: UIViewController, AddProfilePictureViewController.SignUpDataDelegate {
     
     private lazy var createPasswordView: CreatePasswordView = {
         let view = CreatePasswordView()
@@ -41,8 +41,9 @@ class CreatePasswordViewController: UIViewController {
         createPasswordView.confirmPasswordTextField.addTarget(self, action: #selector(confirmPasswordTextFieldDidChange(_:)), for: .editingChanged)
         // hideConfirmPasswordButton 동작 추가
         createPasswordView.hideConfirmPasswordButton.addTarget(self, action: #selector(toggleConfirmPasswordVisibility), for: .touchUpInside)
-        
     }
+    
+    var email: String = ""
     
     @objc private func passwordTextFieldDidChange(_ textField: UITextField) {
         validatePasswordInfo()
@@ -94,10 +95,15 @@ class CreatePasswordViewController: UIViewController {
         createPasswordView.continueButton.setTitleColor(isEnabled ? .white : .icon2, for: .normal)
     }
     
-    @objc private func continueButtonTap(){
+    @objc private func continueButtonTap() {
+        let password = createPasswordView.passwordTextField.text ?? ""
         let addProfilePictureVC = AddProfilePictureViewController()
+        addProfilePictureVC.delegate = self // Delegate 설정
+        addProfilePictureVC.email = email
+        addProfilePictureVC.password = password
         self.navigationController?.pushViewController(addProfilePictureVC, animated: true)
-    }
+        print("데이터 전송 = email : \(email), password : \(password)")
+        }
 
     // 비밀번호 보기/숨기기 토글
     @objc private func togglePasswordVisibility() {
@@ -111,5 +117,12 @@ class CreatePasswordViewController: UIViewController {
         createPasswordView.confirmPasswordTextField.isSecureTextEntry.toggle()
         let imageName = createPasswordView.confirmPasswordTextField.isSecureTextEntry ? "eye_slash" : "eye"
         createPasswordView.hideConfirmPasswordButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+    
+    
+    // Delegate 메서드 구현
+    func didFinishSignUp(email: String, password: String, nickname: String, profileImage: UIImage?) {
+        // 데이터를 전달받아 처리할 로직
+        print("회원가입 완료: \(email), \(password), \(nickname)")
     }
 }

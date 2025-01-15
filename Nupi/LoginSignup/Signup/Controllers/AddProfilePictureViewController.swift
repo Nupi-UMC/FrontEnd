@@ -28,12 +28,31 @@ class AddProfilePictureViewController: UIViewController {
         addProfilePictureView.startButton.addTarget(self, action: #selector(startButtonTap), for: .touchUpInside)
     }
     
+    weak var delegate: SignUpDataDelegate? // Delegate 프로퍼티
+        
+    var email: String = ""
+    var password: String = ""
+    
+    //데이터를 모두 수집할 수 있도록, 각 뷰 컨트롤러에서 필요한 데이터를 전달받는 Delegate Protocol
+    protocol SignUpDataDelegate: AnyObject {
+        func didFinishSignUp(email: String, password: String, nickname: String, profileImage: UIImage?)
+    }
+    
     @objc private func startButtonTap(){
+        
+        let nickname = addProfilePictureView.nicknameTextField.text ?? ""
+        let profileImage = addProfilePictureView.selectProfileImageButton.imageView?.image
+        
+        // Delegate를 통해 데이터 전달
+        delegate?.didFinishSignUp(email: email, password: password, nickname: nickname, profileImage: profileImage)
+        
+        // 데이터 전송 로직 작성 (예: 백엔드 API 호출)
+        print("회원가입 완료 : \(email), \(password), \(nickname), \(String(describing: profileImage))")
+        
+        //프로필 사진, 닉네임 넘겨주기 -> 이 부분은 api 연결하면 생략 ?
         let completeSignupVC = CompleteSignUpViewController()
-        //프로필 사진 넘겨주기
-        completeSignupVC.receivedProfileImage = addProfilePictureView.selectProfileImageButton.imageView?.image
-        //닉네임 넘겨주기
-        completeSignupVC.receivedNickName = addProfilePictureView.nicknameTextField.text
+        completeSignupVC.receivedProfileImage = profileImage
+        completeSignupVC.receivedNickName = nickname
         self.navigationController?.pushViewController(completeSignupVC, animated: true)
     }
     

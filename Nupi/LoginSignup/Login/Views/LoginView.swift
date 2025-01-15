@@ -114,6 +114,15 @@ class LoginView : UIView {
         return button
     }()
     
+    lazy var passwordErrorLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = .rice
+        label.font = .caption2
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
+    }()
+    
     private lazy var loginButton : UIButton = {
         let button = UIButton()
         button.setTitle("이메일로 로그인", for: .normal)
@@ -161,6 +170,8 @@ class LoginView : UIView {
         self.addSubview(signUpButton)
         self.addSubview(dividelineView)
         self.addSubview(findEmailButton)
+        
+        self.addSubview(passwordErrorLabel)
         
         browseButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(75)
@@ -219,6 +230,12 @@ class LoginView : UIView {
             make.height.equalTo(18)
             make.centerY.equalTo(signUpButton)
             make.centerX.equalTo(signUpButton.snp.trailing).offset(20)
+        }
+        
+        passwordErrorLabel.snp.makeConstraints { make in
+            make.top.equalTo(passwordTextField.snp.bottom).offset(13)
+            make.leading.equalTo(passwordTextField)
+            make.height.equalTo(16)
         }
     }
 }

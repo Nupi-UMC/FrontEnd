@@ -33,7 +33,9 @@ class BeginSignUpViewController: UIViewController {
     
     @objc private func continueButtonTap(){
         let emailVerifyVC = VerifyEmailViewController()
+        emailVerifyVC.email = self.email // 이메일 전달
         self.navigationController?.pushViewController(emailVerifyVC, animated: true)
+        print("데이터 전송 = email : \(email)")
     }
     
     @objc private func emailTextFieldDidChange(_ textField : UITextField) {
