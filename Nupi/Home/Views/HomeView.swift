@@ -83,10 +83,37 @@ class HomeView: UIView {
     }()
 
     // MARK: Upcomming Schedule
+    // upcomming타이틀
+    private let upcommingTitle = UILabel().then {
+        $0.text = "Upcomming Schedule"
+        $0.textColor = .blue3
+        $0.font = UIFont(name: "WantedSans-Medium", size: 20)
+    }
+
+    //upcomming 버튼
+    private let upcommingButton = UIButton().then {
+        $0.setTitle("나님의 생일파티~!!", for: .normal)
+        $0.setTitleColor(.blue3 , for: .normal)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-Medium", size: 17)
+        
+        $0.setImage(UIImage(named:"partying_face"), for: .normal)
+        // 이미지의 위치 조정
+        $0.imageEdgeInsets = UIEdgeInsets(top: 18, left: 34, bottom: 18, right: 259)
+        // 텍스트의 위치 조정
+        $0.titleEdgeInsets = UIEdgeInsets(top: 24, left: 110, bottom: 44, right: 0)
+        // 버튼의 콘텐츠 경계 설정
+        //$0.contentEdgeInsets = UIEdgeInsets(top: 18, left: 34, bottom: 0, right: 18)
+                
+        $0.layer.borderColor = UIColor.blue1.cgColor
+        $0.layer.borderWidth = 2
+        $0.layer.cornerRadius = 11
+    }
+
     // MARK: 뭐하고 놀지?
     // MARK: 어디서 놀지?
     // MARK: Our Memories
     // MARK: Steady Popular Spot 타이틀
+    /*
     private lazy var steadyTitle: UILabel = {
         let label = UILabel()
         
@@ -105,6 +132,7 @@ class HomeView: UIView {
         table.separatorStyle = .none
         return table
     }()
+     */
     
     // MARK: 컴포넌트 추가
     private func setViews(){
@@ -112,8 +140,10 @@ class HomeView: UIView {
         self.addSubview(logoLabel)
         self.addSubview(searchButton)
         self.addSubview(myPathButton)
-        self.addSubview(steadyTitle)
-        self.addSubview(steadyTableView)
+        self.addSubview(upcommingTitle)
+        self.addSubview(upcommingButton)
+        //self.addSubview(steadyTitle)
+        //self.addSubview(steadyTableView)
         
     }
     
@@ -143,6 +173,18 @@ class HomeView: UIView {
             $0.height.equalTo(41)
         }
         
+        upcommingTitle.snp.makeConstraints{
+            $0.top.equalTo(searchButton.snp.bottom).offset(44)
+            $0.left.equalToSuperview().offset(24)
+        }
+        
+        upcommingButton.snp.makeConstraints{
+            $0.top.equalTo(upcommingTitle.snp.bottom).offset(17)
+            $0.left.equalToSuperview().offset(24)
+            $0.width.equalTo(345)
+            $0.height.equalTo(88)
+        }
+        /*
         steadyTitle.snp.makeConstraints{
             $0.top.equalTo(searchButton.snp.bottom).offset(30)
             $0.left.equalToSuperview().offset(24)
@@ -153,5 +195,6 @@ class HomeView: UIView {
             $0.left.equalToSuperview().offset(24)
             $0.height.equalTo(450)
         }
+         */
     }
 }
