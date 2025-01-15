@@ -22,7 +22,14 @@ class HomeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK:
+    // MARK: 스크롤뷰
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = true
+        $0.showsHorizontalScrollIndicator = false
+    }
+    
+    private let contentView = UIView()
+    
     // MARK: 배너
     //컬렉션뷰
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
@@ -121,7 +128,29 @@ class HomeView: UIView {
     }
 
     // MARK: 뭐하고 놀지?
+    private let whatToPlayTitle = UILabel().then {
+        $0.text = "뭐하고 놀지?"
+        $0.textColor = .blue3
+        $0.font = UIFont(name: "WantedSans-Medium", size: 20)
+    }
+    
+    //컬렉션뷰
+    let whatToPlayCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        $0.scrollDirection = .horizontal
+        $0.estimatedItemSize = .init(width: 172, height: 186)
+        $0.minimumLineSpacing = 8}).then{
+            $0.backgroundColor = .clear
+            $0.isPagingEnabled = true
+            $0.showsHorizontalScrollIndicator = true
+            $0.register(WhatToPlayCollectionViewCell.self, forCellWithReuseIdentifier: WhatToPlayCollectionViewCell.identifier)
+        }
+    
     // MARK: 어디서 놀지?
+    private let whereTitle = UILabel().then {
+        $0.text = "Upcomming Schedule"
+        $0.textColor = .blue3
+        $0.font = UIFont(name: "WantedSans-Medium", size: 20)
+    }
     // MARK: Our Memories
     // MARK: Steady Popular Spot 타이틀
     /*
@@ -153,11 +182,12 @@ class HomeView: UIView {
         self.addSubview(myPathButton)
         self.addSubview(upcommingTitle)
         self.addSubview(upcommingButton)
+        self.addSubview(whatToPlayTitle)
+        self.addSubview(whatToPlayCollectionView)
         //self.addSubview(steadyTitle)
         //self.addSubview(steadyTableView)
         
     }
-    
     private func setConstaints(){
         logoLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(62)
@@ -194,6 +224,17 @@ class HomeView: UIView {
             $0.left.equalToSuperview().offset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(88)
+        }
+        
+        whatToPlayTitle.snp.makeConstraints{
+            $0.top.equalTo(upcommingButton.snp.bottom).offset(44)
+            $0.left.equalToSuperview().offset(24)
+        }
+        
+        whatToPlayCollectionView.snp.makeConstraints{
+            $0.top.equalTo(whatToPlayTitle.snp.bottom).offset(17)
+            $0.left.equalToSuperview().offset(24)
+            $0.height.equalTo(186)
         }
         /*
         steadyTitle.snp.makeConstraints{
