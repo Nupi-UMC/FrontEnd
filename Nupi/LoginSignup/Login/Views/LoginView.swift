@@ -123,7 +123,7 @@ class LoginView : UIView {
         return label
     }()
     
-    private lazy var loginButton : UIButton = {
+    lazy var loginButton : UIButton = {
         let button = UIButton()
         button.setTitle("이메일로 로그인", for: .normal)
         button.titleLabel?.font = .heading2

@@ -8,6 +8,8 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+
+    var coordinator: MainCoordinator?
     
     private lazy var loginView:  LoginView = {
         let view = LoginView()
@@ -18,6 +20,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = loginView
+        loginView.loginButton.addTarget(self, action: #selector(loginButtonTap), for: .touchUpInside)
         loginView.signUpButton.addTarget(self, action: #selector(signUpButtonTap), for: .touchUpInside)
         loginView.browseButton.addTarget(self, action: #selector(browseButtonTap), for: .touchUpInside)
         // 비밀번호 입력값 변경 감지
@@ -60,17 +63,22 @@ class LoginViewController: UIViewController {
         errorUpdateUI(for: loginView.passwordTextField, errorLabel: loginView.passwordErrorLabel, message: "비밀번호가 일치하지 않아요.", isValid: isValidPassword)
     }
     
+    //로그인 버튼 동작
+    @objc
+    private func loginButtonTap(){
+        validatePasswordInfo()
+        coordinator?.showBaseViewController()
+    }
+    
     //회원가입 버튼 동작
     @objc
     private func signUpButtonTap(){
         let signUpVC = BeginSignUpViewController()
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
-    //둘러보기 버튼 동작
-    @objc
-    private func browseButtonTap(){
-        //수정해야됨 
-        let browseVC = HomeViewController()
-        self.navigationController?.pushViewController(browseVC, animated: true)
+    /// 둘러보기 버튼 동작
+    @objc private func browseButtonTap() {
+        let tabBarVC = BaseViewController()
+        self.navigationController?.setViewControllers([tabBarVC], animated: true)
     }
 }

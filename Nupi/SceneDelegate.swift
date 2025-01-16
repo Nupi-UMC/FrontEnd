@@ -11,17 +11,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-        // UINavigationController로 LoginViewController를 감싸기
-        let navController = UINavigationController(rootViewController: LoginViewController())
-        window?.rootViewController = navController
-        window?.makeKeyAndVisible()
+        // UINavigationController를 사용하여 루트 설정
+        let navigationController = UINavigationController()
+        let coordinator = MainCoordinator(navigationController: navigationController)
+        coordinator.start()
         
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
