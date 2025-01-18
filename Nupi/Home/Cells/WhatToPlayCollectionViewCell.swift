@@ -47,8 +47,10 @@ class WhatToPlayCollectionViewCell: UICollectionViewCell {
         }
         
         placeLabel.snp.makeConstraints{
-            $0.top.equalTo(placeButton.snp.bottom).offset(-8)
-            $0.centerY.equalToSuperview()
+            $0.top.equalToSuperview().inset(160)
+            $0.left.equalToSuperview().offset(58)
+            $0.width.equalTo(56)
+            $0.height.equalTo(18)
         }
     }
 }

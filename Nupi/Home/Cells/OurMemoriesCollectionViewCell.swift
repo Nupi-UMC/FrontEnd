@@ -32,8 +32,7 @@ class OurMemoriesCollectionViewCell: UICollectionViewCell {
     
     //날짜
     let dateLabel = UILabel().then{
-        $0.font = UIFont(name: "WantedSans-Regular", size: 16)
-        $0.font = .systemFont(ofSize: 16, weight: .light)
+        $0.font = UIFont(name: "WantedSans-SemiBold", size: 16)
         $0.textColor = .white
         $0.text = "23.10.07"
     }
@@ -50,8 +49,8 @@ class OurMemoriesCollectionViewCell: UICollectionViewCell {
         }
         
         dateLabel.snp.makeConstraints{
-            $0.top.equalTo(memoriesimageView.snp.bottom).inset(8.39)
-            $0.left.equalTo(memoriesimageView.snp.left).offset(7)
+            $0.bottom.equalToSuperview().inset(8.39)
+            $0.left.equalToSuperview().offset(7)
         }
     }
 }
