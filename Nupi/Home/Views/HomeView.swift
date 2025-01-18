@@ -61,6 +61,7 @@ class HomeView: UIView {
         button.layer.cornerRadius = 11
         
         button.setImage(UIImage(named:"my_path_image"), for: .normal)
+        
         button.imageView?.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
         button.imageView?.leftAnchor.constraint(equalToSystemSpacingAfter: button.leftAnchor, multiplier: 10).isActive = true
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
@@ -84,6 +85,7 @@ class HomeView: UIView {
         button.layer.cornerRadius = 11
         
         button.setImage(UIImage(named:"search_button_image"), for: .normal)
+        
         button.imageView?.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
         button.imageView?.leftAnchor.constraint(equalToSystemSpacingAfter: button.leftAnchor, multiplier: 13).isActive = true
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
@@ -93,6 +95,10 @@ class HomeView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    @objc func buttonTapped(_ sender: UIButton) {
+        sender.isSelected.toggle()
+    }
 
     // MARK: Upcomming Schedule
     // upcomming타이틀
@@ -146,9 +152,6 @@ class HomeView: UIView {
         $0.font = UIFont(name: "WantedSans-Medium", size: 13)
     }
     
-    @objc func buttonTapped(_ sender: UIButton) {
-        sender.isSelected.toggle()
-    }
 
     // MARK: 뭐하고 놀지?
     private let whatToPlayTitle = UILabel().then {
