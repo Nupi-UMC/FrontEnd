@@ -178,7 +178,16 @@ class HomeView: UIView {
         $0.textColor = .blue3
         $0.font = UIFont(name: "WantedSans-Medium", size: 20)
     }
-    // MARK: Our Memories
+
+    //컬렉션뷰
+    let whereToPlayCollectionVIew = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        $0.scrollDirection = .horizontal
+        $0.estimatedItemSize = .init(width: 76, height: 76)
+        $0.minimumLineSpacing = 8}).then{
+            $0.backgroundColor = .clear
+            $0.showsHorizontalScrollIndicator = false
+            $0.register(WhereToPlayCollectionViewCell.self, forCellWithReuseIdentifier: WhereToPlayCollectionViewCell.identifier)
+    }
     //타이틀
     private let ourMemoriesTitle = UILabel().then {
         $0.text = "Our Memories"
@@ -249,6 +258,7 @@ class HomeView: UIView {
         contentView.addSubview(whatToPlayTitle)
         contentView.addSubview(whatToPlayCollectionView)
         contentView.addSubview(whereToPlayTitle)
+        contentView.addSubview(whereToPlayCollectionVIew)
         contentView.addSubview(ourMemoriesTitle)
         contentView.addSubview(vectorIcon2)
         contentView.addSubview(ourMemoriesCollectionView)
@@ -333,6 +343,14 @@ class HomeView: UIView {
         whereToPlayTitle.snp.makeConstraints{
             $0.top.equalTo(whatToPlayCollectionView.snp.bottom).offset(44)
             $0.left.equalToSuperview().offset(24)
+        }
+        
+        whereToPlayCollectionVIew.snp.makeConstraints{
+            $0.top.equalTo(whereToPlayTitle.snp.bottom).offset(17)
+            $0.left.equalToSuperview().offset(24)
+            $0.width.equalTo(352)
+            $0.height.equalTo(76)
+            
         }
         
         ourMemoriesTitle.snp.makeConstraints{

@@ -25,6 +25,7 @@ class HomeViewController: UIViewController {
         //rootView.bannerCollectionView.delegate = self
         rootView.whatToPlayCollectionView.dataSource = self
         //rootView.whatToPlayCollectionView.delegate = self
+        rootView.whereToPlayCollectionVIew.dataSource = self
         rootView.ourMemoriesCollectionView.dataSource = self
     }
     
@@ -40,6 +41,8 @@ extension HomeViewController: UICollectionViewDataSource {
             return WhatToPlayModel.dummy().count
         } else if collectionView == rootView.ourMemoriesCollectionView {
             return OurMemoriesModel.dummy().count
+        } else if collectionView == rootView.whereToPlayCollectionVIew {
+            return WhereToPlayModel.dummy().count
         }
         return 0
     }
@@ -61,6 +64,14 @@ extension HomeViewController: UICollectionViewDataSource {
             let list = WhatToPlayModel.dummy()
             cell.placeButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
             cell.placeLabel.text = list[indexPath.row].place
+            return cell
+        }else if collectionView == rootView.whereToPlayCollectionVIew {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WhereToPlayCollectionViewCell.identifier, for: indexPath) as? WhereToPlayCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let list = WhereToPlayModel.dummy()
+            cell.whereToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
+            cell.whereToPlayLabel.text = list[indexPath.row].place
             return cell
         }else if collectionView == rootView.ourMemoriesCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OurMemoriesCollectionViewCell.identifier, for: indexPath) as?
