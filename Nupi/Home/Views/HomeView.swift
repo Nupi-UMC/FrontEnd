@@ -14,8 +14,7 @@ class HomeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
-        self.setViews()
-        self.setConstaints()
+        setViews()
     }
     
     required init?(coder: NSCoder) {
@@ -25,7 +24,6 @@ class HomeView: UIView {
     // MARK: 스크롤뷰
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
-        $0.showsHorizontalScrollIndicator = false
     }
     
     private let contentView = UIView()
@@ -222,27 +220,38 @@ class HomeView: UIView {
     
     // MARK: 컴포넌트 추가
     private func setViews(){
-        self.addSubview(bannerCollectionView)
-        self.addSubview(logoLabel)
-        self.addSubview(searchButton)
-        self.addSubview(myPathButton)
-        self.addSubview(upcommingTitle)
-        self.addSubview(vectorIcon)
-        self.addSubview(upcommingButton)
-        self.addSubview(dDayLabel)
-        self.addSubview(circleImage)
-        self.addSubview(dateLabel)
-        self.addSubview(whatToPlayTitle)
-        self.addSubview(whatToPlayCollectionView)
-        self.addSubview(whereToPlayTitle)
-        self.addSubview(ourMemoriesTitle)
-        self.addSubview(vectorIcon2)
-        self.addSubview(ourMemoriesCollectionView)
+        addSubview(scrollView)
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.height.equalTo(2357)
+        }
+
+        contentView.addSubview(bannerCollectionView)
+        contentView.addSubview(logoLabel)
+        contentView.addSubview(searchButton)
+        contentView.addSubview(myPathButton)
+        contentView.addSubview(upcommingTitle)
+        contentView.addSubview(vectorIcon)
+        contentView.addSubview(upcommingButton)
+        contentView.addSubview(dDayLabel)
+        contentView.addSubview(circleImage)
+        contentView.addSubview(dateLabel)
+        contentView.addSubview(whatToPlayTitle)
+        contentView.addSubview(whatToPlayCollectionView)
+        contentView.addSubview(whereToPlayTitle)
+        contentView.addSubview(ourMemoriesTitle)
+        contentView.addSubview(vectorIcon2)
+        contentView.addSubview(ourMemoriesCollectionView)
         //self.addSubview(steadyTitle)
         //self.addSubview(steadyTableView)
         
-    }
-    private func setConstaints(){
         logoLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(62)
             $0.left.equalToSuperview().offset(24)
@@ -254,7 +263,7 @@ class HomeView: UIView {
             $0.width.equalTo(393)
             $0.height.equalTo(408)
         }
-        /*
+        
         searchButton.snp.makeConstraints{
             $0.top.equalToSuperview().offset(449)
             $0.left.equalToSuperview().offset(58)
@@ -316,9 +325,9 @@ class HomeView: UIView {
             $0.left.equalToSuperview().offset(24)
             $0.height.equalTo(186)
         }
-        */
+        
         whereToPlayTitle.snp.makeConstraints{
-            $0.top.equalTo(bannerCollectionView.snp.bottom).offset(44)
+            $0.top.equalTo(whatToPlayCollectionView.snp.bottom).offset(44)
             $0.left.equalToSuperview().offset(24)
         }
         
@@ -356,3 +365,4 @@ class HomeView: UIView {
          */
     }
 }
+
