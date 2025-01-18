@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Then
 
 class OurMemoriesCollectionViewCell: UICollectionViewCell {
     static let identifier = "OurMemoriseCollectionViewCell"

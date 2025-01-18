@@ -5,7 +5,6 @@
 //  Created by 김건 on 1/15/25.
 //
 
-import Foundation
 import UIKit
 
 struct WhatToPlayModel{

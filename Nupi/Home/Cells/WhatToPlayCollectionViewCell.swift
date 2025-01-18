@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Then
 
 class WhatToPlayCollectionViewCell: UICollectionViewCell {
     static let identifier = "WhatToPlayCollectionViewCell"

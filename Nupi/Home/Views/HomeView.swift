@@ -326,6 +326,7 @@ class HomeView: UIView {
         whatToPlayCollectionView.snp.makeConstraints{
             $0.top.equalTo(whatToPlayTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
+            $0.width.equalTo(352)
             $0.height.equalTo(186)
         }
         
@@ -350,6 +351,7 @@ class HomeView: UIView {
         ourMemoriesCollectionView.snp.makeConstraints{
             $0.top.equalTo(ourMemoriesTitle.snp.bottom).offset(14)
             $0.left.equalToSuperview().offset(24)
+            $0.width.equalTo(352)
             $0.height.equalTo(186)
         }
     
