@@ -25,7 +25,7 @@ class HomeViewController: UIViewController {
         //rootView.bannerCollectionView.delegate = self
         rootView.whatToPlayCollectionView.dataSource = self
         //rootView.whatToPlayCollectionView.delegate = self
-        rootView.whereToPlayCollectionVIew.dataSource = self
+        rootView.whereToPlayCollectionView.dataSource = self
         rootView.ourMemoriesCollectionView.dataSource = self
     }
     
@@ -41,7 +41,7 @@ extension HomeViewController: UICollectionViewDataSource {
             return WhatToPlayModel.dummy().count
         } else if collectionView == rootView.ourMemoriesCollectionView {
             return OurMemoriesModel.dummy().count
-        } else if collectionView == rootView.whereToPlayCollectionVIew {
+        } else if collectionView == rootView.whereToPlayCollectionView {
             return WhereToPlayModel.dummy().count
         }
         return 0
@@ -65,7 +65,7 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.placeButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
             cell.placeLabel.text = list[indexPath.row].place
             return cell
-        }else if collectionView == rootView.whereToPlayCollectionVIew {
+        }else if collectionView == rootView.whereToPlayCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WhereToPlayCollectionViewCell.identifier, for: indexPath) as? WhereToPlayCollectionViewCell else {
                 return UICollectionViewCell()
             }

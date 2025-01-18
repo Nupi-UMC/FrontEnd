@@ -43,29 +43,22 @@ class SteadyPopularSpotCell: UITableViewCell {
     
     // MARK:
     //spot 이미지
-    private lazy var spotImage: UIImageView = {
-        let imageView = UIImageView()
-        
-        return imageView
-    }()
+    let spotImage = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
     
     //spot 이름
-    private lazy var spotName: UILabel = {
-        let label = UILabel()
-        
-        label.font = UIFont.systemFont(ofSize: 23)
-        label.textColor = .black
-        
-        return label
-    }()
+    let spotName = UILabel().then {
+        $0.font = .systemFo
+        $0.textColor = .black
+
+    }
     
     //spot 이미지
-    private lazy var spotIcon: UIImageView = {
-        let imageView = UIImageView()
-        
-        imageView.image = UIImage(named:"spot_icon")
-        return imageView
-    }()
+    let spotIcon = UIImageView().then {
+        $0.image = UIImage(named:"spot_icon")
+    }
     
     //spot 주소
     private lazy var spotAddress: UILabel = {

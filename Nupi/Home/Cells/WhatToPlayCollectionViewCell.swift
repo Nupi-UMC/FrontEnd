@@ -22,6 +22,8 @@ class WhatToPlayCollectionViewCell: UICollectionViewCell {
     // MARK:
     //버튼
     let placeButton = UIButton().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
         $0.setImage(UIImage(named:"izakaya_image"), for: .normal)
         $0.layer.cornerRadius = 11
     }

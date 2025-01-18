@@ -180,7 +180,7 @@ class HomeView: UIView {
     }
 
     //컬렉션뷰
-    let whereToPlayCollectionVIew = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+    let whereToPlayCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
         $0.scrollDirection = .horizontal
         $0.estimatedItemSize = .init(width: 76, height: 76)
         $0.minimumLineSpacing = 8}).then{
@@ -209,17 +209,13 @@ class HomeView: UIView {
             $0.register(OurMemoriesCollectionViewCell.self, forCellWithReuseIdentifier: OurMemoriesCollectionViewCell.identifier)
     }
     // MARK: Steady Popular Spot 타이틀
-    /*
-    private lazy var steadyTitle: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Steady Popular Spot"
-        label.textColor = UIColor(red:53/255,green:62/255,blue:81/255,alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-        
-        return label
-    }()
+    let steadyTitle = UILabel().then{
+        $0.text = "Steady Popular Spot"
+        $0.textColor = .blue3
+        $0.font = UIFont(name: "WantedSans-Medium", size: 20)
+    }
     
+     /*
     //Steady Popular Spot 스택뷰
     public lazy var steadyTableView: UITableView = {
         let table = UITableView()
@@ -258,11 +254,11 @@ class HomeView: UIView {
         contentView.addSubview(whatToPlayTitle)
         contentView.addSubview(whatToPlayCollectionView)
         contentView.addSubview(whereToPlayTitle)
-        contentView.addSubview(whereToPlayCollectionVIew)
+        contentView.addSubview(whereToPlayCollectionView)
         contentView.addSubview(ourMemoriesTitle)
         contentView.addSubview(vectorIcon2)
         contentView.addSubview(ourMemoriesCollectionView)
-        //self.addSubview(steadyTitle)
+        contentView.self.addSubview(steadyTitle)
         //self.addSubview(steadyTableView)
         
         logoLabel.snp.makeConstraints{
@@ -345,7 +341,7 @@ class HomeView: UIView {
             $0.left.equalToSuperview().offset(24)
         }
         
-        whereToPlayCollectionVIew.snp.makeConstraints{
+        whereToPlayCollectionView.snp.makeConstraints{
             $0.top.equalTo(whereToPlayTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
             $0.width.equalTo(352)
@@ -354,7 +350,7 @@ class HomeView: UIView {
         }
         
         ourMemoriesTitle.snp.makeConstraints{
-            $0.top.equalTo(whereToPlayTitle.snp.bottom).offset(137)
+            $0.top.equalTo(whereToPlayCollectionView.snp.bottom).offset(44)
             $0.left.equalToSuperview().offset(24)
             $0.height.equalTo(24)
         }
@@ -374,12 +370,12 @@ class HomeView: UIView {
         }
     
 
-        /*
         steadyTitle.snp.makeConstraints{
-            $0.top.equalTo(searchButton.snp.bottom).offset(30)
+            $0.top.equalTo(ourMemoriesCollectionView.snp.bottom).offset(44)
             $0.left.equalToSuperview().offset(24)
         }
         
+        /*
         steadyTableView.snp.makeConstraints{
             $0.top.equalTo(steadyTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
