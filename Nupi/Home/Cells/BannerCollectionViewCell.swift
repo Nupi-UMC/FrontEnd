@@ -50,7 +50,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         
         imageView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
-            $0.width.equalTo(393)
+            $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(408)
         }
         
