@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailInfoView: UIView {
+class PlaceDetailInfoView: UIView {
 
     override init (frame: CGRect) {
         super.init(frame: frame)

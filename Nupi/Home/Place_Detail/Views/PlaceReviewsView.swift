@@ -1,5 +1,5 @@
 //
-//  IncludedRoutesView.swift
+//  ReviewsView.swift
 //  Nupi
 //
 //  Created by Dana Lim on 1/19/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IncludedRoutesView: UIView {
+class PlaceReviewsView: UIView {
 
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -19,14 +19,14 @@ class IncludedRoutesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var includedRoutesCollectionView: UICollectionView = {
+    lazy var placeReviewsCollectionView: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
        layout.scrollDirection = .vertical // 세로 스크롤
-       layout.minimumLineSpacing = 32 // 셀 간의 세로 간격
-       layout.itemSize = CGSize(width: 345, height: 190) // 셀 크기
+       layout.minimumLineSpacing = 10 // 셀 간의 세로 간격
+       layout.itemSize = CGSize(width: 345, height: 207) // 셀 크기
        
        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       collectionView.register(IncludedRoutesCollectionViewCell.self, forCellWithReuseIdentifier: IncludedRoutesCollectionViewCell.identifier)
+       collectionView.register(PlaceReviewsCollectionViewCell.self, forCellWithReuseIdentifier: PlaceReviewsCollectionViewCell.identifier)
        collectionView.backgroundColor = .clear // 배경색
        collectionView.showsHorizontalScrollIndicator = false
        collectionView.showsVerticalScrollIndicator = false
@@ -34,11 +34,11 @@ class IncludedRoutesView: UIView {
    }()
     
     private func addComponents(){
-        self.addSubview(includedRoutesCollectionView)
-        includedRoutesCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(28)
+        self.addSubview(placeReviewsCollectionView)
+        placeReviewsCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
             make.width.equalToSuperview()
-            make.bottom.equalToSuperview().inset(28)
+            make.bottom.equalToSuperview().inset(20)
         }
     }
 

@@ -15,10 +15,10 @@ class PlaceDetailViewController: UIViewController {
     }()
     
     // Child View Controllers
-    private let detailVC = DetailInfoViewController()
-    private let photosVC = PhotosViewController()
+    private let detailVC = PlaceDetailInfoViewController()
+    private let photosVC = PlacePhotosViewController()
     private let routesVC = IncludedRoutesViewController()
-    private let reviewsVC = ReviewsViewController()
+    private let reviewsVC = PlaceReviewsViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()

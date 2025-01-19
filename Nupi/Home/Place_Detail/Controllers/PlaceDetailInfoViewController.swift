@@ -7,16 +7,16 @@
 
 import UIKit
 
-class DetailInfoViewController: UIViewController {
+class PlaceDetailInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .bg
-        self.view = detailInfoView
+        self.view = placeDetailInfoView
     }
     
-    private lazy var detailInfoView: DetailInfoView = {
-        let view = DetailInfoView()
+    private lazy var placeDetailInfoView: PlaceDetailInfoView = {
+        let view = PlaceDetailInfoView()
         return view
     }()
 
