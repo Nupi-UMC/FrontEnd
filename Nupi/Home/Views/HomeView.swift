@@ -327,7 +327,8 @@ class HomeView: UIView {
     private func setViews(){
         addSubview(scrollView)
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalToSuperview().offset(-UIApplication.shared.statusBarFrame.height)
+            $0.left.right.bottom.equalToSuperview()
         }
         
         
@@ -378,7 +379,7 @@ class HomeView: UIView {
             
         }
         bannerCollectionView.snp.makeConstraints{
-            $0.top.horizontalEdges.equalToSuperview()
+            $0.top.equalToSuperview()
             $0.width.horizontalEdges.equalToSuperview()
             $0.width.equalTo(393)
             $0.height.equalTo(408)
@@ -413,7 +414,7 @@ class HomeView: UIView {
         }
         upcommingButton.snp.makeConstraints{
             $0.top.equalTo(upcommingTitle.snp.bottom).offset(17)
-            $0.left.right.equalToSuperview().inset(24)
+            $0.left.equalToSuperview().inset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(88)
         }
