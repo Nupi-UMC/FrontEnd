@@ -226,6 +226,7 @@ class HomeView: UIView {
         $0.image = UIImage(named: "steady_popular_spot_image1")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 11
     }
     
     //spot1 이름
@@ -277,6 +278,7 @@ class HomeView: UIView {
         $0.image = UIImage(named: "steady_popular_spot_image2")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 11
     }
     
     //spot2 이름
@@ -486,14 +488,14 @@ class HomeView: UIView {
         
         spot1ImageView.snp.makeConstraints {
             $0.top.equalTo(steadyTitle.snp.bottom).offset(17)
-            $0.left.equalToSuperview().offset(24)
+            $0.left.right.equalToSuperview().inset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(265)
         }
         
         spot1Name.snp.makeConstraints {
             $0.top.equalTo(spot1ImageView.snp.bottom).offset(12)
-            $0.left.equalToSuperview().offset(24)
+            $0.left.equalToSuperview().offset(28)
             $0.width.equalTo(315)
             $0.height.equalTo(62)
         }
@@ -524,20 +526,21 @@ class HomeView: UIView {
         spot1Description.snp.makeConstraints {
             $0.top.equalTo(spot1Address.snp.bottom).offset(8)
             $0.left.equalToSuperview().offset(28)
+            $0.right.equalToSuperview().inset(33)
             $0.width.equalTo(331)
             $0.height.equalTo(72)
         }
         
         spot2ImageView.snp.makeConstraints {
             $0.top.equalTo(spot1Description.snp.bottom).offset(32)
-            $0.left.equalToSuperview().offset(24)
+            $0.left.right.equalToSuperview().inset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(265)
         }
         
         spot2Name.snp.makeConstraints {
             $0.top.equalTo(spot2ImageView.snp.bottom).offset(12)
-            $0.left.equalToSuperview().offset(24)
+            $0.left.equalToSuperview().offset(28)
             $0.width.equalTo(232)
             $0.height.equalTo(35)
         }
@@ -568,6 +571,7 @@ class HomeView: UIView {
         spot2Description.snp.makeConstraints {
             $0.top.equalTo(spot2Address.snp.bottom).offset(8)
             $0.left.equalToSuperview().offset(28)
+            $0.right.equalToSuperview().inset(33)
             $0.width.equalTo(332)
             $0.height.equalTo(76)
         }
