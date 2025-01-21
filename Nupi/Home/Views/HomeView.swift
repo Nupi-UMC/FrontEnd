@@ -208,23 +208,23 @@ class HomeView: UIView {
             $0.showsHorizontalScrollIndicator = false
             $0.register(OurMemoriesCollectionViewCell.self, forCellWithReuseIdentifier: OurMemoriesCollectionViewCell.identifier)
     }
-    // MARK: Steady Popular Spot 타이틀
+    // MARK: Steady Popular Spot
+    //타이틀
     let steadyTitle = UILabel().then{
         $0.text = "Steady Popular Spot"
         $0.textColor = .blue3
         $0.font = UIFont(name: "WantedSans-Medium", size: 20)
     }
     
-     /*
-    //Steady Popular Spot 스택뷰
-    public lazy var steadyTableView: UITableView = {
-        let table = UITableView()
-        
-        table.register(SteadyPopularSpotCell.self, forCellReuseIdentifier: SteadyPopularSpotCell.identifier)
-        table.separatorStyle = .none
-        return table
-    }()
-     */
+    //컬렉션뷰
+    let steadyPopualrSpotCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        $0.scrollDirection = .vertical
+        $0.estimatedItemSize = .init(width: 345, height: 450)
+        $0.minimumLineSpacing = 32}).then{
+            $0.backgroundColor = .clear
+            $0.showsHorizontalScrollIndicator = false
+            $0.register(SteadyPopularSpotCollectionViewCell.self, forCellWithReuseIdentifier: SteadyPopularSpotCollectionViewCell.identifier)
+        }
     
     // MARK: 컴포넌트 추가
     private func setViews(){
@@ -258,8 +258,8 @@ class HomeView: UIView {
         contentView.addSubview(ourMemoriesTitle)
         contentView.addSubview(vectorIcon2)
         contentView.addSubview(ourMemoriesCollectionView)
-        contentView.self.addSubview(steadyTitle)
-        //self.addSubview(steadyTableView)
+        contentView.addSubview(steadyTitle)
+        contentView.addSubview(steadyPopualrSpotCollectionView)
         
         logoLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(62)
@@ -373,15 +373,16 @@ class HomeView: UIView {
         steadyTitle.snp.makeConstraints{
             $0.top.equalTo(ourMemoriesCollectionView.snp.bottom).offset(44)
             $0.left.equalToSuperview().offset(24)
+            $0.height.equalTo(24)
         }
         
-        /*
-        steadyTableView.snp.makeConstraints{
+        
+        steadyPopualrSpotCollectionView.snp.makeConstraints{
             $0.top.equalTo(steadyTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
-            $0.height.equalTo(450)
+            $0.width.equalTo(345)
+            $0.height.equalTo(900)
         }
-         */
     }
 }
 
