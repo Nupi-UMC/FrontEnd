@@ -351,7 +351,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-<<<<<<< HEAD
 		940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -380,7 +379,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-<<<<<<< HEAD
 		940A6E352D379B7C00FB6541 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */;
