@@ -43,8 +43,6 @@ extension HomeViewController: UICollectionViewDataSource {
             return OurMemoriesModel.dummy().count
         } else if collectionView == homeView.whereToPlayCollectionView {
             return WhereToPlayModel.dummy().count
-        } else if collectionView == homeView.steadyPopualrSpotCollectionView {
-            return SteadyPopularSpotModel.dummy().count
         }
         return 0
     }
