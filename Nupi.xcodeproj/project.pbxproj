@@ -29,11 +29,7 @@
 		94FFAC5B2D290D8D006F4810 /* Nupi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-<<<<<<< HEAD
 				94D783932D32304E00839E42 /* Exceptions for "Nupi" folder in "Nupi" target */,
-=======
-				2B9061C82D316F2A0085BE36 /* Exceptions for "Nupi" folder in "Nupi" target */,
->>>>>>> feature/Home
 			);
 			path = Nupi;
 			sourceTree = "<group>";
