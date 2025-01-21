@@ -413,7 +413,7 @@ class HomeView: UIView {
         }
         upcommingButton.snp.makeConstraints{
             $0.top.equalTo(upcommingTitle.snp.bottom).offset(17)
-            $0.left.equalToSuperview().offset(24)
+            $0.left.right.equalToSuperview().inset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(88)
         }
@@ -443,6 +443,7 @@ class HomeView: UIView {
         whatToPlayCollectionView.snp.makeConstraints{
             $0.top.equalTo(whatToPlayTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
+            $0.right.equalToSuperview().inset(17)
             $0.width.equalTo(352)
             $0.height.equalTo(186)
         }
@@ -455,6 +456,7 @@ class HomeView: UIView {
         whereToPlayCollectionView.snp.makeConstraints{
             $0.top.equalTo(whereToPlayTitle.snp.bottom).offset(17)
             $0.left.equalToSuperview().offset(24)
+            $0.right.equalToSuperview().inset(17)
             $0.width.equalTo(352)
             $0.height.equalTo(76)
             
@@ -476,6 +478,7 @@ class HomeView: UIView {
         ourMemoriesCollectionView.snp.makeConstraints{
             $0.top.equalTo(ourMemoriesTitle.snp.bottom).offset(14)
             $0.left.equalToSuperview().offset(24)
+            $0.right.equalToSuperview().inset(17)
             $0.width.equalTo(352)
             $0.height.equalTo(186)
         }
