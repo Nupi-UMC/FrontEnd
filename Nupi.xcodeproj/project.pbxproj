@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		940A6E362D379B7C00FB6541 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 940A6E352D379B7C00FB6541 /* Alamofire */; };
-		942E06192D2A6611002F8FDE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 942E06182D2A6611002F8FDE /* SnapKit */; };
+		942E06192D2A6611002F8FDE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 942E06182D2A6611002F8FDE /* SnapKit */; };;
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +29,11 @@
 		94FFAC5B2D290D8D006F4810 /* Nupi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+<<<<<<< HEAD
 				94D783932D32304E00839E42 /* Exceptions for "Nupi" folder in "Nupi" target */,
+=======
+				2B9061C82D316F2A0085BE36 /* Exceptions for "Nupi" folder in "Nupi" target */,
+>>>>>>> feature/Home
 			);
 			path = Nupi;
 			sourceTree = "<group>";
@@ -41,8 +45,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
 				942E06192D2A6611002F8FDE /* SnapKit in Frameworks */,
 				940A6E362D379B7C00FB6541 /* Alamofire in Frameworks */,
+=======
+				2BCDD69A2D37C3F500B5CC25 /* SnapKit in Frameworks */,
+				2BCDD69D2D37C40400B5CC25 /* Then in Frameworks */,
+>>>>>>> feature/Home
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,8 +94,13 @@
 			);
 			name = Nupi;
 			packageProductDependencies = (
+<<<<<<< HEAD
 				942E06182D2A6611002F8FDE /* SnapKit */,
 				940A6E352D379B7C00FB6541 /* Alamofire */,
+=======
+				2BCDD6992D37C3F500B5CC25 /* SnapKit */,
+				2BCDD69C2D37C40400B5CC25 /* Then */,
+>>>>>>> feature/Home
 			);
 			productName = Nupi;
 			productReference = 94FFAC592D290D8D006F4810 /* Nupi.app */;
@@ -117,8 +131,13 @@
 			mainGroup = 94FFAC502D290D8D006F4810;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+<<<<<<< HEAD
 				942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */,
 				940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */,
+=======
+				2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */,
+>>>>>>> feature/Home
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94FFAC5A2D290D8D006F4810 /* Products */;
@@ -348,6 +367,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+<<<<<<< HEAD
 		940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -357,25 +377,45 @@
 			};
 		};
 		942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+=======
+		2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+>>>>>>> feature/Home
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.7.1;
 			};
 		};
+		2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+<<<<<<< HEAD
 		940A6E352D379B7C00FB6541 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		942E06182D2A6611002F8FDE /* SnapKit */ = {
+=======
+		2BCDD6992D37C3F500B5CC25 /* SnapKit */ = {
+>>>>>>> feature/Home
 			isa = XCSwiftPackageProductDependency;
-			package = 942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		2BCDD69C2D37C40400B5CC25 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
