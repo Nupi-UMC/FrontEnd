@@ -7,30 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2BCDD69A2D37C3F500B5CC25 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCDD6992D37C3F500B5CC25 /* SnapKit */; };
-		2BCDD69D2D37C40400B5CC25 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCDD69C2D37C40400B5CC25 /* Then */; };
+		942E06192D2A6611002F8FDE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 942E06182D2A6611002F8FDE /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		94FFAC592D290D8D006F4810 /* Nupi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nupi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2B9061C82D316F2A0085BE36 /* Exceptions for "Nupi" folder in "Nupi" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 94FFAC582D290D8D006F4810 /* Nupi */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		94FFAC5B2D290D8D006F4810 /* Nupi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				2B9061C82D316F2A0085BE36 /* Exceptions for "Nupi" folder in "Nupi" target */,
-			);
 			path = Nupi;
 			sourceTree = "<group>";
 		};
@@ -41,8 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BCDD69A2D37C3F500B5CC25 /* SnapKit in Frameworks */,
-				2BCDD69D2D37C40400B5CC25 /* Then in Frameworks */,
+				942E06192D2A6611002F8FDE /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,8 +70,7 @@
 			);
 			name = Nupi;
 			packageProductDependencies = (
-				2BCDD6992D37C3F500B5CC25 /* SnapKit */,
-				2BCDD69C2D37C40400B5CC25 /* Then */,
+				942E06182D2A6611002F8FDE /* SnapKit */,
 			);
 			productName = Nupi;
 			productReference = 94FFAC592D290D8D006F4810 /* Nupi.app */;
@@ -117,8 +101,7 @@
 			mainGroup = 94FFAC502D290D8D006F4810;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */,
+				942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94FFAC5A2D290D8D006F4810 /* Products */;
@@ -348,34 +331,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.7.1;
 			};
 		};
-		2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devxoul/Then";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2BCDD6992D37C3F500B5CC25 /* SnapKit */ = {
+		942E06182D2A6611002F8FDE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		2BCDD69C2D37C40400B5CC25 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
