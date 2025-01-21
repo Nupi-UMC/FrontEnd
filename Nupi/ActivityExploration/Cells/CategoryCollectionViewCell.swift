@@ -26,7 +26,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         $0.layer.borderColor = UIColor.blue1.cgColor
         $0.titleLabel?.font = UIFont(name: "WantedSans-Medium", size: 16)
         $0.setTitleColor(.blue4, for: .normal)
-        $0.setTitleColor(.blue3, for: .selected)
         $0.backgroundColor = .bg
     }
 

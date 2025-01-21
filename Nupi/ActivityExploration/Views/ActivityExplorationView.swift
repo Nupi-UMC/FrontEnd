@@ -23,7 +23,7 @@ class ActivityExplorationView: UIView {
     }
     
     // MARK: - Property
-    // 광고 배너 콜렉션 뷰
+    // 광고 배너 컬렉션 뷰
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
         $0.estimatedItemSize = .init(width: 337, height: 115)
@@ -35,7 +35,7 @@ class ActivityExplorationView: UIView {
         $0.register(BannerCollectionViewCell.self, forCellWithReuseIdentifier: BannerCollectionViewCell.identifier)
     }
 
-    // 카테고리 콜렉션 뷰
+    // 카테고리 컬렉션 뷰
     let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
 //        $0.minimumLineSpacing = 0
