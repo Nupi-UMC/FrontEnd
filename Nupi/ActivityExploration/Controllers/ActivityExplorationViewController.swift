@@ -28,8 +28,8 @@ class ActivityExplorationViewController: UIViewController {
     }()
     
     private func setupDelegate() {
-        activityExplorationView.bannerCollectionView.dataSource = self
-        activityExplorationView.bannerCollectionView.delegate = self
+        activityExplorationView.adBannerCollectionView.dataSource = self
+        activityExplorationView.adBannerCollectionView.delegate = self
         activityExplorationView.categoryCollectionView.dataSource = self
         activityExplorationView.categoryCollectionView.delegate = self
         activityExplorationView.storeCollectionView.dataSource = self
@@ -80,8 +80,8 @@ class ActivityExplorationViewController: UIViewController {
 
 extension ActivityExplorationViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == activityExplorationView.bannerCollectionView {
-            return BannerModel.dummny().count
+        if collectionView == activityExplorationView.adBannerCollectionView {
+            return AdBannerModel.dummny().count
         } else if collectionView == activityExplorationView.categoryCollectionView {
             return categories.count
         } else if collectionView == activityExplorationView.storeCollectionView {
@@ -92,15 +92,15 @@ extension ActivityExplorationViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == activityExplorationView.bannerCollectionView {
+        if collectionView == activityExplorationView.adBannerCollectionView {
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: BannerCollectionViewCell.identifier,
+                withReuseIdentifier: AdBannerCollectionViewCell.identifier,
                 for: indexPath
-            ) as? BannerCollectionViewCell else {
+            ) as? AdBannerCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
-            let list = BannerModel.dummny()
+            let list = AdBannerModel.dummny()
             cell.bannerImageView.image = list[indexPath.row].image
             
             return cell

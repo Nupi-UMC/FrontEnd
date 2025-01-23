@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C6B81632D3F9549000CC495 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6B81622D3F9549000CC495 /* Then */; };
-		940A6E362D379B7C00FB6541 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 940A6E352D379B7C00FB6541 /* Alamofire */; };
+		2B88F8E32D40067200F091E6 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2B88F8E22D40067200F091E6 /* Then */; };
+		2C3763102D4257510029939D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2C37630F2D4257510029939D /* Alamofire */; };
 		942E06192D2A6611002F8FDE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 942E06182D2A6611002F8FDE /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -17,7 +17,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		94D783932D32304E00839E42 /* Exceptions for "Nupi" folder in "Nupi" target */ = {
+		2C37630D2D4257350029939D /* Exceptions for "Nupi" folder in "Nupi" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -30,7 +30,7 @@
 		94FFAC5B2D290D8D006F4810 /* Nupi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				94D783932D32304E00839E42 /* Exceptions for "Nupi" folder in "Nupi" target */,
+				2C37630D2D4257350029939D /* Exceptions for "Nupi" folder in "Nupi" target */,
 			);
 			path = Nupi;
 			sourceTree = "<group>";
@@ -42,9 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C3763102D4257510029939D /* Alamofire in Frameworks */,
 				942E06192D2A6611002F8FDE /* SnapKit in Frameworks */,
-				2C6B81632D3F9549000CC495 /* Then in Frameworks */,
-				940A6E362D379B7C00FB6541 /* Alamofire in Frameworks */,
+				2B88F8E32D40067200F091E6 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,8 +88,8 @@
 			name = Nupi;
 			packageProductDependencies = (
 				942E06182D2A6611002F8FDE /* SnapKit */,
-				940A6E352D379B7C00FB6541 /* Alamofire */,
-				2C6B81622D3F9549000CC495 /* Then */,
+				2B88F8E22D40067200F091E6 /* Then */,
+				2C37630F2D4257510029939D /* Alamofire */,
 			);
 			productName = Nupi;
 			productReference = 94FFAC592D290D8D006F4810 /* Nupi.app */;
@@ -121,8 +121,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */,
-				940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				2C6B81612D3F9549000CC495 /* XCRemoteSwiftPackageReference "Then" */,
+				2B88F8E12D40067200F091E6 /* XCRemoteSwiftPackageReference "Then" */,
+				2C37630E2D4257510029939D /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94FFAC5A2D290D8D006F4810 /* Products */;
@@ -352,7 +352,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C6B81612D3F9549000CC495 /* XCRemoteSwiftPackageReference "Then" */ = {
+		2B88F8E12D40067200F091E6 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -360,9 +360,9 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		2C37630E2D4257510029939D /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.10.2;
@@ -379,14 +379,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C6B81622D3F9549000CC495 /* Then */ = {
+		2B88F8E22D40067200F091E6 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2C6B81612D3F9549000CC495 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2B88F8E12D40067200F091E6 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
-		940A6E352D379B7C00FB6541 /* Alamofire */ = {
+		2C37630F2D4257510029939D /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 940A6E342D379B7C00FB6541 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 2C37630E2D4257510029939D /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		942E06182D2A6611002F8FDE /* SnapKit */ = {

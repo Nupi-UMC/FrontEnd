@@ -33,7 +33,7 @@ class ActivityExplorationView: UIView {
     private let contentView = UIView()
     
     // 광고 배너 컬렉션 뷰
-    let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+    let adBannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
         $0.estimatedItemSize = .init(width: 337, height: 115)
         $0.minimumInteritemSpacing = 8
@@ -41,7 +41,7 @@ class ActivityExplorationView: UIView {
         $0.backgroundColor = .clear
         $0.isPagingEnabled = true
         $0.showsHorizontalScrollIndicator = false
-        $0.register(BannerCollectionViewCell.self, forCellWithReuseIdentifier: BannerCollectionViewCell.identifier)
+        $0.register(AdBannerCollectionViewCell.self, forCellWithReuseIdentifier: AdBannerCollectionViewCell.identifier)
     }
 
     // 카테고리 컬렉션 뷰
@@ -87,7 +87,7 @@ class ActivityExplorationView: UIView {
         
         // contentView 내부에 추가
         [
-            bannerCollectionView,
+            adBannerCollectionView,
             categoryCollectionView,
             divideLine,
             dropdownButton,
@@ -106,7 +106,7 @@ class ActivityExplorationView: UIView {
             $0.top.bottom.width.equalToSuperview()
         }
         
-        bannerCollectionView.snp.makeConstraints {
+        adBannerCollectionView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(4)
             $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalToSuperview().offset(-28)
@@ -114,7 +114,7 @@ class ActivityExplorationView: UIView {
         }
         
         categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(bannerCollectionView.snp.bottom).offset(16)
+            $0.top.equalTo(adBannerCollectionView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalToSuperview().offset(-28)
             $0.height.equalTo(29)
