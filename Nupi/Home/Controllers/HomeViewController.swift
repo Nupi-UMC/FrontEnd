@@ -23,6 +23,7 @@ class HomeViewController: UIViewController {
     
     // MARK: - function
     private func setupActions() {
+        homeView.searchButton.addTarget(self, action: #selector(searchButtonDidTap), for: .touchUpInside)
         homeView.myRouteButton.addTarget(self, action: #selector(myRouteButtonDidTap), for: .touchUpInside)
     }
     
@@ -36,6 +37,12 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - action
+    @objc
+    private func searchButtonDidTap() {
+        let myRouthVC = ActivityExplorationViewController()
+        self.navigationController?.pushViewController(myRouthVC, animated: true)
+    }
+    
     @objc
     private func myRouteButtonDidTap() {
         let myRouthVC = MyRouteViewController()
