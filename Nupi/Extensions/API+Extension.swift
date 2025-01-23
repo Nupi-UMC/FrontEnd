@@ -17,7 +17,7 @@ class APIClient {
 extension APIClient {
     
     // Base URL 설정
-    private static let baseURL = " "
+    private static let baseURL = "https://api-nupi.shop"
 
     // MARK: Headers
     // 기본 json형식에 맞는 헤더 생성 함수

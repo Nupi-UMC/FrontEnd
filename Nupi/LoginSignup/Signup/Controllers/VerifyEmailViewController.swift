@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class VerifyEmailViewController: UIViewController {
     
@@ -36,17 +37,85 @@ class VerifyEmailViewController: UIViewController {
     private var limitTime: Int = 300 // 초기 5분
     
     @objc private func verifyEmailButtonTap(){
-        let createPasswordVC = CreatePasswordViewController()
-        createPasswordVC.email = self.email! // 이메일 전달
-        self.navigationController?.pushViewController(createPasswordVC, animated: true)
+        guard let email = self.email, !email.isEmpty else {
+                print("이메일이 입력되지 않았습니다.")
+                return
+            }
+        //API 호출
+        checkVerificationCodeFromServer(email: email, verification_code: verifyEmailView.verificationCodeTextField.text!)
+    }
+    
+    //서버에서 인증코드 확인
+    private func checkVerificationCodeFromServer(email: String, verification_code: String) {
+        guard let code = verifyEmailView.verificationCodeTextField.text, !code.isEmpty else {
+            print("인증 코드가 입력되지 않았습니다.")
+            return
+        }
+
+        let parameters = EmailVerificationCodeConfirmRequest(email: email, verification_code: verification_code)
+        
+        // 디버깅: Request Body 확인
+        if let jsonData = try? JSONEncoder().encode(parameters),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("Request Body: \(jsonString)")
+        }
+
+        // API 요청
+        APIClient.postRequest(endpoint: "/api/auth/verifyCode", parameters: parameters) {
+            (result: Result<EmailVerificationCodeConfirmResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("인증 성공")
+                    DispatchQueue.main.async {
+                        let createPasswordVC = CreatePasswordViewController()
+                        createPasswordVC.email = email
+                        self.navigationController?.pushViewController(createPasswordVC, animated: true)
+                    }
+                } else {
+                    print("인증 요청 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
     
     @objc private func resendVerificationCodeButtonTap() {
-        // 재발송 로직
+        guard let email = self.email, !email.isEmpty else {
+            print("이메일이 입력되지 않았습니다.")
+            return }
+        requestVerificationCodeFromServer(email: email)
         print("인증번호 재발송")
         // 토스트 메시지 표시
         showToastPopup()
         resetTimer()
+    }
+    
+    //서버로 코드 요청
+    private func requestVerificationCodeFromServer(email: String) {
+        let parameters = EmailVerificationCodeRequest(email: email)
+        
+        APIClient.postRequest(endpoint: "/api/auth/requestVerification", parameters: parameters) { (result: Result<EmailVerificationCodeResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("인증 요청 보내짐: \(email)")
+                    DispatchQueue.main.async {
+                    }
+                } else {
+                    print("인증 요청 실패: \(response.message)")
+                    DispatchQueue.main.async {
+                        //self.handleErrorMessage(message: response.message ?? "요청에 실패했습니다.")
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    //self.handleErrorMessage(message: "네트워크 오류가 발생했습니다. 다시 시도해주세요.")
+                }
+            }
+        }
     }
     
     //textfield에 값 들어오는지 확인하는 함수

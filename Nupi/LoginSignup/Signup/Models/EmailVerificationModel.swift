@@ -32,6 +32,6 @@ struct EmailVerificationCodeConfirmResponse : Decodable {
     let message : String
     let result : EmailVerificationCodeConfirmResult?
 }
-struct EmailVerificationCodeConfirmResult : Codable {
-    let verification_id : Int
+struct EmailVerificationCodeConfirmResult : Decodable {
+    let verification_id : Int?
 }
