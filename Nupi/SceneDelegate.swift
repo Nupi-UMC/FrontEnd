@@ -15,17 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-<<<<<<< HEAD
-        
-        // UINavigationController를 사용하여 루트 설정
-        let navigationController = UINavigationController()
-        let coordinator = MainCoordinator(navigationController: navigationController)
-        coordinator.start()
-        
-        window?.rootViewController = navigationController
-=======
-        window?.rootViewController = HomeViewController()
->>>>>>> feature/Home
+        window?.rootViewController = MyRouteViewController()
         window?.makeKeyAndVisible()
     }
 
