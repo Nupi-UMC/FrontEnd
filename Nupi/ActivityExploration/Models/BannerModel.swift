@@ -15,6 +15,8 @@ extension BannerModel {
     static func dummny() -> [BannerModel] {
         return [
             BannerModel(image: .bannerImage1),
+            BannerModel(image: .bannerImage2),
+            BannerModel(image: .bannerImage1),
             BannerModel(image: .bannerImage2)
         ]
     }

@@ -27,7 +27,7 @@ class ActivityExplorationView: UIView {
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
         $0.estimatedItemSize = .init(width: 337, height: 115)
-        $0.minimumLineSpacing = 8
+        $0.minimumLineSpacing = 0
         $0.minimumInteritemSpacing = 0
     }).then {
         $0.backgroundColor = .clear
@@ -46,10 +46,29 @@ class ActivityExplorationView: UIView {
         $0.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
     }
     
+    // 구분 선
+    private let divideLine = UIView().then {
+        $0.backgroundColor = .grey1
+    }
+    
+    // 가게 컬렉션 뷰
+    let storeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.estimatedItemSize = .init(width: 163, height: 174)
+        $0.minimumLineSpacing = 24
+        $0.minimumInteritemSpacing = 11
+    }).then {
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.register(StoreCollectionViewCell.self, forCellWithReuseIdentifier: StoreCollectionViewCell.identifier)
+    }
+    
     // MARK: - Constaints & Add Function
     private func addComponents() {
         addSubview(bannerCollectionView)
         addSubview(categoryCollectionView)
+        addSubview(divideLine)
+        addSubview(storeCollectionView)
     }
     
     private func constraints() {
@@ -65,6 +84,20 @@ class ActivityExplorationView: UIView {
             $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalToSuperview().offset(-28)
             $0.height.equalTo(29)
+        }
+        
+        divideLine.snp.makeConstraints {
+            $0.top.equalTo(categoryCollectionView.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(28)
+            $0.trailing.equalToSuperview().offset(-28)
+            $0.height.equalTo(1)
+        }
+        
+        storeCollectionView.snp.makeConstraints {
+            $0.top.equalTo(divideLine.snp.bottom).offset(28)
+            $0.leading.equalToSuperview().offset(28)
+            $0.trailing.equalToSuperview().offset(-28)
+            $0.bottom.equalToSuperview()
         }
     }
 }

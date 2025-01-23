@@ -49,8 +49,8 @@ class BannerCollectionViewCell: UICollectionViewCell {
     
     private func setupView() {
         // 서브뷰 추가
-        contentView.addSubview(bannerImageView)
-        contentView.addSubview(adView)
+        addSubview(bannerImageView)
+        addSubview(adView)
         adView.addSubview(adLabel)
         
         // 레이아웃 설정

@@ -31,6 +31,8 @@ class ActivityExplorationViewController: UIViewController {
         activityExplorationView.bannerCollectionView.delegate = self
         activityExplorationView.categoryCollectionView.dataSource = self
         activityExplorationView.categoryCollectionView.delegate = self
+        activityExplorationView.storeCollectionView.dataSource = self
+        activityExplorationView.storeCollectionView.delegate = self
     }
     
     // 카테고리 버튼 액션 함수
@@ -50,6 +52,8 @@ extension ActivityExplorationViewController: UICollectionViewDataSource {
             return BannerModel.dummny().count
         } else if collectionView == activityExplorationView.categoryCollectionView {
             return categories.count
+        } else if collectionView == activityExplorationView.storeCollectionView {
+            return StoreModel.dummny().count
         }
         
         return 0
@@ -84,6 +88,20 @@ extension ActivityExplorationViewController: UICollectionViewDataSource {
             button.layer.borderColor = isSelected ? UIColor.blue4.cgColor : UIColor.blue1.cgColor
             button.setTitleColor(isSelected ? .blue3 : .blue4, for: .normal)
             button.addTarget(self, action: #selector(categoryButtonDipTap(_:)), for: .touchUpInside)
+            
+            return cell
+        } else if collectionView == activityExplorationView.storeCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: StoreCollectionViewCell.identifier,
+                for: indexPath
+            ) as? StoreCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            let list = StoreModel.dummny()
+            cell.storeImageView.image = list[indexPath.row].storePic
+            cell.storeNameLabel.text = list[indexPath.row].storeName
+            cell.storeLocationLabel.text = list[indexPath.row].storePlace
             
             return cell
         }
