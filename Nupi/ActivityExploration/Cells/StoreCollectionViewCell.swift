@@ -50,8 +50,7 @@ class StoreCollectionViewCell: UICollectionViewCell {
         
         // 레이아웃 설정
         storeImageView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview()
+            $0.top.horizontalEdges.equalToSuperview()
             $0.width.equalTo(167)
             $0.height.equalTo(125)
         }

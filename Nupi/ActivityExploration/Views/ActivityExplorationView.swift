@@ -23,14 +23,23 @@ class ActivityExplorationView: UIView {
     }
     
     // MARK: - Property
+    // 스크롤 뷰
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = true
+        $0.showsHorizontalScrollIndicator = false
+    }
+    
+    // 컨텐트 뷰
+    private let contentView = UIView()
+    
     // 광고 배너 컬렉션 뷰
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
         $0.estimatedItemSize = .init(width: 337, height: 115)
-        $0.minimumLineSpacing = 0
-        $0.minimumInteritemSpacing = 0
+        $0.minimumInteritemSpacing = 8
     }).then {
         $0.backgroundColor = .clear
+        $0.isPagingEnabled = true
         $0.showsHorizontalScrollIndicator = false
         $0.register(BannerCollectionViewCell.self, forCellWithReuseIdentifier: BannerCollectionViewCell.identifier)
     }
@@ -38,7 +47,6 @@ class ActivityExplorationView: UIView {
     // 카테고리 컬렉션 뷰
     let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
-//        $0.minimumLineSpacing = 0
         $0.minimumInteritemSpacing = 8
     }).then {
         $0.backgroundColor = .clear
@@ -65,17 +73,33 @@ class ActivityExplorationView: UIView {
     
     // MARK: - Constaints & Add Function
     private func addComponents() {
-        addSubview(bannerCollectionView)
-        addSubview(categoryCollectionView)
-        addSubview(divideLine)
-        addSubview(storeCollectionView)
+        self.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        // contentView 내부에 추가
+        [
+            bannerCollectionView,
+            categoryCollectionView,
+            divideLine,
+            storeCollectionView
+        ].forEach {
+            contentView.addSubview($0)
+        }
     }
     
     private func constraints() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.top.bottom.width.equalToSuperview()
+        }
+        
         bannerCollectionView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(4)
             $0.leading.equalToSuperview().offset(28)
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-28)
             $0.height.equalTo(115)
         }
         
@@ -97,6 +121,7 @@ class ActivityExplorationView: UIView {
             $0.top.equalTo(divideLine.snp.bottom).offset(28)
             $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalToSuperview().offset(-28)
+            $0.height.equalTo(500)
             $0.bottom.equalToSuperview()
         }
     }

@@ -8,6 +8,7 @@
 import UIKit
 
 class CategoryCollectionViewCell: UICollectionViewCell {
+    
     static let identifier = "CategoryCollectionViewCell"
     
     override init(frame: CGRect) {
@@ -32,7 +33,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     private func setupView() {
         // 서브뷰 추가
-        contentView.addSubview(categoryButton)
+        addSubview(categoryButton)
         
         // 레이아웃 설정
         categoryButton.snp.makeConstraints {
