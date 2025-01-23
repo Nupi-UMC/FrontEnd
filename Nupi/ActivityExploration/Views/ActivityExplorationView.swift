@@ -59,6 +59,15 @@ class ActivityExplorationView: UIView {
         $0.backgroundColor = .grey1
     }
     
+    // 드롭다운 버튼
+    lazy var dropdownButton = UIButton().then {
+        $0.setTitle("기본 ", for: .normal)
+        $0.setTitleColor(.icon2, for: .normal)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-Regular", size: 15)
+        $0.setImage(.downIcon, for: .normal)
+        $0.semanticContentAttribute = .forceRightToLeft
+    }
+    
     // 가게 컬렉션 뷰
     let storeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.estimatedItemSize = .init(width: 163, height: 174)
@@ -81,6 +90,7 @@ class ActivityExplorationView: UIView {
             bannerCollectionView,
             categoryCollectionView,
             divideLine,
+            dropdownButton,
             storeCollectionView
         ].forEach {
             contentView.addSubview($0)
@@ -117,8 +127,13 @@ class ActivityExplorationView: UIView {
             $0.height.equalTo(1)
         }
         
+        dropdownButton.snp.makeConstraints {
+            $0.top.equalTo(divideLine.snp.bottom).offset(13)
+            $0.trailing.equalToSuperview().offset(-28)
+        }
+        
         storeCollectionView.snp.makeConstraints {
-            $0.top.equalTo(divideLine.snp.bottom).offset(28)
+            $0.top.equalTo(dropdownButton.snp.bottom).offset(28)
             $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalToSuperview().offset(-28)
             $0.height.equalTo(500)
