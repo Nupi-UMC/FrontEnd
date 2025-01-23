@@ -31,7 +31,7 @@ class MyRouteViewController: UIViewController {
     
     @objc
     private func segmentedControlValueChanged(segment: UISegmentedControl) {
-        
+        myRouteView.updateUnderlinePosition(selectedIndex: segment.selectedSegmentIndex)
     }
     
 }
