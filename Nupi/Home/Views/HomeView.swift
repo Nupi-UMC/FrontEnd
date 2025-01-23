@@ -74,7 +74,7 @@ class HomeView: UIView {
     }()
     
     //나의 경로 버튼
-    private lazy var myPathButton: UIButton = {
+    lazy var myRouteButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("나의 경로", for: .normal)
@@ -342,7 +342,7 @@ class HomeView: UIView {
         contentView.addSubview(bannerCollectionView)
         contentView.addSubview(logoLabel)
         contentView.addSubview(searchButton)
-        contentView.addSubview(myPathButton)
+        contentView.addSubview(myRouteButton)
         contentView.addSubview(upcommingTitle)
         contentView.addSubview(vectorIcon)
         contentView.addSubview(upcommingButton)
@@ -392,7 +392,7 @@ class HomeView: UIView {
             $0.height.equalTo(41)
         }
         
-        myPathButton.snp.makeConstraints{
+        myRouteButton.snp.makeConstraints{
             $0.top.equalToSuperview().offset(449)
             $0.left.equalTo(searchButton.snp.right).offset(20)
             $0.width.equalTo(131)
