@@ -8,18 +8,24 @@
 import UIKit
 
 class HomeViewController: UIViewController {
+    
     private let homeView = HomeView()
+    
     let bannerData = BannerModel.dummy()
     let whatToplayData = WhatToPlayModel.dummy()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = homeView
-                
+        setupActions()
         setupDataSource()
     }
     
     // MARK: - function
+    private func setupActions() {
+        homeView.myRouteButton.addTarget(self, action: #selector(myRouteButtonDidTap), for: .touchUpInside)
+    }
+    
     private func setupDataSource(){
         homeView.bannerCollectionView.dataSource = self
         //rootView.bannerCollectionView.delegate = self
@@ -30,6 +36,11 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - action
+    @objc
+    private func myRouteButtonDidTap() {
+        let myRouthVC = MyRouteViewController()
+        self.navigationController?.pushViewController(myRouthVC, animated: true)
+    }
 }
 
 

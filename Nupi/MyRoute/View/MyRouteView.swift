@@ -67,6 +67,7 @@ class MyRouteView: UIView {
         $0.register(RouteCollectionViewCell.self, forCellWithReuseIdentifier: RouteCollectionViewCell.identifier)
     }
     
+    // 세그먼트 밑줄 위치 업데이트 함수
     func updateUnderlinePosition(selectedIndex: Int) {
         let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
         let newXPosition = CGFloat(selectedIndex) * segmentWidth
