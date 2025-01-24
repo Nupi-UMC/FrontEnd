@@ -53,9 +53,9 @@ extension WhatToPlayViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let list = HotIzakayaModel.dummy()
-            cell.hotPlaceImageView.image = list[indexPath.row].image
-            cell.hotPlaceLabel.text = list[indexPath.row].place
-            cell.hotStationLabel.text = list[indexPath.row].station
+            cell.placeImageView.image = list[indexPath.row].image
+            cell.placeLabel.text = list[indexPath.row].place
+            cell.stationLabel.text = list[indexPath.row].station
             return cell
         }
         return UICollectionViewCell()

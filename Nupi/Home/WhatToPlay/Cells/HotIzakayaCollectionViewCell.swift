@@ -22,7 +22,7 @@ class HotIzakayaCollectionViewCell: UICollectionViewCell {
     
     // MARK: UI Components
     // 이미지
-    let hotPlaceImageView = UIImageView().then{
+    let placeImageView = UIImageView().then{
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 7
@@ -37,14 +37,14 @@ class HotIzakayaCollectionViewCell: UICollectionViewCell {
     }
     
     // 장소 이름
-    let hotPlaceLabel = UILabel().then{
+    let placeLabel = UILabel().then{
         $0.text = "무제서울"
         $0.textColor = .blue3
         $0.font = UIFont(name: "WantedSans-Medium", size: 16)
     }
     
     // 장소 아이콘
-    private let hotPlaceIcon = UIImageView().then{
+    private let placeIcon = UIImageView().then{
         $0.image = UIImage(named: "spot_icon")
         $0.tintColor = .coffee
         $0.contentMode = .scaleAspectFill
@@ -52,7 +52,7 @@ class HotIzakayaCollectionViewCell: UICollectionViewCell {
     }
     
     // 역
-    let hotStationLabel = UILabel().then{
+    let stationLabel = UILabel().then{
         $0.text = "홍대입구역 1번 출구"
         $0.textColor = .coffee
         $0.font = UIFont(name: "WantedSans-Medium", size: 13)
@@ -60,13 +60,13 @@ class HotIzakayaCollectionViewCell: UICollectionViewCell {
     
     // MARK: 컴포넌트 추가
     private func setupView(){
-        addSubview(hotPlaceImageView)
+        addSubview(placeImageView)
         addSubview(tagButton)
-        addSubview(hotPlaceLabel)
-        addSubview(hotPlaceIcon)
-        addSubview(hotStationLabel)
+        addSubview(placeLabel)
+        addSubview(placeIcon)
+        addSubview(stationLabel)
         
-        hotPlaceImageView.snp.makeConstraints{
+        placeImageView.snp.makeConstraints{
             $0.top.equalToSuperview()
             $0.left.right.equalToSuperview()
             $0.width.equalTo(163)
@@ -75,27 +75,27 @@ class HotIzakayaCollectionViewCell: UICollectionViewCell {
         
         tagButton.snp.makeConstraints{
             $0.top.equalToSuperview().offset(91)
-            $0.right.equalTo(hotPlaceImageView.snp.right).inset(4)
+            $0.right.equalTo(placeImageView.snp.right).inset(4)
             $0.width.equalTo(30)
             $0.height.equalTo(30)
         }
         
-        hotPlaceLabel.snp.makeConstraints{
-            $0.top.equalTo(hotPlaceImageView.snp.bottom).offset(11)
+        placeLabel.snp.makeConstraints{
+            $0.top.equalTo(placeImageView.snp.bottom).offset(11)
             $0.left.equalToSuperview()
             $0.height.equalTo(19)
         }
         
-        hotPlaceIcon.snp.makeConstraints{
-            $0.top.equalTo(hotPlaceLabel.snp.bottom).offset(3)
+        placeIcon.snp.makeConstraints{
+            $0.top.equalTo(placeLabel.snp.bottom).offset(3)
             $0.left.equalToSuperview()
             $0.width.equalTo(15)
             $0.height.equalTo(15)
         }
         
-        hotStationLabel.snp.makeConstraints{
-            $0.top.equalTo(hotPlaceLabel.snp.bottom).offset(3)
-            $0.left.equalTo(hotPlaceIcon.snp.right).offset(3)
+        stationLabel.snp.makeConstraints{
+            $0.top.equalTo(placeLabel.snp.bottom).offset(3)
+            $0.left.equalTo(placeIcon.snp.right).offset(3)
             $0.height.equalTo(16)
         }
     }

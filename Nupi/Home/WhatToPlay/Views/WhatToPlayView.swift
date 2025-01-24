@@ -27,7 +27,7 @@ class WhatToPlayView: UIView {
     private let contentView = UIView()
     
     // 뒤로가기 버튼
-    let backButton = UIButton().then{
+    private let backButton = UIButton().then{
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.setImage(UIImage(systemName: "chevron.backward"),for: .normal)
