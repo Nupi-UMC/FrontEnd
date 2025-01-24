@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MyRouteViewController: UIViewController {
+    
+    private var myRoutes: [MyRouteModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +18,9 @@ class MyRouteViewController: UIViewController {
         setupDelegate()
         setupAction()
         setupNavigationBar()
+        
+        let defaultRoute = "created"
+        fetchRoutes(myRoute: defaultRoute)
     }
     
     private lazy var myRouteView: MyRouteView = {
@@ -67,17 +73,47 @@ class MyRouteViewController: UIViewController {
         self.present(alertVC, animated: false, completion: nil)
     }
     
+    private func fetchRoutes(myRoute: String) {
+        let memberId = 1 // 추후 토큰으로 대체 예정
+        
+        APIClient.fetchMyRoutes(memberId: memberId, myRoute: myRoute) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    self?.myRoutes = response.result.routes.map {
+                        MyRouteModel(
+                            routeId: $0.routeId,
+                            routeName: $0.routeName,
+                            routeLocation: $0.routeLocation,
+                            routePic: $0.routePic)
+                    }
+                    DispatchQueue.main.async {
+                        self?.myRouteView.routeCollectionView.reloadData()
+                    }
+                } else {
+                    print("Error: \(response.message)")
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     // MARK: - action
     // 세그먼트 변경
     @objc
     private func segmentedControlValueChanged(segment: UISegmentedControl) {
-        myRouteView.updateUnderlinePosition(selectedIndex: segment.selectedSegmentIndex)
+        let selectedIndex = segment.selectedSegmentIndex
+        myRouteView.updateUnderlinePosition(selectedIndex: selectedIndex)
+        
+        let myRoute = selectedIndex == 0 ? "created" : "saved"
+        fetchRoutes(myRoute: myRoute)
     }
 }
 
 extension MyRouteViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return RouteModel.dummny().count
+        return myRoutes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -88,10 +124,16 @@ extension MyRouteViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let list = RouteModel.dummny()
-        cell.routeImageView.image = list[indexPath.row].routePic
-        cell.routeNameLabel.text = list[indexPath.row].routeName
-        cell.routePlaceLabel.text = list[indexPath.row].routePlace
+        let route = myRoutes[indexPath.row]
+        
+        if let routePic = route.routePic, let url = URL(string: routePic) {
+            cell.routeImageView.kf.setImage(with: url)
+        } else {
+            cell.routeImageView.image = UIImage(named: "banner_image1") // 기본 이미지 설정
+        }
+
+        cell.routeNameLabel.text = route.routeName
+        cell.routeLocationLabel.text = route.routeLocation
         
         return cell
     }
