@@ -90,7 +90,7 @@ class MyRouteView: UIView {
         
         // 레이아웃 설정
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(self.safeAreaLayoutGuide)
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {

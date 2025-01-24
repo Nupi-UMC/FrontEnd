@@ -39,14 +39,14 @@ class HomeViewController: UIViewController {
     // MARK: - action
     @objc
     private func searchButtonDidTap() {
-        let myRouthVC = ActivityExplorationViewController()
-        self.navigationController?.pushViewController(myRouthVC, animated: true)
+        let activityExplorationVC = ActivityExplorationViewController()
+        self.navigationController?.pushViewController(activityExplorationVC, animated: true)
     }
     
     @objc
     private func myRouteButtonDidTap() {
-        let myRouthVC = MyRouteViewController()
-        self.navigationController?.pushViewController(myRouthVC, animated: true)
+        let myRouteVC = MyRouteViewController()
+        self.navigationController?.pushViewController(myRouteVC, animated: true)
     }
 }
 
