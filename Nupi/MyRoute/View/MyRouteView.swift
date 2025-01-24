@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import Then
 
 class MyRouteView: UIView {
@@ -57,9 +58,12 @@ class MyRouteView: UIView {
     
     // 경로 컬렉션 뷰
     let routeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
-        $0.estimatedItemSize = .init(width: 163, height: 174)
+        print(UIScreen.main.bounds.width)
+        let itemWidth: CGFloat = (UIScreen.main.bounds.width - 28 * 2 - 11) / 2
+        $0.itemSize = CGSize(width: itemWidth, height: 174)
         $0.minimumLineSpacing = 24
         $0.minimumInteritemSpacing = 11
+        $0.sectionInset = UIEdgeInsets(top: 20, left: 28, bottom: 20, right: 28)
     }).then {
         $0.backgroundColor = .clear
         $0.isScrollEnabled = false
@@ -98,7 +102,7 @@ class MyRouteView: UIView {
         }
         
         segmentedControl.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
+            $0.top.equalToSuperview().offset(20)
             $0.leading.trailing.equalToSuperview().inset(83)
             $0.height.equalTo(43)
         }
@@ -111,11 +115,9 @@ class MyRouteView: UIView {
         }
         
         routeCollectionView.snp.makeConstraints {
-            $0.top.equalTo(segmentUnderlineView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(28)
-            $0.trailing.equalToSuperview().offset(-28)
+            $0.top.equalTo(segmentUnderlineView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(500)
-            $0.bottom.equalToSuperview()
         }
     }
 }
