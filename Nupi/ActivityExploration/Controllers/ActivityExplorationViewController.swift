@@ -18,6 +18,7 @@ class ActivityExplorationViewController: UIViewController {
         self.view = activityExplorationView
         setupDelegate()
         setupActions()
+        setupNavigationBar()
         activityExplorationView.categoryCollectionView.reloadData()
     }
     
@@ -38,6 +39,19 @@ class ActivityExplorationViewController: UIViewController {
     
     private func setupActions() {
         activityExplorationView.dropdownButton.addTarget(self, action: #selector(showDropdownMenu), for: .touchUpInside)
+    }
+    
+    // 네비게이션 바 커스텀 함수
+    private func setupNavigationBar() {
+        let titleLabel = UILabel().then {
+            $0.text = "놀거리 탐색"
+            $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
+            $0.textColor = .icon1
+        }
+
+        self.navigationItem.titleView = titleLabel
+        self.navigationController?.navigationBar.topItem?.title = ""
+        self.navigationController?.navigationBar.tintColor = .icon1
     }
     
     @objc private func showDropdownMenu() {

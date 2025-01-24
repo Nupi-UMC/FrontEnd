@@ -14,6 +14,7 @@ class MyRouteViewController: UIViewController {
         self.view = myRouteView
         setupDelegate()
         setupAction()
+        setupNavigationBar()
     }
     
     private lazy var myRouteView: MyRouteView = {
@@ -29,11 +30,30 @@ class MyRouteViewController: UIViewController {
         myRouteView.routeCollectionView.dataSource = self
     }
     
+    
+    // 네비게이션 바 커스텀 함수
+    private func setupNavigationBar() {
+        let titleLabel = UILabel().then {
+            $0.text = "나의 경로"
+            $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
+            $0.textColor = .icon1
+        }
+        
+        self.navigationItem.titleView = titleLabel
+        self.navigationController?.navigationBar.tintColor = .icon1
+        self.navigationController?.navigationBar.topItem?.title = ""
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more_vertical_icon"), style: .plain, target: self, action: #selector(moreButtonDipTap))
+    }
+    
     @objc
     private func segmentedControlValueChanged(segment: UISegmentedControl) {
         myRouteView.updateUnderlinePosition(selectedIndex: segment.selectedSegmentIndex)
     }
     
+    @objc
+    private func moreButtonDipTap() {
+        
+    }
 }
 
 extension MyRouteViewController: UICollectionViewDataSource {
