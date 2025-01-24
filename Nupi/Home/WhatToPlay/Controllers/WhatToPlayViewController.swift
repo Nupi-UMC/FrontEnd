@@ -1,0 +1,45 @@
+//
+//  WhatToPlayViewController.swift
+//  Nupi
+//
+//  Created by 신연주 on 1/24/25.
+//
+
+import UIKit
+
+class WhatToPlayViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view = whatToPlayView
+        setupDataSource()
+    }
+    
+    private lazy var whatToPlayView: WhatToPlayView = {
+        let view = WhatToPlayView()
+        return view
+    }()
+    
+    private func setupDataSource(){
+        whatToPlayView.placeCollectionView.dataSource = self
+    }
+}
+
+extension WhatToPlayViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return IzakayaModel.dummy().count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IzakayaCollectionViewCell.identifier, for: indexPath) as? IzakayaCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        let list = IzakayaModel.dummy()
+        cell.placeImageView.image = list[indexPath.row].image
+        cell.tagLabel.text = list[indexPath.row].tag
+        cell.placeLabel.text = list[indexPath.row].place
+        cell.stationLabel.text = list[indexPath.row].station
+        cell.descriptionLabel.text = list[indexPath.row].description
+        return cell
+    }
+}

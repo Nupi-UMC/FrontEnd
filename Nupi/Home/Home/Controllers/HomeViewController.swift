@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = homeView
+        self.view = homeView
                 
         setupDataSource()
     }

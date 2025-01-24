@@ -167,7 +167,6 @@ class HomeView: UIView {
         $0.estimatedItemSize = .init(width: 172, height: 186)
         $0.minimumLineSpacing = 8}).then{
             $0.backgroundColor = .clear
-            $0.isPagingEnabled = true
             $0.showsHorizontalScrollIndicator = false
             $0.register(WhatToPlayCollectionViewCell.self, forCellWithReuseIdentifier: WhatToPlayCollectionViewCell.identifier)
         }
