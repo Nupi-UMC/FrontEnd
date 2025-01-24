@@ -31,7 +31,7 @@ class AdBannerCollectionViewCell: UICollectionViewCell {
     // 광고 표시 뷰
     private let adView = UIView().then {
         $0.backgroundColor = .blue3
-        $0.layer.cornerRadius = 10
+        $0.layer.cornerRadius = 7.5
         $0.clipsToBounds = true
     }
     
@@ -51,7 +51,6 @@ class AdBannerCollectionViewCell: UICollectionViewCell {
         // 레이아웃 설정
         bannerImageView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
-            $0.width.equalTo(337)
             $0.height.equalTo(115)
         }
         

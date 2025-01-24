@@ -14,6 +14,7 @@ class ActivityExplorationView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .bg
         addComponents()
         constraints()
     }
@@ -34,9 +35,11 @@ class ActivityExplorationView: UIView {
     
     // 광고 배너 컬렉션 뷰
     let adBannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        let itemWidth: CGFloat = UIScreen.main.bounds.width - 28 * 2 - 8
+        $0.itemSize = CGSize(width: itemWidth, height: 115)
         $0.scrollDirection = .horizontal
-        $0.estimatedItemSize = .init(width: 337, height: 115)
         $0.minimumInteritemSpacing = 8
+        $0.sectionInset = UIEdgeInsets(top: 5, left: 28, bottom: 0, right: 28)
     }).then {
         $0.backgroundColor = .clear
         $0.isPagingEnabled = true
@@ -48,6 +51,7 @@ class ActivityExplorationView: UIView {
     let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
         $0.minimumInteritemSpacing = 8
+        $0.sectionInset = UIEdgeInsets(top: 16, left: 28, bottom: 16, right: 28)
     }).then {
         $0.backgroundColor = .clear
         $0.showsHorizontalScrollIndicator = false
@@ -61,18 +65,23 @@ class ActivityExplorationView: UIView {
     
     // 드롭다운 버튼
     lazy var dropdownButton = UIButton().then {
-        $0.setTitle("기본 ", for: .normal)
+        $0.setTitle("기본", for: .normal)
         $0.setTitleColor(.icon2, for: .normal)
         $0.titleLabel?.font = UIFont(name: "WantedSans-Regular", size: 15)
         $0.setImage(.downIcon, for: .normal)
         $0.semanticContentAttribute = .forceRightToLeft
+        $0.contentHorizontalAlignment = .right
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
     }
     
     // 가게 컬렉션 뷰
     let storeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
-        $0.estimatedItemSize = .init(width: 163, height: 174)
+        print(UIScreen.main.bounds.width)
+        let itemWidth: CGFloat = (UIScreen.main.bounds.width - 28 * 2 - 11) / 2
+        $0.itemSize = CGSize(width: itemWidth, height: 174)
         $0.minimumLineSpacing = 24
         $0.minimumInteritemSpacing = 11
+        $0.sectionInset = UIEdgeInsets(top: 20, left: 28, bottom: 20, right: 28)
     }).then {
         $0.backgroundColor = .clear
         $0.isScrollEnabled = false
@@ -84,7 +93,7 @@ class ActivityExplorationView: UIView {
     private func addComponents() {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
+
         // contentView 내부에 추가
         [
             adBannerCollectionView,
@@ -99,7 +108,7 @@ class ActivityExplorationView: UIView {
     
     private func constraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(self.safeAreaLayoutGuide)
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -107,21 +116,18 @@ class ActivityExplorationView: UIView {
         }
         
         adBannerCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(4)
-            $0.leading.equalToSuperview().offset(28)
-            $0.trailing.equalToSuperview().offset(-28)
-            $0.height.equalTo(115)
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(120)
         }
         
         categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(adBannerCollectionView.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(28)
-            $0.trailing.equalToSuperview().offset(-28)
-            $0.height.equalTo(29)
+            $0.top.equalTo(adBannerCollectionView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(61)
         }
         
         divideLine.snp.makeConstraints {
-            $0.top.equalTo(categoryCollectionView.snp.bottom).offset(16)
+            $0.top.equalTo(categoryCollectionView.snp.bottom)
             $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalToSuperview().offset(-28)
             $0.height.equalTo(1)
@@ -130,14 +136,13 @@ class ActivityExplorationView: UIView {
         dropdownButton.snp.makeConstraints {
             $0.top.equalTo(divideLine.snp.bottom).offset(13)
             $0.trailing.equalToSuperview().offset(-28)
+            $0.width.equalTo(100)
         }
         
         storeCollectionView.snp.makeConstraints {
-            $0.top.equalTo(dropdownButton.snp.bottom).offset(28)
-            $0.leading.equalToSuperview().offset(28)
-            $0.trailing.equalToSuperview().offset(-28)
+            $0.top.equalTo(dropdownButton.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(500)
-            $0.bottom.equalToSuperview()
         }
     }
 }

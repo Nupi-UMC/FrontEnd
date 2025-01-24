@@ -24,21 +24,18 @@ class ActivityExplorationViewController: UIViewController {
     
     private lazy var activityExplorationView: ActivityExplorationView = {
         let view = ActivityExplorationView()
-        view.backgroundColor = .bg
         return view
     }()
     
     private func setupDelegate() {
         activityExplorationView.adBannerCollectionView.dataSource = self
-        activityExplorationView.adBannerCollectionView.delegate = self
         activityExplorationView.categoryCollectionView.dataSource = self
         activityExplorationView.categoryCollectionView.delegate = self
         activityExplorationView.storeCollectionView.dataSource = self
-        activityExplorationView.storeCollectionView.delegate = self
     }
     
     private func setupActions() {
-        activityExplorationView.dropdownButton.addTarget(self, action: #selector(showDropdownMenu), for: .touchUpInside)
+        showDropdownMenu()
     }
     
     // 네비게이션 바 커스텀 함수
@@ -48,45 +45,40 @@ class ActivityExplorationViewController: UIViewController {
             $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
             $0.textColor = .icon1
         }
-
+        
         self.navigationItem.titleView = titleLabel
         self.navigationController?.navigationBar.topItem?.title = ""
         self.navigationController?.navigationBar.tintColor = .icon1
     }
     
+    // 드롭다운 버튼 클릭
     @objc private func showDropdownMenu() {
-        // 드롭다운 메뉴 생성
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        // 드롭다운 항목 추가
-        let options = ["기본", "옵션1", "옵션2", "옵션3"]
-        for option in options {
-            alert.addAction(UIAlertAction(title: option, style: .default, handler: { _ in
+        let options = ["기본", "북마크순", "추천순"]
+        let menuItems = options.map { option in
+            UIAction(title: option, handler: { _ in
                 // 선택한 옵션 처리
                 self.activityExplorationView.dropdownButton.setTitle(option, for: .normal)
-            }))
+            })
         }
         
-        // 취소 버튼 추가
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        let menu = UIMenu(title: "", children: menuItems)
         
-        // iPad 대응 (PopoverPresentation)
-        if let popover = alert.popoverPresentationController {
-            popover.sourceView = activityExplorationView.dropdownButton
-            popover.sourceRect = activityExplorationView.dropdownButton.bounds
-        }
-        
-        // 드롭다운 메뉴 표시
-        present(alert, animated: true, completion: nil)
+        // 버튼에 메뉴 연결
+        self.activityExplorationView.dropdownButton.menu = menu
+        self.activityExplorationView.dropdownButton.showsMenuAsPrimaryAction = true
     }
-
+    
     
     // 카테고리 버튼 액션 함수
     @objc private func categoryButtonDipTap(_ sender: UIButton) {
-        guard let cell = sender.superview?.superview as? CategoryCollectionViewCell,
-              let indexPath = activityExplorationView.categoryCollectionView.indexPath(for: cell) else { return }
+        guard let cell = sender.superview as? CategoryCollectionViewCell,
+              let indexPath = activityExplorationView.categoryCollectionView.indexPath(for: cell) else {
+            print("셀 또는 indexPath를 찾을 수 없습니다.")
+            return
+        }
         
         // 선택된 카테고리 업데이트
+        print("선택된 카테고리: \(categories[indexPath.row])")
         selectedCategory = indexPath.row
         activityExplorationView.categoryCollectionView.reloadData()
     }

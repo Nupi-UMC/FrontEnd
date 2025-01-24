@@ -14,8 +14,8 @@ struct AdBannerModel {
 extension AdBannerModel {
     static func dummny() -> [AdBannerModel] {
         return [
-            AdBannerModel(image: .bannerImage1),
-            AdBannerModel(image: .bannerImage2)
+            AdBannerModel(image: .adBannerImage1),
+            AdBannerModel(image: .adBannerImage2)
         ]
     }
 }
