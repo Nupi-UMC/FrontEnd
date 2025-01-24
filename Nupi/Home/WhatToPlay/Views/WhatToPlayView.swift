@@ -41,9 +41,8 @@ class WhatToPlayView: UIView {
         $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
     }
     
-    // 컬렉션뷰
+    // 이자카야 컬렉션뷰
     let placeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
-        $0.scrollDirection = .vertical
         $0.estimatedItemSize = .init(width: 345, height: 424)
         $0.minimumLineSpacing = 32}).then{
             $0.backgroundColor = .clear
@@ -63,7 +62,14 @@ class WhatToPlayView: UIView {
         $0.font = UIFont(name: "WantedSans-SemiBold", size: 22)
     }
     
-    // 테이블뷰
+    // 핫이자카야 컬렉션뷰
+    let hotPlaceCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        $0.estimatedItemSize = .init(width: 163, height: 174)
+        $0.minimumLineSpacing = 11}).then{
+            $0.backgroundColor = .clear
+            $0.showsHorizontalScrollIndicator = false
+            $0.register(HotIzakayaCollectionViewCell.self, forCellWithReuseIdentifier: HotIzakayaCollectionViewCell.identifier)
+        }
     
     // MARK: 컴포넌트 추가
     private func setViews(){
@@ -77,7 +83,7 @@ class WhatToPlayView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(1700)
+            $0.height.equalTo(1768)
         }
         
         contentView.addSubview(backButton)
@@ -85,6 +91,7 @@ class WhatToPlayView: UIView {
         contentView.addSubview(placeCollectionView)
         contentView.addSubview(separatorLine)
         contentView.addSubview(subTitleLabel)
+        contentView.addSubview(hotPlaceCollectionView)
         
         backButton.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -114,6 +121,13 @@ class WhatToPlayView: UIView {
         subTitleLabel.snp.makeConstraints{
             $0.top.equalTo(separatorLine.snp.bottom).offset(32)
             $0.left.equalToSuperview().offset(28)
+        }
+        
+        hotPlaceCollectionView.snp.makeConstraints{
+            $0.top.equalTo(subTitleLabel.snp.bottom).offset(22)
+            $0.left.right.equalToSuperview().inset(28)
+            $0.width.equalTo(337)
+            $0.height.equalTo(562)
         }
     }
 }

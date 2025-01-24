@@ -45,7 +45,7 @@ class IzakayaCollectionViewCell: UICollectionViewCell {
         $0.clipsToBounds = true
     }
     
-    // 장소
+    // 장소 이름
     let placeLabel = UILabel().then{
         $0.text = "심 이자카야 강남"
         $0.textColor = .black
