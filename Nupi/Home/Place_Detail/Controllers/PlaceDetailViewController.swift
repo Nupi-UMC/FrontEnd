@@ -23,6 +23,8 @@ class PlaceDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = placeDetailView
+
+        placeDetailView.headerView.setUpImageSlider()
         
         setupSegmentedControl()
         showChildViewController(detailVC) // 초기 화면 설정

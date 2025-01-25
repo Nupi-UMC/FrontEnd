@@ -12,6 +12,18 @@ class PlaceDetailHeaderView: UIView {
     
     // UI Components
     private let imageSlider = UIScrollView()
+    private let pageIndicatorLabel : UILabel = {
+        let label = UILabel()
+        label.font = .tabbar1
+        label.textColor = .black
+        label.textAlignment = .center
+        label.layer.cornerRadius = 13
+        label.clipsToBounds = true
+        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.65)
+
+        return label
+    }()
+    private var imageURLs: [String] = []
     lazy var titleLabel = UILabel()
     lazy var categoryLabel = UILabel()
     let locationImageView = UIImageView()
@@ -33,10 +45,52 @@ class PlaceDetailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func updatePageIndicatorLabel(currentPage: Int) {
+        let totalPages = imageURLs.count
+        pageIndicatorLabel.text = "\(currentPage + 1)/\(totalPages)"
+    }
+    
+    
+     func setUpImageSlider() {
+        imageSlider.subviews.forEach { $0.removeFromSuperview() } // 기존 이미지 제거
+
+        let sampleImages = [
+            UIImage(named: "ex2"), // 프로젝트에 추가된 로컬 이미지
+            UIImage(named: "ex2"),
+            UIImage(named: "ex2"),
+            UIImage(named: "ex2")
+        ]
+        
+        for (index, image) in sampleImages.enumerated() {
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+            imageView.image = image // 이미지 설정
+            imageSlider.addSubview(imageView)
+            
+            imageView.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.width.equalToSuperview()
+                make.leading.equalToSuperview().offset(CGFloat(index) * self.frame.width)
+            }
+        }
+
+        // 스크롤뷰의 컨텐츠 사이즈 설정
+        imageSlider.contentSize = CGSize(width: CGFloat(sampleImages.count) * self.frame.width, height: 335)
+
+    }
+    
+    @objc private func pageControlTapped(_ sender: UIPageControl){
+        let offset = CGFloat(sender.currentPage) * imageSlider.frame.width
+            imageSlider.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+    }
+    
     private func setupUI() {
         // 기본 설정
         imageSlider.isPagingEnabled = true
         imageSlider.showsHorizontalScrollIndicator = false
+        imageSlider.showsVerticalScrollIndicator = false
+        imageSlider.delegate = self
         
         titleLabel.font = .heading3
         titleLabel.textColor = .blue3
@@ -67,6 +121,7 @@ class PlaceDetailHeaderView: UIView {
         
         // Add Subviews
         addSubview(imageSlider)
+        addSubview(pageIndicatorLabel)
         addSubview(titleLabel)
         addSubview(categoryLabel)
         addSubview(locationImageView)
@@ -134,5 +189,19 @@ class PlaceDetailHeaderView: UIView {
                 make.centerY.equalTo(saveButton)
                 make.leading.equalTo(saveButton.snp.trailing).offset(3)
             }
+        pageIndicatorLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(imageSlider.snp.bottom).inset(15)
+            make.width.equalTo(46)
+            make.height.equalTo(27)
+            make.centerX.equalToSuperview()
         }
+        }
+}
+
+extension PlaceDetailHeaderView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
+        updatePageIndicatorLabel(currentPage: pageIndex)
+    }
+    
 }

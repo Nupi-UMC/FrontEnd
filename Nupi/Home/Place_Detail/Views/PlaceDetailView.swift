@@ -19,7 +19,13 @@ class PlaceDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let headerView = PlaceDetailHeaderView()
+    let headerView = PlaceDetailHeaderView()
+    
+    private let dividerView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .line1
+        return view
+    }()
     
     let segmentedControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["상세정보", "사진", "포함된 경로", "후기"])
@@ -62,6 +68,7 @@ class PlaceDetailView: UIView {
     
     private func addComponents(){
         self.addSubview(headerView)
+        self.addSubview(dividerView)
         self.addSubview(lineView)
         self.addSubview(segmentedControl)
         self.addSubview(containerView)
@@ -69,9 +76,9 @@ class PlaceDetailView: UIView {
 
         
         lineView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedControl.snp.bottom).offset(1)
-            make.height.equalTo(1)
-            make.leading.trailing.equalToSuperview().inset(29)
+            make.top.equalTo(segmentedControl.snp.bottom) // SegmentedControl 바로 아래에 위치
+            make.leading.trailing.equalTo(segmentedControl) // SegmentedControl의 너비와 동일
+            make.height.equalTo(1) // 1pt 높이로 설정
         }
         
         headerView.snp.makeConstraints { make in
@@ -79,8 +86,14 @@ class PlaceDetailView: UIView {
             make.height.equalTo(457)
         }
         
+        dividerView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(11)
+        }
+        
         segmentedControl.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(11)
+            make.top.equalTo(dividerView.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(29)
             make.height.equalTo(46)
         }
