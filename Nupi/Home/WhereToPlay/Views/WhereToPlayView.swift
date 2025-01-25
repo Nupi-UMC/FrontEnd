@@ -55,7 +55,16 @@ class WhereToPlayView: UIView {
         $0.backgroundColor = .line1
     }
     
-    // 테마 선택 버튼 컬렉션뷰
+    // 카테고리 선택 버튼 컬렉션뷰
+    let buttonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        $0.scrollDirection = .horizontal
+        $0.estimatedItemSize = .init(width: 52, height: 29)
+        $0.minimumLineSpacing = 8}).then{
+            $0.backgroundColor = .clear
+            $0.showsHorizontalScrollIndicator = false
+            $0.register(ButtonCollectionViewCell.self, forCellWithReuseIdentifier: ButtonCollectionViewCell.identifier)
+        }
+    
     // 정렬 버튼
     // 테마별 컬렉션뷰
     let placeSortedCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
@@ -85,7 +94,9 @@ class WhereToPlayView: UIView {
         contentView.addSubview(titleLabel)
         contentView.addSubview(placeCollectionView)
         contentView.addSubview(separatorLine)
+        contentView.addSubview(buttonCollectionView)
         contentView.addSubview(placeSortedCollectionView)
+        
         
         backButton.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -112,6 +123,12 @@ class WhereToPlayView: UIView {
             $0.height.equalTo(11)
         }
         
+        buttonCollectionView.snp.makeConstraints{
+            $0.top.equalTo(separatorLine.snp.bottom).offset(16)
+            $0.left.right.equalToSuperview().inset(28)
+            $0.width.equalTo(337)
+            $0.height.equalTo(29)
+        }
         placeSortedCollectionView.snp.makeConstraints{
             $0.top.equalTo(separatorLine.snp.bottom).offset(121)
             $0.left.right.equalToSuperview().inset(28)

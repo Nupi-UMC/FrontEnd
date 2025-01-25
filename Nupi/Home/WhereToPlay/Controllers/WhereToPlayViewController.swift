@@ -23,6 +23,7 @@ class WhereToPlayViewController: UIViewController {
     private func setupDataSource(){
         whereToPlayView.placeCollectionView.dataSource = self
         whereToPlayView.placeSortedCollectionView.dataSource = self
+        whereToPlayView.buttonCollectionView.dataSource = self
     }
 }
 
@@ -32,6 +33,8 @@ extension WhereToPlayViewController: UICollectionViewDataSource {
             return HongdaeModel.dummy().count
         } else if collectionView == whereToPlayView.placeSortedCollectionView{
             return HongdaeSortedModel.dummy().count
+        } else if collectionView == whereToPlayView.buttonCollectionView{
+            return ButtonModel.dummy().count
         }
         return 0
     }
@@ -56,6 +59,13 @@ extension WhereToPlayViewController: UICollectionViewDataSource {
             cell.placeImageView.image = list[indexPath.row].image
             cell.placeLabel.text = list[indexPath.row].place
             cell.stationLabel.text = list[indexPath.row].station
+            return cell
+        } else if collectionView == whereToPlayView.buttonCollectionView{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ButtonCollectionViewCell.identifier, for: indexPath) as? ButtonCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let list = ButtonModel.dummy()
+            cell.button.setTitle(list[indexPath.row].category, for: .normal)
             return cell
         }
 
