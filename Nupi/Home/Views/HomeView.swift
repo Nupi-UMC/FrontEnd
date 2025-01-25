@@ -50,7 +50,7 @@ class HomeView: UIView {
     
     // MARK: 상단버튼
     //놀거리 탐색 버튼
-    private lazy var searchButton: UIButton = {
+    lazy var searchButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("놀거리 탐색", for: .normal)

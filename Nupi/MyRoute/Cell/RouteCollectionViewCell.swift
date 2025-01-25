@@ -36,12 +36,12 @@ class RouteCollectionViewCell: UICollectionViewCell {
         $0.font = UIFont(name: "WantedSans-Medium", size: 16)
     }
     
-    let routePlaceIcon = UIImageView().then {
+    let routeLocationIcon = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.image = .roundPlaceIcon
     }
     
-    let routePlaceLabel = UILabel().then {
+    let routeLocationLabel = UILabel().then {
         $0.textColor = .coffee
         $0.font = UIFont(name: "WantedSans-Medium", size: 13)
     }
@@ -51,14 +51,12 @@ class RouteCollectionViewCell: UICollectionViewCell {
         addSubview(routeImageView)
         routeImageView.addSubview(photoIcon)
         addSubview(routeNameLabel)
-        addSubview(routePlaceIcon)
-        addSubview(routePlaceLabel)
+        addSubview(routeLocationIcon)
+        addSubview(routeLocationLabel)
         
         // 레이아웃 설정
         routeImageView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview()
-            $0.width.equalTo(167)
+            $0.top.horizontalEdges.equalToSuperview()
             $0.height.equalTo(125)
         }
         
@@ -73,16 +71,16 @@ class RouteCollectionViewCell: UICollectionViewCell {
             $0.leading.trailing.equalToSuperview()
         }
         
-        routePlaceIcon.snp.makeConstraints {
+        routeLocationIcon.snp.makeConstraints {
             $0.top.equalTo(routeNameLabel.snp.bottom).offset(3.5)
             $0.leading.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.width.height.equalTo(15)
         }
         
-        routePlaceLabel.snp.makeConstraints {
-            $0.centerY.equalTo(routePlaceIcon)
-            $0.leading.equalTo(routePlaceIcon.snp.trailing).offset(3)
+        routeLocationLabel.snp.makeConstraints {
+            $0.centerY.equalTo(routeLocationIcon)
+            $0.leading.equalTo(routeLocationIcon.snp.trailing).offset(3)
             $0.trailing.equalToSuperview()
         }
     }
