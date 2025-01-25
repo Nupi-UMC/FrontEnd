@@ -17,8 +17,8 @@ class APIClient {
 extension APIClient {
     
     // Base URL 설정
-    private static let baseURL = " "
-
+    private static let baseURL = "https://api-nupi.shop"
+    
     // MARK: Headers
     // 기본 json형식에 맞는 헤더 생성 함수
     private static func getHeaders(withToken token: String? = nil) -> HTTPHeaders {
@@ -64,7 +64,7 @@ extension APIClient {
             completion(response.result)
         }
     }
-
+    
     // MARK: POST
     // 공통 POST 요청 함수
     static func postRequest<T: Decodable, U: Encodable>(endpoint: String, parameters: U, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
@@ -102,10 +102,10 @@ extension APIClient {
     // MARK: PUT
     // PUT 요청 함수
     static func putRequest<T: Decodable, U: Encodable>(endpoint: String, parameters: U, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
-       
+        
         let url = "\(baseURL)\(endpoint)"
         let headers = getHeaders(withToken: token)
-
+        
         AF.request(url, method: .put, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
         }
@@ -141,5 +141,30 @@ extension APIClient {
             completion(response.result)
         }
     }
+    
+}
 
+extension APIClient {
+    // 나의 경로 API
+    static func fetchMyRoutes(
+        memberId: Int,
+        myRoute: String,
+        completion: @escaping (Result<MyRouteResponse, AFError>) -> Void)
+    {
+        let endpoint = "/api/home/\(memberId)/route?myRoute=\(myRoute)"
+        getRequest(endpoint: endpoint, completion: completion)
+    }
+    
+    // 놀거리 탐색 API
+    static func fetchSearchStores(
+        memberId: Int,
+        latitude: Double,
+        longitude: Double,
+        category: Int,
+        sort: String,
+        completion: @escaping (Result<StoreResponse, AFError>) -> Void)
+    {
+        let endpoint = "/api/home/\(memberId)/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
+        getRequest(endpoint: endpoint, completion: completion)
+    }
 }
