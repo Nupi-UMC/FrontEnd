@@ -1,5 +1,5 @@
 //
-//  ButtonCollectionViewCell.swift
+//  CategoryButtonCollectionViewCell.swift
 //  Nupi
 //
 //  Created by 김건 on 1/25/25.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ButtonCollectionViewCell: UICollectionViewCell {
-    static let identifier = "ButtonCollectionViewCell"
+class CategoryButtonCollectionViewCell: UICollectionViewCell {
+    static let identifier = "CategoryButtonCollectionViewCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,25 +21,23 @@ class ButtonCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: UI Components
-    let button = UIButton().then{
-        $0.setTitle("전체", for: .normal)
-        $0.tintColor = .blue4
+    let categoryButton = UIButton().then{
+        $0.setTitleColor(.blue4, for: .normal)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-Medium", size: 16)
+        $0.clipsToBounds = true
         
         $0.backgroundColor = .bg
         
         $0.layer.cornerRadius = 12
         $0.layer.borderWidth  = 1
-        $0.layer.borderColor = UIColor(named: ".grey2")?.cgColor
+        $0.layer.borderColor = UIColor.blue1.cgColor
     }
     // MARK: 컴포넌트 추가
     private func setupView(){
-        addSubview(button)
+        addSubview(categoryButton)
         
-        button.snp.makeConstraints{
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.width.equalTo(52)
-            $0.height.equalTo(29)
+        categoryButton.snp.makeConstraints{
+            $0.edges.equalToSuperview()
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Then
 
 class HongdaeSortedCollectionViewCell: UICollectionViewCell {
     static let identifier = "HongdaeSortedCollectionViewCell"

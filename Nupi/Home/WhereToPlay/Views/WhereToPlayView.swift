@@ -56,14 +56,20 @@ class WhereToPlayView: UIView {
     }
     
     // 카테고리 선택 버튼 컬렉션뷰
-    let buttonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+    let categoryButtonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
-        $0.estimatedItemSize = .init(width: 52, height: 29)
-        $0.minimumLineSpacing = 8}).then{
-            $0.backgroundColor = .clear
-            $0.showsHorizontalScrollIndicator = false
-            $0.register(ButtonCollectionViewCell.self, forCellWithReuseIdentifier: ButtonCollectionViewCell.identifier)
-        }
+        $0.minimumInteritemSpacing = 8
+        $0.sectionInset = UIEdgeInsets(top: 16, left: 28, bottom: 16, right: 28)
+    }).then {
+        $0.backgroundColor = .clear
+        $0.showsHorizontalScrollIndicator = false
+        $0.register(CategoryButtonCollectionViewCell.self, forCellWithReuseIdentifier: CategoryButtonCollectionViewCell.identifier)
+    }
+    
+    // 구분선
+    private let separatorLine2 = UIView().then{
+        $0.backgroundColor = .grey1
+    }
     
     // 정렬 버튼
     // 테마별 컬렉션뷰
@@ -94,7 +100,8 @@ class WhereToPlayView: UIView {
         contentView.addSubview(titleLabel)
         contentView.addSubview(placeCollectionView)
         contentView.addSubview(separatorLine)
-        contentView.addSubview(buttonCollectionView)
+        contentView.addSubview(categoryButtonCollectionView)
+        contentView.addSubview(separatorLine2)
         contentView.addSubview(placeSortedCollectionView)
         
         
@@ -123,12 +130,19 @@ class WhereToPlayView: UIView {
             $0.height.equalTo(11)
         }
         
-        buttonCollectionView.snp.makeConstraints{
+        categoryButtonCollectionView.snp.makeConstraints{
             $0.top.equalTo(separatorLine.snp.bottom).offset(16)
-            $0.left.right.equalToSuperview().inset(28)
-            $0.width.equalTo(337)
-            $0.height.equalTo(29)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(61)
         }
+        
+        separatorLine2.snp.makeConstraints{
+            $0.top.equalTo(categoryButtonCollectionView.snp.bottom)
+            $0.left.equalToSuperview().offset(28)
+            $0.right.equalToSuperview().offset(-28)
+            $0.height.equalTo(1)
+        }
+        
         placeSortedCollectionView.snp.makeConstraints{
             $0.top.equalTo(separatorLine.snp.bottom).offset(121)
             $0.left.right.equalToSuperview().inset(28)
