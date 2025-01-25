@@ -30,6 +30,7 @@ class PlaceDetailViewController: UIViewController {
     
     private func setupSegmentedControl() {
         let segmentedControl = placeDetailView.getSegmentedControl()
+        
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
     }
 
@@ -53,6 +54,19 @@ class PlaceDetailViewController: UIViewController {
             showChildViewController(reviewsVC)
         default:
             break
+        }
+        updateSegmentedControlLinePosition(sender)
+    }
+    
+    private func updateSegmentedControlLinePosition(_ segmentedControl: UISegmentedControl) {
+        let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
+        let leadingDistance = CGFloat(segmentedControl.selectedSegmentIndex) * segmentWidth + 16
+        
+        UIView.animate(withDuration: 0.3) {
+            self.placeDetailView.segmentedControlLineView.snp.updateConstraints { make in
+                make.leading.equalTo(segmentedControl.snp.leading).offset(leadingDistance)
+            }
+            self.placeDetailView.layoutIfNeeded()
         }
     }
     

@@ -11,7 +11,7 @@ class PlaceDetailView: UIView {
 
     override init (frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .line1
+        self.backgroundColor = .bg
         
         addComponents()
     }
@@ -21,35 +21,77 @@ class PlaceDetailView: UIView {
     
     private let headerView = PlaceDetailHeaderView()
     
-    private let segmentedControl : UISegmentedControl = {
+    let segmentedControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["상세정보", "사진", "포함된 경로", "후기"])
         control.selectedSegmentIndex = 0
-        control.backgroundColor = .bg
-        control.selectedSegmentTintColor = .bg
-        control.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
-        control.setTitleTextAttributes([.foregroundColor: UIColor.icon1], for: .normal)
+        //선택된 세그멘트 배경 제거
+        control.selectedSegmentTintColor = UIColor.clear
+        control.setTitleTextAttributes(
+            [NSAttributedString.Key.foregroundColor: UIColor.icon1,
+             NSAttributedString.Key.font: UIFont.button2],
+            for: .normal
+        )
+        control.setTitleTextAttributes(
+            [NSAttributedString.Key.foregroundColor: UIColor.black,
+             NSAttributedString.Key.font: UIFont.button2],
+            for: .selected
+        )
+        //배경 이미지, 중간 칸막이 이미지 제거
+        control.setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+        control.setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
         return control
+        
+        
     }()
+    
+    var segmentedControlLineView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue3
+        return view
+    }()
+    
+    private let lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue1
+        return view
+    }()
+    
     
     let containerView = UIView()
     
     
     private func addComponents(){
         self.addSubview(headerView)
+        self.addSubview(lineView)
+        self.addSubview(segmentedControl)
+        self.addSubview(containerView)
+        self.addSubview(segmentedControlLineView)
+
+        
+        lineView.snp.makeConstraints { make in
+            make.top.equalTo(segmentedControl.snp.bottom).offset(1)
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview().inset(29)
+        }
         
         headerView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(457)
         }
         
-        self.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(11)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(29)
             make.height.equalTo(46)
         }
         
-        self.addSubview(containerView)
+        segmentedControlLineView.snp.makeConstraints { make in
+            make.top.equalTo(segmentedControl.snp.bottom)
+            make.width.equalTo(51)
+            make.height.equalTo(1)
+            make.leading.equalTo(segmentedControl.snp.leading).offset(16)
+        }
+        
         containerView.snp.makeConstraints { make in
             make.top.equalTo(segmentedControl.snp.bottom)
             make.leading.trailing.equalToSuperview()
