@@ -36,7 +36,8 @@ class WhereToPlayViewController: UIViewController {
     }
     
     private func setupActions() {
-    }
+        whereToPlayView.dropdownButton.addTarget(self, action: #selector(showDropdownMenu), for: .touchUpInside)
+      }
     
     // 놀거리 탐색 API 호출
       private func fetchSearchStores() {
@@ -44,6 +45,32 @@ class WhereToPlayViewController: UIViewController {
       }
     
     // MARK: - action
+    @objc private func showDropdownMenu() {
+          // 드롭다운 메뉴 생성
+          let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+          // 드롭다운 항목 추가
+          let options = ["기본순", "북마크순", "추천순"]
+          for option in options {
+              alert.addAction(UIAlertAction(title: option, style: .default, handler: { _ in
+                  // 선택한 옵션 처리
+                  self.whereToPlayView.dropdownButton.setTitle(option, for: .normal)
+              }))
+          }
+
+          // 취소 버튼 추가
+          alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+
+          // iPad 대응 (PopoverPresentation)
+          if let popover = alert.popoverPresentationController {
+              popover.sourceView = whereToPlayView.dropdownButton
+              popover.sourceRect = whereToPlayView.dropdownButton.bounds
+          }
+
+          // 드롭다운 메뉴 표시
+          present(alert, animated: true, completion: nil)
+      }
+
     // 카테고리 버튼 클릭
     @objc private func categoryButtonDipTap(_ sender: UIButton) {
         //guard let cell = sender.superview as? CategoryButtonCollectionViewCell,

@@ -71,7 +71,15 @@ class WhereToPlayView: UIView {
         $0.backgroundColor = .grey1
     }
     
-    // 정렬 버튼
+    // 드롭다운 버튼
+    lazy var dropdownButton = UIButton().then {
+        $0.setTitle("기본 ", for: .normal)
+        $0.setTitleColor(.icon2, for: .normal)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-Regular", size: 15)
+        $0.setImage(UIImage(named: "down_icon"), for: .normal)
+        $0.semanticContentAttribute = .forceRightToLeft
+    }
+    
     // 테마별 컬렉션뷰
     let placeSortedCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
         $0.estimatedItemSize = .init(width: 163, height: 174)
@@ -102,6 +110,7 @@ class WhereToPlayView: UIView {
         contentView.addSubview(separatorLine)
         contentView.addSubview(categoryButtonCollectionView)
         contentView.addSubview(separatorLine2)
+        contentView.addSubview(dropdownButton)
         contentView.addSubview(placeSortedCollectionView)
         
         
@@ -143,8 +152,13 @@ class WhereToPlayView: UIView {
             $0.height.equalTo(1)
         }
         
+        dropdownButton.snp.makeConstraints {
+            $0.top.equalTo(separatorLine2.snp.bottom).offset(13)
+            $0.right.equalToSuperview().offset(-28)
+        }
+        
         placeSortedCollectionView.snp.makeConstraints{
-            $0.top.equalTo(separatorLine.snp.bottom).offset(121)
+            $0.top.equalTo(dropdownButton.snp.bottom).offset(28)
             $0.left.right.equalToSuperview().inset(28)
             $0.width.equalTo(337)
             $0.height.equalTo(368)
