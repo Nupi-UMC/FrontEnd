@@ -73,10 +73,14 @@ class MyRouteViewController: UIViewController {
         self.present(alertVC, animated: false, completion: nil)
     }
     
+    // 나의 경로 API 호출
     private func fetchRoutes(myRoute: String) {
         let memberId = 1 // 추후 토큰으로 대체 예정
         
-        APIClient.fetchMyRoutes(memberId: memberId, myRoute: myRoute) { [weak self] result in
+        APIClient.fetchMyRoutes(
+            memberId: memberId,
+            myRoute: myRoute
+        ) { [weak self] result in
             switch result {
             case .success(let response):
                 if response.isSuccess {

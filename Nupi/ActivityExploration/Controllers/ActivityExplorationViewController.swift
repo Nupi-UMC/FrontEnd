@@ -9,9 +9,10 @@ import UIKit
 
 class ActivityExplorationViewController: UIViewController {
     
-    // 카테고리 배열
-    let categories = ["전체", "소품샵", "굿즈샵", "맛집", "카페", "테마카페", "팝업", "전시", "클래스"]
-    private var selectedCategory: Int = 0
+    private let categories = ["전체", "소품샵", "굿즈샵", "맛집", "카페", "테마카페", "팝업", "전시", "클래스"] // 카테고리 배열
+    private var selectedCategory: Int = 0 // 선택된 카테고리
+    private var selectedSort: String = "default" // 정렬 방식
+    private var stores: [StoreModel] = [] // 장소 정보 배열
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +20,7 @@ class ActivityExplorationViewController: UIViewController {
         setupDelegate()
         setupActions()
         setupNavigationBar()
+        fetchSearchStores()
         activityExplorationView.categoryCollectionView.reloadData()
     }
     
@@ -27,6 +29,7 @@ class ActivityExplorationViewController: UIViewController {
         return view
     }()
     
+    // MARK: - function
     private func setupDelegate() {
         activityExplorationView.adBannerCollectionView.dataSource = self
         activityExplorationView.categoryCollectionView.dataSource = self
@@ -51,25 +54,49 @@ class ActivityExplorationViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = .icon1
     }
     
-    // 드롭다운 버튼 클릭
-    @objc private func showDropdownMenu() {
-        let options = ["기본", "북마크순", "추천순"]
-        let menuItems = options.map { option in
-            UIAction(title: option, handler: { _ in
-                // 선택한 옵션 처리
-                self.activityExplorationView.dropdownButton.setTitle(option, for: .normal)
-            })
+    // 놀거리 탐색 API 호출
+    private func fetchSearchStores() {
+        let memberId = 1 // 추후 토큰으로 대체 예정
+        let latitude = 37.5142
+        let longitude = 127.8983
+        let category = self.selectedCategory
+        let sort = self.selectedSort
+        
+        APIClient.fetchSearchStores(
+            memberId: memberId,
+            latitude: latitude,
+            longitude: longitude,
+            category: category,
+            sort: sort
+        ) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    self?.stores =
+                    response.result.stores.map {
+                        StoreModel(
+                            storeId: $0.storeId,
+                            storeName: $0.storeName,
+                            storePic: $0.storePic,
+                            storePlace: $0.storePlace,
+                            saved: $0.saved)
+                    }
+                    DispatchQueue.main.async {
+                        self?.activityExplorationView
+                            .storeCollectionView
+                            .reloadData()
+                    }
+                } else {
+                    print("API 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("네트워크 오류: \(error.localizedDescription)")
+            }
         }
-        
-        let menu = UIMenu(title: "", children: menuItems)
-        
-        // 버튼에 메뉴 연결
-        self.activityExplorationView.dropdownButton.menu = menu
-        self.activityExplorationView.dropdownButton.showsMenuAsPrimaryAction = true
     }
     
-    
-    // 카테고리 버튼 액션 함수
+    // MARK: - action
+    // 카테고리 버튼 클릭
     @objc private func categoryButtonDipTap(_ sender: UIButton) {
         guard let cell = sender.superview as? CategoryCollectionViewCell,
               let indexPath = activityExplorationView.categoryCollectionView.indexPath(for: cell) else {
@@ -78,9 +105,35 @@ class ActivityExplorationViewController: UIViewController {
         }
         
         // 선택된 카테고리 업데이트
-        print("선택된 카테고리: \(categories[indexPath.row])")
         selectedCategory = indexPath.row
         activityExplorationView.categoryCollectionView.reloadData()
+        fetchSearchStores()
+    }
+    
+    // 드롭다운 버튼 클릭
+    @objc private func showDropdownMenu() {
+        let options = ["기본", "북마크순", "추천순"]
+        let menuItems = options.map { option in
+            UIAction(title: option, handler: { _ in
+                // 선택한 옵션 처리
+                self.selectedSort = {
+                    switch option {
+                    case "기본": return "default"
+                    case "북마크순": return "bookmark"
+                    case "추천순": return "recommend"
+                    default: return "default"
+                    }
+                }()
+                self.activityExplorationView.dropdownButton.setTitle(option, for: .normal)
+                self.fetchSearchStores()
+            })
+        }
+        
+        let menu = UIMenu(title: "", children: menuItems)
+        
+        // 버튼에 메뉴 연결
+        self.activityExplorationView.dropdownButton.menu = menu
+        self.activityExplorationView.dropdownButton.showsMenuAsPrimaryAction = true
     }
 }
 
@@ -91,7 +144,7 @@ extension ActivityExplorationViewController: UICollectionViewDataSource {
         } else if collectionView == activityExplorationView.categoryCollectionView {
             return categories.count
         } else if collectionView == activityExplorationView.storeCollectionView {
-            return StoreModel.dummny().count
+            return stores.count
         }
         
         return 0
@@ -136,10 +189,16 @@ extension ActivityExplorationViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let list = StoreModel.dummny()
-            cell.storeImageView.image = list[indexPath.row].storePic
-            cell.storeNameLabel.text = list[indexPath.row].storeName
-            cell.storeLocationLabel.text = list[indexPath.row].storePlace
+            let store = stores[indexPath.row]
+            
+            if let storePic = store.storePic, let url = URL(string: storePic) {
+                cell.storeImageView.kf.setImage(with: url)
+            } else {
+                cell.storeImageView.image = UIImage(named: "banner_image1") // 기본 이미지 설정
+            }
+            
+            cell.storeNameLabel.text = store.storeName
+            cell.storeLocationLabel.text = store.storePlace
             
             return cell
         }
