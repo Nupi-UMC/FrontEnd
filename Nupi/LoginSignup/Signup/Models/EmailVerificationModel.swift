@@ -24,7 +24,7 @@ struct EmailVerificationCodeResult : Codable {
 // MARK : - 인증 코드 확인
 struct EmailVerificationCodeConfirmRequest : Codable{
     let email : String
-    let verification_code : String
+    let verificationCode : String
 }
 struct EmailVerificationCodeConfirmResponse : Decodable {
     let isSuccess : Bool
