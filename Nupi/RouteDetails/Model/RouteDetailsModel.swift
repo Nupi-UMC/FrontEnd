@@ -38,3 +38,18 @@ extension RoutePlacesModel {
         ]
     }
 }
+
+struct RouteReviewModel {
+    let image: UIImage
+    let nickname: String
+    let content: String
+}
+
+extension RouteReviewModel {
+    static func dummny() -> [RouteReviewModel] {
+        return [
+            RouteReviewModel(image: .adBannerImage1, nickname: "징징이", content: "꼭 가보세요 꼭 이 경로 따라가다가 만 보 걸었음 나만 당할 순 없다 근데 재미있긴 해요"),
+            RouteReviewModel(image: .adBannerImage1, nickname: "와쟈뵷~!", content: "같이 간 친구가 무섭다고 울었어요 잼있뉸뎽 ㅠ.ㅠ")
+        ]
+    }
+}

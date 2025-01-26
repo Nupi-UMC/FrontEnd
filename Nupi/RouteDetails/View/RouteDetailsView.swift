@@ -79,7 +79,7 @@ class RouteDetailsView: UIView {
     }
     
     // 구분선
-    private let divider = UIView().then {
+    private let dividerView = UIView().then {
         $0.backgroundColor = .line1
     }
     
@@ -107,7 +107,6 @@ class RouteDetailsView: UIView {
     
     private lazy var followRouteButton = createTitleButton(title: "이 경로 따라가기")
     private lazy var routePlacesButton = createTitleButton(title: "경로에 포함된 장소")
-    private lazy var routeReviewsButton = createTitleButton(title: "이 경로 후기")
     
     // 경로에 포함된 장소 컬렉션 뷰
     let routePlacesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
@@ -119,9 +118,22 @@ class RouteDetailsView: UIView {
     }).then {
         $0.backgroundColor = .clear
         $0.showsHorizontalScrollIndicator = false
-        $0.register(RoutePlacesCollectionViewCell.self, forCellWithReuseIdentifier: RoutePlacesCollectionViewCell.identifier)
+        $0.register(RoutePlaceCollectionViewCell.self, forCellWithReuseIdentifier: RoutePlaceCollectionViewCell.identifier)
     }
     
+    private lazy var routeReviewsButton = createTitleButton(title: "이 경로 후기")
+
+    let routeReviewsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        let itemWidth: CGFloat = UIScreen.main.bounds.width / 2
+        $0.itemSize = CGSize(width: itemWidth, height: 160)
+        $0.scrollDirection = .horizontal
+        $0.minimumLineSpacing = 4
+        $0.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+    }).then {
+        $0.backgroundColor = .clear
+        $0.showsHorizontalScrollIndicator = false
+        $0.register(RouteReivewCollectionViewCell.self, forCellWithReuseIdentifier: RouteReivewCollectionViewCell.identifier)
+    }
     
     // 제목 버튼 생성 함수
     private func createTitleButton(title: String) -> UIButton {
@@ -150,14 +162,15 @@ class RouteDetailsView: UIView {
             routeLocationLabel,
             likeButton,
             bookmarkButton,
-            divider,
+            dividerView,
             routeDescriptionTitleLabel,
             routeDescriptionContentLabel,
             routeCreatorLabel,
             followRouteButton,
             routePlacesButton,
             routePlacesCollectionView,
-            routeReviewsButton
+            routeReviewsButton,
+            routeReviewsCollectionView
         ].forEach {
             contentView.addSubview($0)
         }
@@ -202,14 +215,14 @@ class RouteDetailsView: UIView {
             $0.trailing.equalToSuperview().inset(24)
         }
         
-        divider.snp.makeConstraints {
+        dividerView.snp.makeConstraints {
             $0.top.equalTo(likeButton.snp.bottom).offset(12)
             $0.height.equalTo(11)
             $0.horizontalEdges.equalToSuperview()
         }
         
         routeDescriptionTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(divider.snp.bottom).offset(19)
+            $0.top.equalTo(dividerView.snp.bottom).offset(19)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
         
@@ -242,7 +255,12 @@ class RouteDetailsView: UIView {
         routeReviewsButton.snp.makeConstraints {
             $0.top.equalTo(routePlacesCollectionView.snp.bottom).offset(44)
             $0.leading.trailing.equalToSuperview().inset(24)
-            $0.bottom.equalToSuperview()
+        }
+        
+        routeReviewsCollectionView.snp.makeConstraints {
+            $0.top.equalTo(routeReviewsButton.snp.bottom).offset(20)
+            $0.height.equalTo(160)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
 }

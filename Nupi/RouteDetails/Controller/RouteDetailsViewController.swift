@@ -24,6 +24,7 @@ class RouteDetailsViewController: UIViewController {
     private func setupDelegate() {
         routeDetailsView.routeImageCollectionView.dataSource = self
         routeDetailsView.routePlacesCollectionView.dataSource = self
+        routeDetailsView.routeReviewsCollectionView.dataSource = self
     }
 }
 
@@ -33,6 +34,8 @@ extension RouteDetailsViewController: UICollectionViewDataSource {
             return RouteDetailsModel.dummny().count
         } else if collectionView == routeDetailsView.routePlacesCollectionView {
             return RoutePlacesModel.dummny().count
+        } else if collectionView == routeDetailsView.routeReviewsCollectionView {
+            return RouteReviewModel.dummny().count
         }
         
         return 0
@@ -53,15 +56,29 @@ extension RouteDetailsViewController: UICollectionViewDataSource {
             return cell
         } else if collectionView == routeDetailsView.routePlacesCollectionView {
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoutePlacesCollectionViewCell.identifier,
+                withReuseIdentifier: RoutePlaceCollectionViewCell.identifier,
                 for: indexPath
-            ) as? RoutePlacesCollectionViewCell else {
+            ) as? RoutePlaceCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
             let list = RoutePlacesModel.dummny()
             cell.placeImageView.image = list[indexPath.row].image
             cell.placeNameLabel.text = list[indexPath.row].title
+            
+            return cell
+        } else if collectionView == routeDetailsView.routeReviewsCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RouteReivewCollectionViewCell.identifier,
+                for: indexPath
+            ) as? RouteReivewCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            let list = RouteReviewModel.dummny()
+            cell.profileImageView.image = list[indexPath.row].image
+            cell.nicknameLabel.text = list[indexPath.row].nickname
+            cell.reviewContentLabel.text = list[indexPath.row].content
             
             return cell
         }

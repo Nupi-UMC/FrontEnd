@@ -7,9 +7,9 @@
 
 import UIKit
 
-class RoutePlacesCollectionViewCell: UICollectionViewCell {
+class RoutePlaceCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "RoutePlacesCollectionViewCell"
+    static let identifier = "RoutePlaceCollectionViewCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
