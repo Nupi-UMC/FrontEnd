@@ -22,3 +22,19 @@ extension RouteDetailsModel {
         ]
     }
 }
+
+struct RoutePlacesModel {
+    let image: UIImage
+    let title: String
+}
+
+extension RoutePlacesModel {
+    static func dummny() -> [RoutePlacesModel] {
+        return [
+            RoutePlacesModel(image: .adBannerImage1, title: "도리무란도"),
+            RoutePlacesModel(image: .adBannerImage1, title: "플래프"),
+            RoutePlacesModel(image: .adBannerImage1, title: "팀버샵"),
+            RoutePlacesModel(image: .adBannerImage1, title: "고스펑크"),
+        ]
+    }
+}

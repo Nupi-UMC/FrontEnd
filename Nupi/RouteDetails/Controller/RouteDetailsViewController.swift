@@ -23,25 +23,49 @@ class RouteDetailsViewController: UIViewController {
     // MARK: - function
     private func setupDelegate() {
         routeDetailsView.routeImageCollectionView.dataSource = self
+        routeDetailsView.routePlacesCollectionView.dataSource = self
     }
 }
 
 extension RouteDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        RouteDetailsModel.dummny().count
+        if collectionView == routeDetailsView.routeImageCollectionView {
+            return RouteDetailsModel.dummny().count
+        } else if collectionView == routeDetailsView.routePlacesCollectionView {
+            return RoutePlacesModel.dummny().count
+        }
+        
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: RouteImageCollectionViewCell.identifier,
-            for: indexPath
-        ) as? RouteImageCollectionViewCell else {
-            return UICollectionViewCell()
+        if collectionView == routeDetailsView.routeImageCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RouteImageCollectionViewCell.identifier,
+                for: indexPath
+            ) as? RouteImageCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            let list = RouteDetailsModel.dummny()
+            cell.routeImageView.image = list[indexPath.row].image
+            cell.countLabel.text = "\(indexPath.row + 1)/\(list.count)"
+            return cell
+        } else if collectionView == routeDetailsView.routePlacesCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RoutePlacesCollectionViewCell.identifier,
+                for: indexPath
+            ) as? RoutePlacesCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            let list = RoutePlacesModel.dummny()
+            cell.placeImageView.image = list[indexPath.row].image
+            cell.placeNameLabel.text = list[indexPath.row].title
+            
+            return cell
         }
         
-        let list = RouteDetailsModel.dummny()
-        cell.routeImageView.image = list[indexPath.row].image
-        cell.countLabel.text = "\(indexPath.row + 1)/\(list.count)"
-        return cell
+        return UICollectionViewCell()
     }
 }

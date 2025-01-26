@@ -106,6 +106,22 @@ class RouteDetailsView: UIView {
     }
     
     private lazy var followRouteButton = createTitleButton(title: "이 경로 따라가기")
+    private lazy var routePlacesButton = createTitleButton(title: "경로에 포함된 장소")
+    private lazy var routeReviewsButton = createTitleButton(title: "이 경로 후기")
+    
+    // 경로에 포함된 장소 컬렉션 뷰
+    let routePlacesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        let itemWidth: CGFloat = (UIScreen.main.bounds.width - 24 * 2 - 4) / 2
+        $0.itemSize = CGSize(width: itemWidth, height: 194)
+        $0.scrollDirection = .horizontal
+        $0.minimumLineSpacing = 4
+        $0.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+    }).then {
+        $0.backgroundColor = .clear
+        $0.showsHorizontalScrollIndicator = false
+        $0.register(RoutePlacesCollectionViewCell.self, forCellWithReuseIdentifier: RoutePlacesCollectionViewCell.identifier)
+    }
+    
     
     // 제목 버튼 생성 함수
     private func createTitleButton(title: String) -> UIButton {
@@ -138,7 +154,10 @@ class RouteDetailsView: UIView {
             routeDescriptionTitleLabel,
             routeDescriptionContentLabel,
             routeCreatorLabel,
-            followRouteButton
+            followRouteButton,
+            routePlacesButton,
+            routePlacesCollectionView,
+            routeReviewsButton
         ].forEach {
             contentView.addSubview($0)
         }
@@ -206,6 +225,22 @@ class RouteDetailsView: UIView {
         
         followRouteButton.snp.makeConstraints {
             $0.top.equalTo(routeCreatorLabel.snp.bottom).offset(44)
+            $0.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        routePlacesButton.snp.makeConstraints {
+            $0.top.equalTo(followRouteButton.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        routePlacesCollectionView.snp.makeConstraints {
+            $0.top.equalTo(routePlacesButton.snp.bottom).offset(20)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(194)
+        }
+        
+        routeReviewsButton.snp.makeConstraints {
+            $0.top.equalTo(routePlacesCollectionView.snp.bottom).offset(44)
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalToSuperview()
         }
