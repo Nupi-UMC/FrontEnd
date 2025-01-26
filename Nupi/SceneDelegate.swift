@@ -17,11 +17,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         
         // UINavigationController를 사용하여 루트 설정
-        let navigationController = UINavigationController()
-        let coordinator = MainCoordinator(navigationController: navigationController)
-        coordinator.start()
+//        let navigationController = UINavigationController()
+//        let coordinator = MainCoordinator(navigationController: navigationController)
+//        coordinator.start()
         
-        window?.rootViewController = navigationController
+//        window?.rootViewController = navigationController
+        window?.rootViewController = RouteDetailsViewController()
         window?.makeKeyAndVisible()
     }
 
