@@ -75,11 +75,16 @@ class VerifyEmailViewController: UIViewController {
             case .success(let response):
                 if response.isSuccess {
                     print("인증 성공")
-                    DispatchQueue.main.async {
-                        let createPasswordVC = CreatePasswordViewController()
-                        createPasswordVC.email = email
-                        self.navigationController?.pushViewController(createPasswordVC, animated: true)
+                    if let verificationId = response.result?.verificationId {
+                        print("verificationId: \(verificationId)") // 디버깅용
+                        DispatchQueue.main.async {
+                            let createPasswordVC = CreatePasswordViewController()
+                            createPasswordVC.email = email
+                            createPasswordVC.verificationId = verificationId
+                            self.navigationController?.pushViewController(createPasswordVC, animated: true)
+                        }
                     }
+                        
                 } else {
                     print("인증 요청 실패: \(response.message)")
                 }

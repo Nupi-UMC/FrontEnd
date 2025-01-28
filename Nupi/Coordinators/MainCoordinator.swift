@@ -22,6 +22,11 @@ class MainCoordinator: Coordinator {
 
     func showBaseViewController() {
         let tabBarController = BaseViewController()
-        navigationController.setViewControllers([tabBarController], animated: true)
+        // SceneDelegate의 window.rootViewController를 변경하여 네비게이션 바 제거
+            if let sceneDelegate = UIApplication.shared.connectedScenes
+                .first?.delegate as? SceneDelegate {
+                sceneDelegate.window?.rootViewController = tabBarController
+                sceneDelegate.window?.makeKeyAndVisible()
+            }
     }
 }

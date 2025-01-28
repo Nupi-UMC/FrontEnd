@@ -20,10 +20,10 @@ struct LoginResponse : Decodable {
     let result : LoginResult?
 }
 
-struct LoginResult : Codable {
-    let access_token : String
-    let refresh_token : String
-    let expires_in : Int
+struct LoginResult : Decodable {
+    let accessToken : String
+    let refreshToken : String
+    let expiresIn : Int
 }
 
 

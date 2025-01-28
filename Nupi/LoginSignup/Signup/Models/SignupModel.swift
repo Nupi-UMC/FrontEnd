@@ -9,18 +9,15 @@ import Foundation
 
 // MARK : - 회원가입
 struct SignupRequest : Codable {
-    let verification_id : Int
+    let verificationId : Int
     let email : String
     let password : String
     let nickname : String
-    let profile: String
+    let profile: String?
 }
 struct SignupResponse : Decodable {
     let isSuccess : Bool
     let code : String
     let message : String
-    let result : Signupresult?
-}
-struct Signupresult : Codable {
-    let user_id : Int
+    let result : String?
 }

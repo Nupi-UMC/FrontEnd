@@ -45,7 +45,7 @@ class LoginView : UIView {
         return label
     }()
     
-    private lazy var emailTextField : UITextField = {
+    lazy var emailTextField : UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(
             string: "이메일을 입력하세요",
