@@ -18,7 +18,7 @@ struct EmailVerificationCodeResponse : Decodable {
     let result : EmailVerificationCodeResult?
 }
 struct EmailVerificationCodeResult : Codable {
-    let expires_at : String
+    let expiresAt : String
 }
 
 // MARK : - 인증 코드 확인
@@ -33,5 +33,5 @@ struct EmailVerificationCodeConfirmResponse : Decodable {
     let result : EmailVerificationCodeConfirmResult?
 }
 struct EmailVerificationCodeConfirmResult : Decodable {
-    let verification_id : Int?
+    let verificationId : Int?
 }

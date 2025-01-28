@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class LoginViewController: UIViewController {
 
@@ -67,7 +68,7 @@ class LoginViewController: UIViewController {
     @objc
     private func loginButtonTap(){
         validatePasswordInfo()
-        coordinator?.showBaseViewController()
+        fetchLogin()
     }
     
     //회원가입 버튼 동작
@@ -76,9 +77,45 @@ class LoginViewController: UIViewController {
         let signUpVC = BeginSignUpViewController()
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
-    /// 둘러보기 버튼 동작
+    //둘러보기 버튼 동작
     @objc private func browseButtonTap() {
         let tabBarVC = BaseViewController()
         self.navigationController?.setViewControllers([tabBarVC], animated: true)
+    }
+    
+    private func fetchLogin(){
+        let parameters = LoginRequest(
+            email: loginView.emailTextField.text ?? "",
+            password: loginView.passwordTextField.text ?? ""
+            )
+        APIClient.postRequest(endpoint: "/api/auth/login", parameters: parameters) { (result: Result<LoginResponse, AFError>) in
+                switch result {
+                case .success(let response):
+                    if response.isSuccess {
+                        print("로그인 성공: \(response.message)")
+                        if let loginResult = response.result {
+                            print("Access Token: \(loginResult.accessToken)")
+                            print("Refresh Token: \(loginResult.refreshToken)")
+                            print("Token Expiry: \(loginResult.expiresIn)초")
+                            
+                            DispatchQueue.main.async {
+                                // 로그인 후 메인 화면으로 이동
+                                //let homeVC = HomeViewController()
+                                //self.navigationController?.pushViewController(homeVC, animated: true)
+                                self.coordinator?.showBaseViewController()
+                            }
+                        }
+                    } else {
+                        print("로그인 실패: \(response.message)")
+                        DispatchQueue.main.async {
+                            // 오류 메시지 표시
+                        }
+                    }
+                case .failure(let error):
+                    print("API 호출 중 오류 발생: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                    }
+                }
+            }
     }
 }
