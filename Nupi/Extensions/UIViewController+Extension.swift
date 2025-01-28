@@ -37,8 +37,6 @@ extension UIViewController {
             navigationController?.navigationBar.barTintColor = UIColor.bg
             navigationController?.navigationBar.layer.borderWidth = 0    // 테두리 두께 제거
             navigationController?.navigationBar.layer.borderColor = UIColor.bg.cgColor
-            navigationController?.navigationBar.shadowImage = UIImage()  // 스크롤시 네비게이션 바에 그림자가 자동으로 생기기 때문에 그림자도 제거해야함
-
         }
         
         func setupNavigationBar(action: Selector) {
