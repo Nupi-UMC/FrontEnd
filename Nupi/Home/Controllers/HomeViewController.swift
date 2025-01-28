@@ -20,6 +20,10 @@ class HomeViewController: UIViewController {
         setupActions()
         setupDataSource()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
     
     // MARK: - function
     private func setupActions() {

@@ -69,6 +69,7 @@ class LoginViewController: UIViewController {
     private func loginButtonTap(){
         validatePasswordInfo()
         fetchLogin()
+        self.coordinator?.showBaseViewController()
     }
     
     //회원가입 버튼 동작
