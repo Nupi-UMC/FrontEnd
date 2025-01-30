@@ -8,7 +8,7 @@
 import UIKit
 
 class PlaceReviewsView: UIView {
-
+    
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .bg
@@ -19,27 +19,10 @@ class PlaceReviewsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var placeReviewsCollectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
-       layout.scrollDirection = .vertical // 세로 스크롤
-       layout.minimumLineSpacing = 10 // 셀 간의 세로 간격
-       layout.itemSize = CGSize(width: 345, height: 207) // 셀 크기
-       
-       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       collectionView.register(PlaceReviewsCollectionViewCell.self, forCellWithReuseIdentifier: PlaceReviewsCollectionViewCell.identifier)
-       collectionView.backgroundColor = .clear // 배경색
-       collectionView.showsHorizontalScrollIndicator = false
-       collectionView.showsVerticalScrollIndicator = false
-       return collectionView
-   }()
     
     private func addComponents(){
-        self.addSubview(placeReviewsCollectionView)
-        placeReviewsCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.width.equalToSuperview()
-            make.bottom.equalToSuperview().inset(20)
-        }
+        
     }
-
+    
+    
 }

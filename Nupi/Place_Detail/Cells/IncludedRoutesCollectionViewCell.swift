@@ -10,10 +10,14 @@ import UIKit
 class IncludedRoutesCollectionViewCell: UICollectionViewCell {
     static let identifier = "IncludedRoutesCollectionViewCell"
     
-    var imageView : UIImageView = {
-        let image = UIImageView()
-        return image
-    }()
+    var thumbnailImageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+            imageView.layer.cornerRadius = 10 // 둥근 모서리 적용
+            return imageView
+        }()
+    
     var routeTitleLabel : UILabel = {
         let label = UILabel()
         label.font = .heading2
@@ -49,15 +53,17 @@ class IncludedRoutesCollectionViewCell: UICollectionViewCell {
     }
     
     private func addComponents(){
-        self.addSubview(imageView)
+        self.addSubview(thumbnailImageView)
         self.addSubview(routeTitleLabel)
         self.addSubview(routeLocationLabel)
         self.addSubview(likeCountLabel)
         self.addSubview(saveCountLabel)
         
-        imageView.snp.makeConstraints { make in
-            
-        }
+        //  이미지 뷰의 레이아웃 설정 (크기와 위치)
+                thumbnailImageView.snp.makeConstraints { make in
+                    make.top.leading.trailing.equalToSuperview()
+                    make.height.equalTo(100) // 고정 높이 설정
+                }
         routeTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(138)
             make.leading.equalToSuperview().offset(4)
