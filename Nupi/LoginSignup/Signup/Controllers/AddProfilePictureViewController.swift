@@ -9,6 +9,7 @@ import UIKit
 import Alamofire
 
 class AddProfilePictureViewController: UIViewController {
+    private var selectedImageURL: URL?
     
     private lazy var addProfilePictureView: AddProfilePictureView = {
         let view = AddProfilePictureView()
@@ -84,7 +85,19 @@ class AddProfilePictureViewController: UIViewController {
     //회원가입 API
     private func registerUser(){
         let profileImage = addProfilePictureView.selectProfileImageButton.imageView?.image
-        let profileImageBase64 = encodeImageToBase64(profileImage) ?? "" // 이미지가 없으면 빈 문자열
+        // UIImage -> JPEG 데이터로 변환
+
+        guard let imageData = profileImage?.jpegData(compressionQuality: 0.8) else {
+                print("이미지 변환 실패")
+                return
+            }
+            
+        let base64String = imageData.base64EncodedString()
+        
+        guard let imageURL = selectedImageURL else {
+                print("❌ 이미지 URL이 없습니다.")
+                return
+            }
         
         // Encodable 구조체로 요청 데이터 생성
             let parameters = SignupRequest(
@@ -92,8 +105,17 @@ class AddProfilePictureViewController: UIViewController {
                 email: email,
                 password: password,
                 nickname: addProfilePictureView.nicknameTextField.text!,
-                profile: profileImageBase64
+                profile: imageURL.absoluteString
             )
+        // ✅ 🔍 디버깅: JSON 데이터가 올바르게 인코딩되었는지 확인
+            do {
+                let jsonData = try JSONEncoder().encode(parameters)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print("📡 회원가입 요청 JSON 데이터:\n", jsonString)
+                }
+            } catch {
+                print("🚨 JSON 인코딩 실패: \(error.localizedDescription)")
+            }
         
         APIClient.postRequest(endpoint: "/api/auth/signup", parameters: parameters){ (result: Result<SignupResponse, AFError>) in
             switch result {
@@ -127,13 +149,14 @@ extension AddProfilePictureViewController: UIImagePickerControllerDelegate, UINa
     //이미지 피커에서 이미지 선택했을 때 호출되는 메서드
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             
-            // 편집된 이미지 선택한 경우
-            if let editedImage = info[.editedImage] as? UIImage {
-                addProfilePictureView.selectProfileImageButton.setImage(editedImage, for: .normal)
-            }
-            // 원본 이미지 선택한 경우
-            else if let originalImage = info[.originalImage] as? UIImage {
-                addProfilePictureView.selectProfileImageButton.setImage(originalImage, for: .normal)
+        // ✅ 1. 이미지 가져오기
+                if let selectedImage = info[.originalImage] as? UIImage {
+                    addProfilePictureView.selectProfileImageButton.setImage(selectedImage, for: .normal)
+                }
+
+        if let imageURL = info[.imageURL] as? URL {
+                self.selectedImageURL = imageURL
+                print("🖼️ 이미지 URL 저장됨: \(imageURL.absoluteString)")
             }
             picker.dismiss(animated: true)
         }

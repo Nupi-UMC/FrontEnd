@@ -23,6 +23,7 @@ class LoginViewController: UIViewController {
         self.view = loginView
         loginView.loginButton.addTarget(self, action: #selector(loginButtonTap), for: .touchUpInside)
         loginView.signUpButton.addTarget(self, action: #selector(signUpButtonTap), for: .touchUpInside)
+        //둘러보기 버튼 동작
         loginView.browseButton.addTarget(self, action: #selector(browseButtonTap), for: .touchUpInside)
         // 비밀번호 입력값 변경 감지
         loginView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)
@@ -69,7 +70,7 @@ class LoginViewController: UIViewController {
     private func loginButtonTap(){
         validatePasswordInfo()
         fetchLogin()
-        self.coordinator?.showBaseViewController()
+        //self.coordinator?.showBaseViewController()
     }
     
     //회원가입 버튼 동작
@@ -80,8 +81,8 @@ class LoginViewController: UIViewController {
     }
     //둘러보기 버튼 동작
     @objc private func browseButtonTap() {
-        let tabBarVC = BaseViewController()
-        self.navigationController?.setViewControllers([tabBarVC], animated: true)
+        let homeVC = HomeViewController()
+        self.navigationController?.pushViewController(homeVC, animated: true)
     }
     
     private func fetchLogin(){
@@ -115,8 +116,8 @@ class LoginViewController: UIViewController {
                 case .failure(let error):
                     print("API 호출 중 오류 발생: \(error.localizedDescription)")
                     DispatchQueue.main.async {
-                    }
                 }
             }
+        }
     }
 }
