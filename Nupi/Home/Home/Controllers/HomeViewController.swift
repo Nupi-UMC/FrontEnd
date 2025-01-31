@@ -52,10 +52,17 @@ class HomeViewController: UIViewController {
         let myRouteVC = MyRouteViewController()
         self.navigationController?.pushViewController(myRouteVC, animated: true)
     }
+    
+    @objc
+    private func whatToPlayButtonDidTap() {
+        let whatToPlayVC = WhatToPlayViewController()
+        self.navigationController?.pushViewController(whatToPlayVC, animated: true)
+    }
+    
 }
 
 
-extension HomeViewController: UICollectionViewDataSource {
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == homeView.bannerCollectionView {
             return BannerModel.dummy().count
@@ -86,6 +93,10 @@ extension HomeViewController: UICollectionViewDataSource {
             let list = WhatToPlayModel.dummy()
             cell.placeButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
             cell.placeLabel.text = list[indexPath.row].place
+            
+            //액션 추가
+            cell.placeButton.addTarget(self, action: #selector(whatToPlayButtonDidTap), for: .touchUpInside)
+                    
             return cell
         } else if collectionView == homeView.whereToPlayCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WhereToPlayCollectionViewCell.identifier, for: indexPath) as? WhereToPlayCollectionViewCell else {
@@ -108,3 +119,4 @@ extension HomeViewController: UICollectionViewDataSource {
         return UICollectionViewCell()
     }
 }
+
