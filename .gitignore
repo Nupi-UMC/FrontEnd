@@ -2,16 +2,25 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
 # Xcode specific files
 build/
 DerivedData/
 xcuserdata/
 *.xccheckout
 *.xcscmblueprint
+<<<<<<< HEAD
+
+=======
+>>>>>>> feature/Home
 # Other common files
 *.swp
 *.lock
 *.log
 *.pyc
 *.pyo
+<<<<<<< HEAD
 *.env
+=======
+*.env
+>>>>>>> feature/Home

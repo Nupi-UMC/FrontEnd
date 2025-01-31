@@ -17,5 +17,36 @@ class CompleteSignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = completeSignUpView
+        completeSignUpView.moveToLoginPageButton.addTarget(self, action: #selector(moveToLoginButtonTap), for: .touchUpInside)
+        completeSignUpView.exitButton.addTarget(self, action: #selector(exitButtonTap), for: .touchUpInside)
+        
+        self.navigationItem.hidesBackButton = true //back button 숨기기
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false //스와이프로 뒤로 가는 제스쳐 비활성화
+        
+        //전달받은 프로필 사진 표시
+        if let profileImage = receivedProfileImage {
+                completeSignUpView.profilePictureView.image = profileImage
+        } else {
+            completeSignUpView.profilePictureView.layer.backgroundColor = UIColor.bg.cgColor
+        }
+        
+        if let nickNameLabel = receivedNickName {
+            completeSignUpView.userNicknameLabel.text = nickNameLabel
+        }
+    }
+    
+    //전달받을 프로필이미지 변수
+    public var receivedProfileImage: UIImage?
+    //전달받을 닉네임 변수
+    public var receivedNickName : String?
+    
+    
+    @objc private func moveToLoginButtonTap(){
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    @objc private func exitButtonTap(){
+        //let exitVC = ExitViewController()
+        //self.navigationController?.pushViewController(exitVC,animated:true)
     }
 }
