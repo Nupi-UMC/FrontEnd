@@ -46,7 +46,7 @@ class HongdaeSortedCollectionViewCell: UICollectionViewCell {
     
     // 장소 아이콘
     private let placeIcon = UIImageView().then{
-        $0.image = UIImage(named: "spot_icon")
+        $0.image = UIImage(named: "spot_icon_blue")
         $0.tintColor = .coffee
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -88,10 +88,10 @@ class HongdaeSortedCollectionViewCell: UICollectionViewCell {
         }
         
         placeIcon.snp.makeConstraints{
-            $0.top.equalTo(placeLabel.snp.bottom).offset(3)
-            $0.left.equalToSuperview()
-            $0.width.equalTo(15)
-            $0.height.equalTo(15)
+            $0.top.equalTo(placeLabel.snp.bottom).offset(4.75)
+            $0.left.equalToSuperview().offset(2.5)
+            $0.width.equalTo(10)
+            $0.height.equalTo(12.3)
         }
         
         stationLabel.snp.makeConstraints{
