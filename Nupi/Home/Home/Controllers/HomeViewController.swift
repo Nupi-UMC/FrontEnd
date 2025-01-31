@@ -59,6 +59,12 @@ class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(whatToPlayVC, animated: true)
     }
     
+    @objc
+    private func whereToPlayButtonDidTap() {
+        let whereToPlayVC = WhereToPlayViewController()
+        self.navigationController?.pushViewController(whereToPlayVC, animated: true)
+    }
+    
 }
 
 
@@ -105,6 +111,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             let list = WhereToPlayModel.dummy()
             cell.whereToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
             cell.whereToPlayLabel.text = list[indexPath.row].place
+            
+            //액션 추가
+            cell.whereToPlayButton.addTarget(self, action: #selector(whereToPlayButtonDidTap), for: .touchUpInside)
+            
             return cell
         } else if collectionView == homeView.ourMemoriesCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OurMemoriesCollectionViewCell.identifier, for: indexPath) as?
