@@ -19,7 +19,13 @@ class WhereToPlayViewController: UIViewController {
         
         setupDataSource()
         setupActions()
+        setupNavigationBar() 
         whereToPlayView.categoryButtonCollectionView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     private lazy var whereToPlayView: WhereToPlayView = {
@@ -44,6 +50,21 @@ class WhereToPlayViewController: UIViewController {
       private func fetchSearchStores() {
           
       }
+    
+    // 네비게이션바 추가
+    private func setupNavigationBar() {
+        self.navigationController?.navigationBar.barTintColor = .white
+        self.navigationController?.navigationBar.tintColor = .icon1
+        self.navigationController?.navigationBar.topItem?.title = ""
+        
+        let titleLabel = UILabel().then {
+            $0.text = "Hongdae"
+            $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
+            $0.textColor = .icon1
+        }
+        
+        self.navigationItem.titleView = titleLabel
+    }
     
     // MARK: - action
     @objc private func showDropdownMenu() {

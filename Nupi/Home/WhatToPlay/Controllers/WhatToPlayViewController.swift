@@ -34,7 +34,7 @@ class WhatToPlayViewController: UIViewController {
         whatToPlayView.hotPlaceCollectionView.dataSource = self
     }
     
-    
+    // 네비게이션바 추가
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.tintColor = .icon1
