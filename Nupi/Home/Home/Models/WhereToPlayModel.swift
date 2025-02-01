@@ -20,7 +20,7 @@ extension WhereToPlayModel{
          WhereToPlayModel(image: "hongdae_image",place: "홍대"),
          WhereToPlayModel(image: "seongsu_image",place: "성수"),
          WhereToPlayModel(image: "euljiro_image",place: "을지로"),
-         WhereToPlayModel(image: "myeongdong_image",place: "명동")
+         WhereToPlayModel(image: "myeongdong_image",place: "안국")
          
         ]
     }

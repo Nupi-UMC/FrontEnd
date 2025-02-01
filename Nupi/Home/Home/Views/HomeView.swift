@@ -23,13 +23,24 @@ class HomeView: UIView {
     
     // MARK: UI Components
     // MARK: 스크롤뷰
-    private let scrollView = UIScrollView().then {
+    let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
     }
     
     private let contentView = UIView()
     
     // MARK: 상단배너
+    // scrollToTop 버튼
+    let scrollToTopButton = UIButton().then{
+        $0.backgroundColor = .icon1
+        $0.setImage(UIImage(named: "scroll_to_top_icon"), for: .normal)
+        $0.clipsToBounds = true
+        
+        $0.layer.cornerRadius = 25.5
+        $0.layer.borderColor = UIColor.white2.cgColor
+        $0.layer.borderWidth = 1.79
+    }
+    
     //컬렉션뷰
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
         $0.scrollDirection = .horizontal
@@ -338,6 +349,8 @@ class HomeView: UIView {
             $0.height.equalTo(2357)
         }
         
+        self.addSubview(scrollToTopButton)
+        
         contentView.addSubview(bannerCollectionView)
         contentView.addSubview(logoLabel)
         contentView.addSubview(searchButton)
@@ -372,11 +385,18 @@ class HomeView: UIView {
         contentView.addSubview(spot2Address)
         contentView.addSubview(spot2Description)
         
+        scrollToTopButton.snp.makeConstraints{
+            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-17)
+            $0.right.equalToSuperview().offset(-8)
+            $0.width.height.equalTo(51)
+        }
+        
         logoLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(62)
             $0.left.equalToSuperview().offset(24)
             
         }
+        
         bannerCollectionView.snp.makeConstraints{
             $0.top.equalToSuperview()
             $0.width.horizontalEdges.equalToSuperview()

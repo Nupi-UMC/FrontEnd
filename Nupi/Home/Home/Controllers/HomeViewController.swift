@@ -29,9 +29,11 @@ class HomeViewController: UIViewController {
     private func setupActions() {
         homeView.searchButton.addTarget(self, action: #selector(searchButtonDidTap), for: .touchUpInside)
         homeView.myRouteButton.addTarget(self, action: #selector(myRouteButtonDidTap), for: .touchUpInside)
+        homeView.scrollToTopButton.addTarget(self, action: #selector(scrollToTopButtonDidTap), for: .touchUpInside)
     }
     
     private func setupDataSource(){
+        homeView.scrollView.delegate = self
         homeView.bannerCollectionView.dataSource = self
         //rootView.bannerCollectionView.delegate = self
         homeView.whatToPlayCollectionView.dataSource = self
@@ -65,6 +67,11 @@ class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(whereToPlayVC, animated: true)
     }
     
+    
+    @objc private func scrollToTopButtonDidTap() {
+        let scrollView = homeView.scrollView
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
 }
 
 
