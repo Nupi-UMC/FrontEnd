@@ -66,16 +66,20 @@ class RouteDetailsView: UIView {
     let likeButton = UIButton().then {
         $0.setTitle("389", for: .normal)
         $0.setTitleColor(.icon2, for: .normal)
+        $0.setTitleColor(.icon1, for: .selected)
         $0.titleLabel?.font = .button3
         $0.setImage(.likeIcon, for: .normal)
+        $0.setImage(.likeFillIcon, for: .selected)
     }
     
     // 북마크 버튼
     let bookmarkButton = UIButton().then {
         $0.setTitle("389", for: .normal)
         $0.setTitleColor(.icon2, for: .normal)
+        $0.setTitleColor(.icon1, for: .selected)
         $0.titleLabel?.font = .button3
         $0.setImage(.bookmarkIcon, for: .normal)
+        $0.setImage(.bookmarkFillIcon, for: .selected)
     }
     
     // 구분선
@@ -260,7 +264,27 @@ class RouteDetailsView: UIView {
         routeReviewsCollectionView.snp.makeConstraints {
             $0.top.equalTo(routeReviewsButton.snp.bottom).offset(20)
             $0.height.equalTo(160)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(90)
         }
     }
+    
+    // UI 업데이트 함수
+    func updateUI(
+            routeName: String,
+            location: String,
+            likeNum: Int,
+            bookmarkNum: Int,
+            content: String,
+            isLiked: Bool,
+            isBookmarked: Bool
+        ) {
+            routeTitleLabel.text = routeName
+            routeLocationLabel.text = location
+            likeButton.setTitle("\(likeNum)", for: .normal)
+            bookmarkButton.setTitle("\(bookmarkNum)", for: .normal)
+            routeDescriptionContentLabel.text = content
+            likeButton.isSelected = isLiked
+            bookmarkButton.isSelected = isBookmarked
+        }
 }

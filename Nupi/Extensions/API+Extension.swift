@@ -167,4 +167,13 @@ extension APIClient {
         let endpoint = "/api/home/\(memberId)/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
         getRequest(endpoint: endpoint, completion: completion)
     }
+    
+    // 경로 세부 조회 API
+    static func fetchRouteDetails(
+        routeId: Int,
+        completion: @escaping (Result<RouteDetailsResponse, AFError>) -> Void)
+    {
+        let endpoint = "/api/routes/\(routeId)"
+        getRequest(endpoint: endpoint, completion: completion)
+    }
 }

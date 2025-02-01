@@ -35,6 +35,7 @@ class MyRouteViewController: UIViewController {
     
     private func setupDelegate() {
         myRouteView.routeCollectionView.dataSource = self
+        myRouteView.routeCollectionView.delegate = self
     }
     
     // 네비게이션 바 커스텀 함수
@@ -140,5 +141,18 @@ extension MyRouteViewController: UICollectionViewDataSource {
         cell.routeLocationLabel.text = route.routeLocation
         
         return cell
+    }
+}
+
+extension MyRouteViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedRouteId = myRoutes[indexPath.row].routeId // 선택된 경로 정보
+        let detailViewController = RouteDetailsViewController() // 경로 상세 페이지 VC
+        
+        // 선택된 경로 정보 전달
+        detailViewController.routeId = selectedRouteId
+        
+        // 화면 전환
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

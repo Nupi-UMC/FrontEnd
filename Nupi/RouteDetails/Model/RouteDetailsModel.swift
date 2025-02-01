@@ -7,34 +7,59 @@
 
 import UIKit
 
-struct RouteDetailsModel {
+struct RouteDetailsResponse: Decodable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: RouteDetails
+}
+
+struct RouteDetails: Codable {
+    let routeId: Int
+    let routeName: String
+    let content: String
+    let location: String
+    let likeNum: Int
+    let bookmarkNum: Int
+    let isLiked: Bool
+    let isBookmarked: Bool
+    let storeList: [RouteStoresModel]
+}
+
+struct RouteStoresModel: Codable {
+    let storeId: Int
+    let storeName: String
+    let image: String?
+}
+
+//struct RoutePlacesModel {
+//    let image: UIImage
+//    let title: String
+//}
+//
+//extension RoutePlacesModel {
+//    static func dummny() -> [RoutePlacesModel] {
+//        return [
+//            RoutePlacesModel(image: .adBannerImage1, title: "도리무란도"),
+//            RoutePlacesModel(image: .adBannerImage1, title: "플래프"),
+//            RoutePlacesModel(image: .adBannerImage1, title: "팀버샵"),
+//            RoutePlacesModel(image: .adBannerImage1, title: "고스펑크"),
+//        ]
+//    }
+//}
+
+struct RouteImageModel {
     let image: UIImage
 }
 
-extension RouteDetailsModel {
-    static func dummny() -> [RouteDetailsModel] {
+extension RouteImageModel {
+    static func dummny() -> [RouteImageModel] {
         return [
-            RouteDetailsModel(image: .bannerImage1),
-            RouteDetailsModel(image: .adBannerImage2),
-            RouteDetailsModel(image: .adBannerImage1),
-            RouteDetailsModel(image: .adBannerImage2),
-            RouteDetailsModel(image: .adBannerImage1),
-        ]
-    }
-}
-
-struct RoutePlacesModel {
-    let image: UIImage
-    let title: String
-}
-
-extension RoutePlacesModel {
-    static func dummny() -> [RoutePlacesModel] {
-        return [
-            RoutePlacesModel(image: .adBannerImage1, title: "도리무란도"),
-            RoutePlacesModel(image: .adBannerImage1, title: "플래프"),
-            RoutePlacesModel(image: .adBannerImage1, title: "팀버샵"),
-            RoutePlacesModel(image: .adBannerImage1, title: "고스펑크"),
+            RouteImageModel(image: .bannerImage1),
+            RouteImageModel(image: .adBannerImage2),
+            RouteImageModel(image: .adBannerImage1),
+            RouteImageModel(image: .adBannerImage2),
+            RouteImageModel(image: .adBannerImage1),
         ]
     }
 }

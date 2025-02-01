@@ -8,32 +8,75 @@
 import UIKit
 
 class RouteDetailsViewController: UIViewController {
-
+    
+    var routeId: Int?
+    private var stores: [RouteStoresModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = routeDetailsView
         setupDelegate()
+        
+        if let routeId = routeId {
+            print("Route ID: \(routeId)")
+            fetchRouteDetails(routeId: routeId)
+        }
     }
     
     private lazy var routeDetailsView: RouteDetailsView = {
         let view = RouteDetailsView()
         return view
     }()
-    
+
     // MARK: - function
     private func setupDelegate() {
         routeDetailsView.routeImageCollectionView.dataSource = self
         routeDetailsView.routePlacesCollectionView.dataSource = self
         routeDetailsView.routeReviewsCollectionView.dataSource = self
     }
+    
+    // 경로 상세 API 호출
+    private func fetchRouteDetails(routeId: Int) {
+        APIClient.fetchRouteDetails(routeId: routeId) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    DispatchQueue.main.async {
+                        self?.stores = response.result.storeList.map {
+                            RouteStoresModel(
+                                storeId: $0.storeId,
+                                storeName: $0.storeName,
+                                image: $0.image
+                            )
+                        }
+                        
+                        self?.routeDetailsView.updateUI(
+                            routeName: response.result.routeName,
+                            location: response.result.location,
+                            likeNum: response.result.likeNum,
+                            bookmarkNum: response.result.bookmarkNum,
+                            content: response.result.content,
+                            isLiked: response.result.isLiked,
+                            isBookmarked: response.result.isBookmarked
+                        )
+                        self?.routeDetailsView.routePlacesCollectionView.reloadData()
+                    }
+                } else {
+                    print("API 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("네트워크 오류: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 extension RouteDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == routeDetailsView.routeImageCollectionView {
-            return RouteDetailsModel.dummny().count
+            return RouteImageModel.dummny().count
         } else if collectionView == routeDetailsView.routePlacesCollectionView {
-            return RoutePlacesModel.dummny().count
+            return stores.count
         } else if collectionView == routeDetailsView.routeReviewsCollectionView {
             return RouteReviewModel.dummny().count
         }
@@ -50,7 +93,7 @@ extension RouteDetailsViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let list = RouteDetailsModel.dummny()
+            let list = RouteImageModel.dummny()
             cell.routeImageView.image = list[indexPath.row].image
             cell.countLabel.text = "\(indexPath.row + 1)/\(list.count)"
             return cell
@@ -62,9 +105,15 @@ extension RouteDetailsViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let list = RoutePlacesModel.dummny()
-            cell.placeImageView.image = list[indexPath.row].image
-            cell.placeNameLabel.text = list[indexPath.row].title
+            let store = stores[indexPath.row]
+            
+            if let image = store.image, let url = URL(string: image) {
+                cell.placeImageView.kf.setImage(with: url)
+            } else {
+                cell.placeImageView.image = UIImage(named: "banner_image1") // 기본 이미지 설정
+            }
+            
+            cell.placeNameLabel.text = store.storeName
             
             return cell
         } else if collectionView == routeDetailsView.routeReviewsCollectionView {
