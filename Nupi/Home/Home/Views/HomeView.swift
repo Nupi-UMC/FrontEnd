@@ -61,52 +61,42 @@ class HomeView: UIView {
     
     // MARK: 상단버튼
     //놀거리 탐색 버튼
-    lazy var searchButton: UIButton = {
-        let button = UIButton()
+    let searchButton = UIButton().then {
+        $0.setTitle("놀거리 탐색", for: .normal)
+        $0.setTitleColor(.grey1, for: .normal)
+        $0.setTitleColor(.grey2, for: .selected)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-SemiBold", size: 16)
         
-        button.setTitle("놀거리 탐색", for: .normal)
-        button.setTitleColor(.grey1, for: .normal)
-        button.setTitleColor(.grey2, for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        $0.layer.backgroundColor = UIColor.text1.cgColor
+        $0.layer.cornerRadius = 11
         
-        button.layer.backgroundColor = UIColor(red:63/255,green:66/255,blue:76/255,alpha: 1).cgColor
-        button.layer.cornerRadius = 11
+        $0.setImage(UIImage(named:"my_path_image"), for: .normal)
         
-        button.setImage(UIImage(named:"my_path_image"), for: .normal)
+        $0.imageView?.topAnchor.constraint(equalTo: $0.topAnchor, constant: 8).isActive = true
+        $0.imageView?.leftAnchor.constraint(equalToSystemSpacingAfter: $0.leftAnchor, multiplier: 10).isActive = true
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
         
-        button.imageView?.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
-        button.imageView?.leftAnchor.constraint(equalToSystemSpacingAfter: button.leftAnchor, multiplier: 10).isActive = true
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
-        
-        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+        $0.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+    }
     
     //나의 경로 버튼
-    lazy var myRouteButton: UIButton = {
-        let button = UIButton()
+    let myRouteButton = UIButton().then {
+        $0.setTitle("나의 경로", for: .normal)
+        $0.setTitleColor(.grey1, for: .normal)
+        $0.setTitleColor(.grey2, for: .selected)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-SemiBold", size: 16)
         
-        button.setTitle("나의 경로", for: .normal)
-        button.setTitleColor(.grey1, for: .normal)
-        button.setTitleColor(.grey2, for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        $0.layer.backgroundColor = UIColor(red:63/255,green:66/255,blue:76/255,alpha: 1).cgColor
+        $0.layer.cornerRadius = 11
         
-        button.layer.backgroundColor = UIColor(red:63/255,green:66/255,blue:76/255,alpha: 1).cgColor
-        button.layer.cornerRadius = 11
+        $0.setImage(UIImage(named:"search_button_image"), for: .normal)
         
-        button.setImage(UIImage(named:"search_button_image"), for: .normal)
+        $0.imageView?.topAnchor.constraint(equalTo: $0.topAnchor, constant: 8).isActive = true
+        $0.imageView?.leftAnchor.constraint(equalToSystemSpacingAfter: $0.leftAnchor, multiplier: 13).isActive = true
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
         
-        button.imageView?.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
-        button.imageView?.leftAnchor.constraint(equalToSystemSpacingAfter: button.leftAnchor, multiplier: 13).isActive = true
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
-        
-        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+        $0.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+    }
     
     @objc func buttonTapped(_ sender: UIButton) {
         sender.isSelected.toggle()
