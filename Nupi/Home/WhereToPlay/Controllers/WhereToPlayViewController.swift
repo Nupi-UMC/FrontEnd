@@ -37,7 +37,7 @@ class WhereToPlayViewController: UIViewController {
     
     private func setupActions() {
         whereToPlayView.dropdownButton.addTarget(self, action: #selector(showDropdownMenu), for: .touchUpInside)
-        
+
       }
     
     // 놀거리 탐색 API 호출

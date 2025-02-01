@@ -6,13 +6,21 @@
 //
 
 import UIKit
+import Then
 
 class WhatToPlayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = whatToPlayView
+        
         setupDataSource()
+        setupNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     private lazy var whatToPlayView: WhatToPlayView = {
@@ -20,10 +28,28 @@ class WhatToPlayViewController: UIViewController {
         return view
     }()
     
+    // MARK: - function
     private func setupDataSource(){
         whatToPlayView.placeCollectionView.dataSource = self
         whatToPlayView.hotPlaceCollectionView.dataSource = self
     }
+    
+    
+    private func setupNavigationBar() {
+        self.navigationController?.navigationBar.barTintColor = .white
+        self.navigationController?.navigationBar.tintColor = .icon1
+        self.navigationController?.navigationBar.topItem?.title = ""
+        
+        let titleLabel = UILabel().then {
+            $0.text = "izakaya"
+            $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
+            $0.textColor = .icon1
+        }
+        
+        self.navigationItem.titleView = titleLabel
+    }
+    
+    // MARK: - Action
 }
 
 extension WhatToPlayViewController: UICollectionViewDataSource {

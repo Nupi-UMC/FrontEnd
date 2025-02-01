@@ -26,20 +26,6 @@ class WhatToPlayView: UIView {
     
     private let contentView = UIView()
     
-    // 뒤로가기 버튼
-    private let backButton = UIButton().then{
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.setImage(UIImage(systemName: "chevron.backward"),for: .normal)
-        $0.tintColor = .icon1
-    }
-    
-    // 상단 타이틀
-    private let titleLabel = UILabel().then {
-        $0.text = "izakaya"
-        $0.textColor = .icon1
-        $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
-    }
     
     // 이자카야 컬렉션뷰
     let placeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
@@ -86,27 +72,13 @@ class WhatToPlayView: UIView {
             $0.height.equalTo(1768)
         }
         
-        contentView.addSubview(backButton)
-        contentView.addSubview(titleLabel)
         contentView.addSubview(placeCollectionView)
         contentView.addSubview(separatorLine)
         contentView.addSubview(subTitleLabel)
         contentView.addSubview(hotPlaceCollectionView)
         
-        backButton.snp.makeConstraints{
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview().inset(16)
-            $0.width.equalTo(30)
-            $0.height.equalTo(30)
-        }
-        titleLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(5)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(20)
-        }
-        
         placeCollectionView.snp.makeConstraints{
-            $0.top.equalTo(titleLabel.snp.bottom).offset(22)
+            $0.top.equalToSuperview().offset(10)
             $0.left.right.equalToSuperview().inset(24)
             $0.width.equalTo(345)
             $0.height.equalTo(880)
