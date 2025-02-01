@@ -34,7 +34,11 @@ struct IncludedRoutesResponse: Decodable {
     let isSuccess: Bool
     let code: String
     let message: String
-    let result: [Route]?
+    let result: RouteResult?
+}
+
+struct RouteResult : Decodable {
+    let  routes : [Route]?
 }
 
 // MARK: - 장소 상세 정보 모델

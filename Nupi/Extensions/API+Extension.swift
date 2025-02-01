@@ -21,7 +21,7 @@ extension APIClient {
 
     // MARK: Headers
     // 기본 json형식에 맞는 헤더 생성 함수
-    private static func getHeaders(withToken token: String? = nil) -> HTTPHeaders {
+     static func getHeaders(withToken token: String? = nil) -> HTTPHeaders {
         var headers: HTTPHeaders = [
             "accept": "*/*",
             "Content-Type": "application/json"
@@ -49,6 +49,9 @@ extension APIClient {
     static func getRequest<T: Decodable>(endpoint: String, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
         let headers = getHeaders(withToken: token)
+        print("🟢 요청 URL: \(url)")
+        print("🟢 요청 헤더: \(headers)")
+
         
         AF.request(url, method: .get, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -59,6 +62,9 @@ extension APIClient {
     static func getRequest<T: Decodable>(endpoint: String, parameters: [String: Any]? = nil, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
         let headers = getHeaders(withToken: token)
+        print("🟢 요청 URL: \(url)")
+        print("🟢 요청 헤더: \(headers)")
+
         
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)

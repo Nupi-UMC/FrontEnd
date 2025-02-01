@@ -11,7 +11,20 @@ import SnapKit
 class PlaceDetailHeaderView: UIView {
     
     // UI Components
-    private let imageSlider = UIScrollView()
+    let imageCollectionView: UICollectionView = {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            layout.minimumLineSpacing = 0
+            layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 335)
+
+            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            collectionView.backgroundColor = .clear
+            collectionView.isPagingEnabled = true
+            collectionView.showsHorizontalScrollIndicator = false
+            return collectionView
+        }()
+    
+    //private let imageSlider = UIScrollView()
     private let pageIndicatorLabel : UILabel = {
         let label = UILabel()
         label.font = .tabbar1
@@ -50,47 +63,37 @@ class PlaceDetailHeaderView: UIView {
         pageIndicatorLabel.text = "\(currentPage + 1)/\(totalPages)"
     }
     
-    
-     func setUpImageSlider() {
-        imageSlider.subviews.forEach { $0.removeFromSuperview() } // 기존 이미지 제거
-
-        let sampleImages = [
-            UIImage(named: "ex2"), // 프로젝트에 추가된 로컬 이미지
-            UIImage(named: "ex2"),
-            UIImage(named: "ex2"),
-            UIImage(named: "ex2")
-        ]
-        
-        for (index, image) in sampleImages.enumerated() {
-            let imageView = UIImageView()
-            imageView.contentMode = .scaleAspectFill
-            imageView.clipsToBounds = true
-            imageView.image = image // 이미지 설정
-            imageSlider.addSubview(imageView)
+    func setUpImageSlider(with imageURLs: [String]) {
+            self.imageURLs = imageURLs
+        imageCollectionView.subviews.forEach { $0.removeFromSuperview() } // 기존 이미지 제거
             
-            imageView.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview()
-                make.width.equalToSuperview()
-                make.leading.equalToSuperview().offset(CGFloat(index) * self.frame.width)
+            for (index, urlString) in imageURLs.enumerated() {
+                let imageView = UIImageView()
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+                imageView.loadImage(from: urlString)
+                imageCollectionView.addSubview(imageView)
+                
+                imageView.snp.makeConstraints { make in
+                    make.top.bottom.equalToSuperview()
+                    make.width.equalToSuperview()
+                    make.leading.equalToSuperview().offset(CGFloat(index) * self.frame.width)
+                }
             }
+
+        imageCollectionView.contentSize = CGSize(width: CGFloat(imageURLs.count) * self.frame.width, height: 335)
         }
-
-        // 스크롤뷰의 컨텐츠 사이즈 설정
-        imageSlider.contentSize = CGSize(width: CGFloat(sampleImages.count) * self.frame.width, height: 335)
-
-    }
     
     @objc private func pageControlTapped(_ sender: UIPageControl){
-        let offset = CGFloat(sender.currentPage) * imageSlider.frame.width
-            imageSlider.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+        let offset = CGFloat(sender.currentPage) * imageCollectionView.frame.width
+        imageCollectionView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
     
     private func setupUI() {
         // 기본 설정
-        imageSlider.isPagingEnabled = true
-        imageSlider.showsHorizontalScrollIndicator = false
-        imageSlider.showsVerticalScrollIndicator = false
-        imageSlider.delegate = self
+        // `UICollectionViewDataSource` 연결
+
+        imageCollectionView.register(HeaderImageCollectionCell.self, forCellWithReuseIdentifier: HeaderImageCollectionCell.identifier)
         
         titleLabel.font = .heading3
         titleLabel.textColor = .blue3
@@ -120,7 +123,7 @@ class PlaceDetailHeaderView: UIView {
         saveLabel.text = "389"
         
         // Add Subviews
-        addSubview(imageSlider)
+        addSubview(imageCollectionView)
         addSubview(pageIndicatorLabel)
         addSubview(titleLabel)
         addSubview(categoryLabel)
@@ -134,13 +137,13 @@ class PlaceDetailHeaderView: UIView {
     }
     
     private func setupConstraints() {
-            imageSlider.snp.makeConstraints { make in
+        imageCollectionView.snp.makeConstraints { make in
                 make.top.leading.trailing.equalToSuperview()
                 make.height.equalTo(335)
             }
             
             titleLabel.snp.makeConstraints { make in
-                make.top.equalTo(imageSlider.snp.bottom).offset(24)
+                make.top.equalTo(imageCollectionView.snp.bottom).offset(24)
                 make.leading.equalToSuperview().offset(27)
                 make.height.equalTo(26)
             }
@@ -163,7 +166,7 @@ class PlaceDetailHeaderView: UIView {
             }
             
             likeButton.snp.makeConstraints { make in
-                make.top.equalTo(imageSlider.snp.bottom).offset(91)
+                make.top.equalTo(imageCollectionView.snp.bottom).offset(91)
                 make.trailing.equalToSuperview().offset(-115)
                 make.width.height.equalTo(19)
             }
@@ -190,7 +193,7 @@ class PlaceDetailHeaderView: UIView {
                 make.leading.equalTo(saveButton.snp.trailing).offset(3)
             }
         pageIndicatorLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(imageSlider.snp.bottom).inset(15)
+            make.bottom.equalTo(imageCollectionView.snp.bottom).inset(15)
             make.width.equalTo(46)
             make.height.equalTo(27)
             make.centerX.equalToSuperview()

@@ -87,4 +87,17 @@ class IncludedRoutesCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(17)
         }
     }
+    /// `Route` 모델을 사용하여 UI 업데이트
+        func updateUI(with route: Route) {
+            routeTitleLabel.text = route.routeName
+            routeLocationLabel.text = route.location
+            likeCountLabel.text = "\(route.likeNum)"
+            saveCountLabel.text = "\(route.bookmarkNum)"
+            
+            /*if let imageUrl = route.images?.first {
+                thumbnailImageView.loadImage(from: imageUrl)
+            } else {
+                thumbnailImageView.image = UIImage(named: "placeholder") // 기본 이미지 설정
+            }*/
+        }
 }

@@ -27,7 +27,7 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
         
         setupDelegate()
         
-        fetchRoutesContainingPlace(storeId: 10)
+        fetchRoutesContainingPlace(storeId: 50)
         //storeId가 설정된 경우 자동으로 데이터 요청
         //if let storeId = storeId {fetchRoutesContainingPlace(storeId: storeId)}
     }
@@ -42,14 +42,17 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
     }
     
     // API 요청: 장소 포함 경로 조회
-        private func fetchRoutesContainingPlace(storeId: Int) {
-            let endpoint = "/api/stores/\(storeId)/detail?memberId=1"
+    func fetchRoutesContainingPlace(storeId: Int) {
+            let endpoint = "/api/stores/\(storeId)/routes"
             
             APIClient.getRequest(endpoint: endpoint, token: nil) { (result: Result<IncludedRoutesResponse, AFError>) in
                 switch result {
                 case .success(let response):
                     print("장소 포함 경로 목록 조회 성공:", response.result ?? [])
-                    guard let routes = response.result else { return }
+                    guard let routes = response.result?.routes, !routes.isEmpty else { // `routes`가 nil 또는 빈 배열인지 확인
+                                    print(" 장소 포함 경로 데이터가 없습니다.")
+                                    return
+                                }
                     
                     DispatchQueue.main.async {
                         self.routes = routes // 데이터 저장
@@ -72,29 +75,15 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
             }
             
             let route = routes[indexPath.row]
-            cell.routeTitleLabel.text = route.routeName
-            cell.routeLocationLabel.text = route.location
-            cell.likeCountLabel.text = "\(route.likeNum)"
-            cell.saveCountLabel.text = "\(route.bookmarkNum)"
-            
-            if let imageUrl = route.images?.first {
-                cell.thumbnailImageView.loadImage(from: imageUrl)
-            }
-            
-            return cell
+                cell.updateUI(with: route) // 셀의 UI 업데이트 메서드 호출
+                
+                return cell
         }
-}
-
-// UIImageView에 URL로 이미지 로드하는 확장 함수
-extension UIImageView {
-    func loadImage(from url: String) {
-        guard let imageURL = URL(string: url) else { return }
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: imageURL), let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.image = image
-                }
+    // 뷰컨트롤러에서 데이터 업데이트를 처리
+    func updateRoutes(with routes: [Route]) {
+        self.routes = routes // 데이터 저장
+        DispatchQueue.main.async {
+            self.includedRoutesView.includedRoutesCollectionView.reloadData() // UI 업데이트
             }
         }
-    }
 }

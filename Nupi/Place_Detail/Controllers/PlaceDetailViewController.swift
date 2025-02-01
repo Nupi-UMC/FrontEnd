@@ -8,8 +8,22 @@
 import UIKit
 import Alamofire
 
-class PlaceDetailViewController: UIViewController {
+class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageURLs.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderImageCollectionCell.identifier, for: indexPath) as? HeaderImageCollectionCell else {
+                    return UICollectionViewCell()
+                }
+                let imageURL = imageURLs[indexPath.item]
+                cell.configure(with: imageURL)
+                return cell
+    }
+    
     private var placeDetail: PlaceDetailResult? // 장소 상세 정보 저장
+    private var imageURLs: [String] = [] //이미지 URL 리스트 저장
 
     private lazy var placeDetailView: PlaceDetailView = {
         let view = PlaceDetailView()
@@ -27,12 +41,13 @@ class PlaceDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = placeDetailView
+        placeDetailView.headerView.imageCollectionView.register(HeaderImageCollectionCell.self, forCellWithReuseIdentifier: HeaderImageCollectionCell.identifier)
 
-        placeDetailView.headerView.setUpImageSlider()
+        placeDetailView.headerView.setUpImageSlider(with: placeDetail?.slideImages ?? [])
         
         setupSegmentedControl()
         showChildViewController(detailVC) // 초기 화면 설정
-        
+        fetchPlaceDetail(storeId: 50)
     }
     
     private func setupSegmentedControl() {
@@ -57,10 +72,15 @@ class PlaceDetailViewController: UIViewController {
             showChildViewController(photosVC)
         case 2:
             showChildViewController(routesVC)
+            routesVC.fetchRoutesContainingPlace(storeId: 50)
         case 3:
             showChildViewController(reviewsVC)
         default:
             break
+        }
+        
+        if let storeId = storeId {
+            fetchPlaceDetail(storeId: storeId)
         }
         updateSegmentedControlLinePosition(sender)
     }
@@ -88,60 +108,81 @@ class PlaceDetailViewController: UIViewController {
 }
 
 extension PlaceDetailViewController {
+    //서버에서 장소 상세정보 불러오는 함수
     func fetchPlaceDetail(storeId: Int) {
-        self.storeId = 10 // `storeId` 저장
-        let endpoint = "/api/place/\(storeId)" // API 엔드포인트
-        
-        APIClient.getRequest(endpoint: endpoint, token: nil) { (result: Result<PlaceDetailResponse, AFError>) in
-            switch result {
-            case .success(let response):
-                print("장소 상세 조회 성공:", response)
-                guard let placeDetail = response.result else {
-                                    print("장소 상세 정보가 없습니다.")
-                                    return
-                                }
-                DispatchQueue.main.async {
-                    self.updateUI(with: placeDetail) // UI 업데이트
+            self.storeId = storeId
+
+            let endpoint = "/api/stores/\(storeId)/detail"
+            let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJpYXQiOjE3MzgzOTcyNjUsImV4cCI6MTczOTYwNjg2NX0.pT12WVdsjxTHr4OCzIVE3ZW0gvrWmTa7K-sJqHa04JE"
+
+            APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<PlaceDetailResponse, AFError>) in
+                switch result {
+                case .success(let response):
+                    print("장소 상세 조회 성공:", response)
+
+                    guard let placeDetail = response.result else {
+                        print("장소 상세 정보 없음")
+                        return
+                    }
+
+                    DispatchQueue.main.async {
+                        self.placeDetail = placeDetail
+                        self.updateUI(with: placeDetail)
+                    }
+
+                case .failure(let error):
+                    print("장소 상세 조회 실패: \(error.localizedDescription)")
+                    if let statusCode = error.responseCode {
+                        print("HTTP 상태 코드: \(statusCode)")
+                    }
                 }
-                
-            case .failure(let error):
-                print("장소 상세 조회 실패: \(error.localizedDescription)")
+            }
+        }
+
+    /// 장소 상세 정보를 UI에 반영하는 메서드
+    private func updateUI(with placeDetail: PlaceDetailResult) {
+        DispatchQueue.main.async {
+            self.placeDetailView.headerView.titleLabel.text = placeDetail.name
+            self.placeDetailView.headerView.locationLabel.text = placeDetail.location
+            
+            self.placeDetailView.headerView.likeLabel.text = "\(placeDetail.likeNum)"
+            self.placeDetailView.headerView.saveLabel.text = "\(placeDetail.bookmarkNum)"
+            self.updateLikeUI(saved: placeDetail.isLiked)
+            self.updateBookmarkUI(saved: placeDetail.isBookmarked)
+            
+            //  선택된 뷰 컨트롤러가 `detailVC`인지 확인
+            if let currentVC = self.children.first {
+                switch currentVC {
+                case let detailVC as PlaceDetailInfoViewController:
+                    detailVC.updateDetailInfoView(with: placeDetail) // 장소 상세 정보 업데이트
+                default:
+                    print("")
+                }
             }
         }
     }
-    /// 장소 상세 정보를 UI에 반영하는 메서드 추가
-        private func updateUI(with placeDetail: PlaceDetailResult) {
-            /*placeDetailView.headerView.setImage(from: placeDetail.image) // 헤더 이미지 설정
-            placeDetailView.titleLabel.text = placeDetail.name
-            placeDetailView.locationLabel.text = placeDetail.location
-            placeDetailView.addressLabel.text = placeDetail.address
-            placeDetailView.businessHoursLabel.text = "영업시간: \(placeDetail.businessHours)"
-            placeDetailView.likeCountLabel.text = "\(placeDetail.likeNum)"
-            placeDetailView.bookmarkCountLabel.text = " \(placeDetail.bookmarkNum)"*/
-        }
 }
 extension PlaceDetailViewController {
     
-    /// 좋아요 요청 (API 호출)
-    private func toggleLike() {
-        guard let storeId = placeDetail?.storeId else { return } // storeId 가져오기
-        let memberId = 123 //현재 로그인된 사용자 ID (예제)
-        
-        let endpoint = "/api/store/\(storeId)/like/\(memberId)" //API 엔드포인트
-        
-        APIClient.postRequestWithoutParameters(endpoint: endpoint) { [weak self] (result: Result<PlaceLikeResponse, AFError>) in
-            switch result {
-            case .success(let response):
-                print("좋아요 요청 성공:", response)
-                
-                DispatchQueue.main.async {
-                    self?.updateLikeUI(saved: response.result!.saved)
+    ///  좋아요 요청 (API 호출)
+        private func toggleLike() {
+            guard let storeId = placeDetail?.id else { return }
+
+            let endpoint = "/api/stores/\(storeId)/like" // API 엔드포인트
+
+            APIClient.postRequestWithoutParameters(endpoint: endpoint) { [weak self] (result: Result<PlaceLikeResponse, AFError>) in
+                switch result {
+                case .success(let response):
+                    print("좋아요 요청 성공:", response)
+                    
+                    DispatchQueue.main.async {
+                        self?.updateLikeUI(saved: response.result!.saved)
+                    }
+                case .failure(let error):
+                    print("좋아요 요청 실패:", error.localizedDescription)
                 }
-            case .failure(let error):
-                print("좋아요 요청 실패:", error.localizedDescription)
             }
         }
-    }
     
     /// 좋아요 상태 UI 업데이트
     private func updateLikeUI(saved: Bool) {
@@ -151,23 +192,22 @@ extension PlaceDetailViewController {
     
     /// 북마크 요청 (API 호출)
     private func toggleBookmark() {
-        guard let storeId = placeDetail?.storeId else { return } // storeId 가져오기
-        let memberId = 123 //현재 로그인된 사용자 ID (예제)
-        
-        let endpoint = "/api/store/\(storeId)/bookmark/\(memberId)" //API 엔드포인트
-        
-        APIClient.postRequestWithoutParameters(endpoint: endpoint) { [weak self] (result: Result<PlaceBookmarkResponse, AFError>) in
-            switch result {
-            case .success(let response):
-                print("좋아요 요청 성공:", response)
-                
-                DispatchQueue.main.async {
-                    self?.updateBookmarkUI(saved: response.result!.saved)
+        guard let storeId = placeDetail?.id else { return }
+
+            let endpoint = "/api/stores/\(storeId)/bookmark"
+
+            APIClient.postRequestWithoutParameters(endpoint: endpoint) { [weak self] (result: Result<PlaceBookmarkResponse, AFError>) in
+                switch result {
+                case .success(let response):
+                    print("북마크 요청 성공:", response)
+                    
+                    DispatchQueue.main.async {
+                        self?.updateBookmarkUI(saved: response.result!.saved)
+                    }
+                case .failure(let error):
+                    print("북마크 요청 실패:", error.localizedDescription)
                 }
-            case .failure(let error):
-                print("좋아요 요청 실패:", error.localizedDescription)
             }
-        }
     }
     
     /// 북마크 상태 UI 업데이트

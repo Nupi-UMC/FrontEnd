@@ -18,7 +18,7 @@ struct PlaceDetailResponse: Decodable {
 
 // MARK: - 장소 상세 정보 모델
 struct PlaceDetailResult: Decodable {
-    let storeId: Int
+    let id: Int
     let name: String
     let content: String
     let location: String
@@ -26,9 +26,13 @@ struct PlaceDetailResult: Decodable {
     let businessHours: String
     let number: String
     let snsUrl: String
-    let image: String
+    let slideImages: [String]?
     let category: String
-    let group: String
+    let groupInfo: String
     let likeNum: Int
     let bookmarkNum: Int
+    let isLiked : Bool
+    let isBookmarked : Bool
+    let latitude : Float
+    let longitude : Float
 }

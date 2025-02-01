@@ -13,7 +13,7 @@ struct SignupRequest : Codable {
     let email : String
     let password : String
     let nickname : String
-    let profile: String?
+    let profileImage: Data? //multiportform type
 }
 struct SignupResponse : Decodable {
     let isSuccess : Bool
