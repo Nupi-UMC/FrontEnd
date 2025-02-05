@@ -22,13 +22,14 @@ extension APIClient {
     // MARK: Headers
     // 기본 json형식에 맞는 헤더 생성 함수
      static func getHeaders(withToken token: String? = nil) -> HTTPHeaders {
-        var headers: HTTPHeaders = [
+        
+         var headers: HTTPHeaders = [
             "accept": "*/*",
             "Content-Type": "application/json"
         ]
         if let token = token {
             headers["Authorization"] = "Bearer \(token)"
-        }
+         }
         return headers
     }
     
@@ -49,12 +50,9 @@ extension APIClient {
     static func getRequest<T: Decodable>(endpoint: String, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
         let headers = getHeaders(withToken: token)
-        print("🟢 요청 URL: \(url)")
-        print("🟢 요청 헤더: \(headers)")
-
         
         AF.request(url, method: .get, headers: headers).responseDecodable(of: T.self) { response in
-            completion(response.result)
+            handleResponse(response, endpoint: endpoint, completion: completion)
         }
     }
     
@@ -62,12 +60,9 @@ extension APIClient {
     static func getRequest<T: Decodable>(endpoint: String, parameters: [String: Any]? = nil, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
         let headers = getHeaders(withToken: token)
-        print("🟢 요청 URL: \(url)")
-        print("🟢 요청 헤더: \(headers)")
-
         
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: T.self) { response in
-            completion(response.result)
+            handleResponse(response, endpoint: endpoint, completion: completion)
         }
     }
     
@@ -147,6 +142,38 @@ extension APIClient {
             completion(response.result)
         }
     }
+    private static func handleResponse<T: Decodable>(
+            _ response: AFDataResponse<T>,
+            endpoint: String,
+            parameters: [String: Any]? = nil,
+            completion: @escaping (Result<T, AFError>) -> Void
+        ) {
+            switch response.result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                if response.response?.statusCode == 401 {
+                    print("Access Token 만료, Refresh Token으로 재발급 시도")
+                    FCMTokenManager.shared.refreshAccessToken { newToken in
+                        guard let newToken = newToken else {
+                            print("Refresh Token도 만료됨. 재로그인 필요")
+                            completion(.failure(error))
+                            return
+                        }
+                        print("새로운 Access Token 발급 완료. API 재요청")
+                        
+                        // 새로운 토큰으로 재요청
+                        let headers = getHeaders(withToken: newToken)
+                        AF.request("\(baseURL)\(endpoint)", method: .get, parameters: parameters, headers: headers)
+                            .responseDecodable(of: T.self) { retryResponse in
+                                completion(retryResponse.result)
+                            }
+                    }
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
     
 }
 

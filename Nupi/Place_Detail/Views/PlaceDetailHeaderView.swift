@@ -9,9 +9,11 @@ import UIKit
 import SnapKit
 
 class PlaceDetailHeaderView: UIView {
+    // MARK: - Properties
+        private var imageURLs: [String] = []
     
-    // UI Components
-    let imageCollectionView: UICollectionView = {
+    // MARK: - UI Components
+        lazy var imageCollectionView: UICollectionView = {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
             layout.minimumLineSpacing = 0
@@ -21,6 +23,9 @@ class PlaceDetailHeaderView: UIView {
             collectionView.backgroundColor = .clear
             collectionView.isPagingEnabled = true
             collectionView.showsHorizontalScrollIndicator = false
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.register(HeaderImageCollectionCell.self, forCellWithReuseIdentifier: HeaderImageCollectionCell.identifier)
             return collectionView
         }()
     
@@ -36,7 +41,7 @@ class PlaceDetailHeaderView: UIView {
 
         return label
     }()
-    private var imageURLs: [String] = []
+    
     lazy var titleLabel = UILabel()
     lazy var categoryLabel = UILabel()
     let locationImageView = UIImageView()
@@ -58,36 +63,20 @@ class PlaceDetailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func updatePageIndicatorLabel(currentPage: Int) {
-        let totalPages = imageURLs.count
-        pageIndicatorLabel.text = "\(currentPage + 1)/\(totalPages)"
-    }
     
-    func setUpImageSlider(with imageURLs: [String]) {
+    // MARK: - Public Methods
+        func setUpImageSlider(with imageURLs: [String]) {
             self.imageURLs = imageURLs
-        imageCollectionView.subviews.forEach { $0.removeFromSuperview() } // 기존 이미지 제거
-            
-            for (index, urlString) in imageURLs.enumerated() {
-                let imageView = UIImageView()
-                imageView.contentMode = .scaleAspectFill
-                imageView.clipsToBounds = true
-                imageView.loadImage(from: urlString)
-                imageCollectionView.addSubview(imageView)
-                
-                imageView.snp.makeConstraints { make in
-                    make.top.bottom.equalToSuperview()
-                    make.width.equalToSuperview()
-                    make.leading.equalToSuperview().offset(CGFloat(index) * self.frame.width)
-                }
-            }
-
-        imageCollectionView.contentSize = CGSize(width: CGFloat(imageURLs.count) * self.frame.width, height: 335)
+            imageCollectionView.reloadData() // ✅ UI 업데이트
+            updatePageIndicatorLabel(currentPage: 0) // ✅ 첫 페이지 설정
+        }
+        
+        // MARK: - Private Methods
+        private func updatePageIndicatorLabel(currentPage: Int) {
+            let totalPages = imageURLs.count
+            pageIndicatorLabel.text = "\(currentPage + 1)/\(totalPages)"
         }
     
-    @objc private func pageControlTapped(_ sender: UIPageControl){
-        let offset = CGFloat(sender.currentPage) * imageCollectionView.frame.width
-        imageCollectionView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
-    }
     
     private func setupUI() {
         // 기본 설정
@@ -201,10 +190,26 @@ class PlaceDetailHeaderView: UIView {
         }
 }
 
-extension PlaceDetailHeaderView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+// MARK: - UICollectionViewDataSource
+extension PlaceDetailHeaderView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageURLs.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderImageCollectionCell.identifier, for: indexPath) as? HeaderImageCollectionCell else {
+            return UICollectionViewCell()
+        }
+        let imageURL = imageURLs[indexPath.item]
+        cell.configure(with: imageURL)
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension PlaceDetailHeaderView: UICollectionViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
         updatePageIndicatorLabel(currentPage: pageIndex)
     }
-    
 }

@@ -69,6 +69,7 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         case 0:
             showChildViewController(detailVC)
         case 1:
+            photosVC.setStoreId(storeId!)
             showChildViewController(photosVC)
         case 2:
             showChildViewController(routesVC)
@@ -79,9 +80,6 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
             break
         }
         
-        if let storeId = storeId {
-            fetchPlaceDetail(storeId: storeId)
-        }
         updateSegmentedControlLinePosition(sender)
     }
     
@@ -89,7 +87,7 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
         let leadingDistance = CGFloat(segmentedControl.selectedSegmentIndex) * segmentWidth + 16
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.1) {
             self.placeDetailView.segmentedControlLineView.snp.updateConstraints { make in
                 make.leading.equalTo(segmentedControl.snp.leading).offset(leadingDistance)
             }
@@ -113,9 +111,9 @@ extension PlaceDetailViewController {
             self.storeId = storeId
 
             let endpoint = "/api/stores/\(storeId)/detail"
-            let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJpYXQiOjE3MzgzOTcyNjUsImV4cCI6MTczOTYwNjg2NX0.pT12WVdsjxTHr4OCzIVE3ZW0gvrWmTa7K-sJqHa04JE"
+            let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
 
-            APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<PlaceDetailResponse, AFError>) in
+        APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<PlaceDetailResponse, AFError>) in
                 switch result {
                 case .success(let response):
                     print("장소 상세 조회 성공:", response)
@@ -149,6 +147,12 @@ extension PlaceDetailViewController {
             self.placeDetailView.headerView.saveLabel.text = "\(placeDetail.bookmarkNum)"
             self.updateLikeUI(saved: placeDetail.isLiked)
             self.updateBookmarkUI(saved: placeDetail.isBookmarked)
+            
+            // slideImages 업데이트
+                    if let slideImages = placeDetail.slideImages {
+                        self.imageURLs = slideImages
+                        self.placeDetailView.headerView.setUpImageSlider(with: slideImages)
+                    }
             
             //  선택된 뷰 컨트롤러가 `detailVC`인지 확인
             if let currentVC = self.children.first {

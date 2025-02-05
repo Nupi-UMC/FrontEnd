@@ -14,7 +14,7 @@ class PlaceDetailInfoViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .bg
         self.view = placeDetailInfoView
-        setupMapView()
+        //setupMapView()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openInstagram))
         placeDetailInfoView.instagramLabel.isUserInteractionEnabled = true
@@ -43,7 +43,7 @@ class PlaceDetailInfoViewController: UIViewController {
             
             let latitude = placeDetail.latitude ?? 37.5665
             let longitude = placeDetail.longitude ?? 126.9784
-            self.setMapLocation(latitude: Double(latitude), longitude: Double(longitude))
+            //self.setMapLocation(latitude: Double(latitude), longitude: Double(longitude))
         }
     }
     //인스타아이디 추출 함수
@@ -77,7 +77,7 @@ class PlaceDetailInfoViewController: UIViewController {
                 print("mapController가 nil입니다!")
             }
         }
-    /// 지도 초기화 함수
+    //지도 초기화 함수
         private func setupMapView() {
             mapContainer = placeDetailInfoView.mapImageViewContainer
             mapController = KMController(viewContainer: mapContainer!)

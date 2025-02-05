@@ -80,10 +80,11 @@ class AddProfilePictureViewController: UIViewController {
         let nickname = addProfilePictureView.nicknameTextField.text ?? ""
         let profileImageData = addProfilePictureView.selectProfileImageButton.imageView?.image?.jpegData(compressionQuality: 0.5)
 
-        let url = "https://api-nupi.shop/api/auth/signup"
+        let url = "https://api-nupi.shop/api/signup"
         let headers: HTTPHeaders = [
-                "accept": "*/*" // 모든 응답 허용
-            ]
+            "accept": "application/json",
+            "Content-Type": "multipart/form-data"
+        ]
 
         // JSON으로 보낼 기본 회원가입 데이터
         let parameters: [String: Any] = [
@@ -103,7 +104,7 @@ class AddProfilePictureViewController: UIViewController {
 
             // 2. 프로필 이미지가 있으면 multipart로 추가
             if let imageData = profileImageData {
-                multipartFormData.append(imageData, withName: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg")
+                multipartFormData.append(imageData, withName: "profileImage", mimeType: "image/jpeg")
             }
         }, to: url, method: .post, headers: headers)
         .validate()

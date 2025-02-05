@@ -11,6 +11,7 @@ import Alamofire
 class PlacePhotosViewController: UIViewController, UICollectionViewDataSource {
     
     private var imageURLs: [String] = [] // 사진 데이터 저장
+    private var storeId : Int?
     
     // MARK: UICollectionView DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -35,8 +36,17 @@ class PlacePhotosViewController: UIViewController, UICollectionViewDataSource {
         self.view = placePhotosView
         
         setupDelegate()
-        fetchPlacePhotos(storeId: 10)
     }
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            
+            if let storeId = storeId {
+                fetchPlacePhotos(storeId: storeId) // 🔹 View가 보일 때 자동으로 데이터 로드
+            }
+        }
+    func setStoreId(_ id: Int) {
+            self.storeId = id
+        }
     
     private lazy var placePhotosView: PlacePhotosView = {
         let view = PlacePhotosView()
@@ -49,9 +59,10 @@ class PlacePhotosViewController: UIViewController, UICollectionViewDataSource {
     
     //서버에서 사진 리스트 가져오기
     private func fetchPlacePhotos(storeId: Int){
-        let endpoint = "/api/stores/\(storeId)/detail"
+        let endpoint = "/api/stores/\(storeId)/images"
+        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
         
-        APIClient.getRequest(endpoint: endpoint, token: nil){ (result: Result<PlacePhotoResponse, AFError>) in
+        APIClient.getRequest(endpoint: endpoint, token: token){ (result: Result<PlacePhotoResponse, AFError>) in
             switch result {
             case .success(let response):
                 print("장소 사진 조회 성공: ", response)

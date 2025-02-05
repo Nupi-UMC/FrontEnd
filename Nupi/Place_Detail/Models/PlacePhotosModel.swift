@@ -8,29 +8,6 @@
 import UIKit
 import Foundation
 
-struct PlacePhotosModel {
-    var image : UIImage
-}
-
-extension PlacePhotosModel {
-    static func dummy() -> [PlacePhotosModel] {
-        return [
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex)
-        ]
-    }
-}
-
 struct PlacePhotoResponse : Decodable {
     let isSuccess : Bool
     let code : String

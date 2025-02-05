@@ -15,16 +15,6 @@ struct IncludedRoutesModel {
     var saveCountLabel : String
 }
 
-extension IncludedRoutesModel {
-    static func dummy() -> [IncludedRoutesModel] {
-        return [
-            IncludedRoutesModel(image: .ex, routeTitle: "귀여운 소품이 가득", routeLocation: "성수역 1번 출구", likeCountLabel: "389", saveCountLabel: "389" ),
-            IncludedRoutesModel(image: .ex, routeTitle: "귀여운 소품이 가득", routeLocation: "성수역 1번 출구", likeCountLabel: "389", saveCountLabel: "389" ),
-            IncludedRoutesModel(image: .ex, routeTitle: "귀여운 소품이 가득", routeLocation: "성수역 1번 출구", likeCountLabel: "389", saveCountLabel: "389" ),
-            IncludedRoutesModel(image: .ex, routeTitle: "귀여운 소품이 가득", routeLocation: "성수역 1번 출구", likeCountLabel: "389", saveCountLabel: "389" )
-        ]
-    }
-}
 
 import Foundation
 
