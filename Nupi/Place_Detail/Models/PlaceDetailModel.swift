@@ -33,6 +33,6 @@ struct PlaceDetailResult: Decodable {
     let bookmarkNum: Int
     let isLiked : Bool
     let isBookmarked : Bool
-    let latitude : Float
-    let longitude : Float
+    let latitude : Double
+    let longitude : Double
 }

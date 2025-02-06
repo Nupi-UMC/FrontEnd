@@ -48,6 +48,10 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         setupSegmentedControl()
         showChildViewController(detailVC) // 초기 화면 설정
         fetchPlaceDetail(storeId: 50)
+        
+        //버튼 클릭했을때
+            placeDetailView.headerView.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+            placeDetailView.headerView.saveButton.addTarget(self, action: #selector(bookmarkButtonTapped), for: .touchUpInside)
     }
     
     private func setupSegmentedControl() {
@@ -72,8 +76,8 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
             photosVC.setStoreId(storeId!)
             showChildViewController(photosVC)
         case 2:
+            routesVC.setStoreId(storeId!)
             showChildViewController(routesVC)
-            routesVC.fetchRoutesContainingPlace(storeId: 50)
         case 3:
             showChildViewController(reviewsVC)
         default:
@@ -145,14 +149,15 @@ extension PlaceDetailViewController {
             
             self.placeDetailView.headerView.likeLabel.text = "\(placeDetail.likeNum)"
             self.placeDetailView.headerView.saveLabel.text = "\(placeDetail.bookmarkNum)"
-            self.updateLikeUI(saved: placeDetail.isLiked)
-            self.updateBookmarkUI(saved: placeDetail.isBookmarked)
+            
+            self.updateLikeUI(saved: placeDetail.isLiked, likeNum: placeDetail.likeNum)
+            self.updateBookmarkUI(saved: placeDetail.isBookmarked, bookmarkNum: placeDetail.bookmarkNum)
             
             // slideImages 업데이트
-                    if let slideImages = placeDetail.slideImages {
-                        self.imageURLs = slideImages
-                        self.placeDetailView.headerView.setUpImageSlider(with: slideImages)
-                    }
+            if let slideImages = placeDetail.slideImages {
+                self.imageURLs = slideImages
+                self.placeDetailView.headerView.setUpImageSlider(with: slideImages)
+            }
             
             //  선택된 뷰 컨트롤러가 `detailVC`인지 확인
             if let currentVC = self.children.first {
@@ -168,55 +173,110 @@ extension PlaceDetailViewController {
 }
 extension PlaceDetailViewController {
     
-    ///  좋아요 요청 (API 호출)
-        private func toggleLike() {
-            guard let storeId = placeDetail?.id else { return }
+    // 좋아요 요청 (API 호출)
+    private func toggleLike(previousState: Bool, previousCount: Int) {
+        guard let storeId = placeDetail?.id else { return }
 
-            let endpoint = "/api/stores/\(storeId)/like" // API 엔드포인트
+        let endpoint = "/api/stores/\(storeId)/like"
+        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
 
-            APIClient.postRequestWithoutParameters(endpoint: endpoint) { [weak self] (result: Result<PlaceLikeResponse, AFError>) in
-                switch result {
-                case .success(let response):
-                    print("좋아요 요청 성공:", response)
-                    
-                    DispatchQueue.main.async {
-                        self?.updateLikeUI(saved: response.result!.saved)
-                    }
-                case .failure(let error):
-                    print("좋아요 요청 실패:", error.localizedDescription)
+        APIClient.postRequestWithoutParameters(endpoint: endpoint, token: token) { [weak self] (result: Result<PlaceLikeResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                print("좋아요 요청 성공:", response)
+            case .failure(let error):
+                print("좋아요 요청 실패:", error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.restoreLikeState(previousState: previousState, previousCount: previousCount)  // 요청 실패 시 복구
                 }
             }
         }
-    
-    /// 좋아요 상태 UI 업데이트
-    private func updateLikeUI(saved: Bool) {
-        let imageName = saved ? "liked_button" : "like_button"
-        placeDetailView.headerView.likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
+    
+    ////좋아요 버튼 UI 즉시 변경
+    private func updateLikeUI(saved: Bool, likeNum: Int) {
+        let imageName = saved ? "selectedLike" : "like_button"
+        placeDetailView.headerView.likeButton.setImage(UIImage(named: imageName), for: .normal)
+        placeDetailView.headerView.likeLabel.text = "\(likeNum)"
+    }
+
     
     /// 북마크 요청 (API 호출)
-    private func toggleBookmark() {
+    private func toggleBookmark(previousState: Bool, previousCount: Int) {
         guard let storeId = placeDetail?.id else { return }
 
-            let endpoint = "/api/stores/\(storeId)/bookmark"
+        let endpoint = "/api/stores/\(storeId)/bookmark"
+        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
 
-            APIClient.postRequestWithoutParameters(endpoint: endpoint) { [weak self] (result: Result<PlaceBookmarkResponse, AFError>) in
-                switch result {
-                case .success(let response):
-                    print("북마크 요청 성공:", response)
-                    
-                    DispatchQueue.main.async {
-                        self?.updateBookmarkUI(saved: response.result!.saved)
-                    }
-                case .failure(let error):
-                    print("북마크 요청 실패:", error.localizedDescription)
+        APIClient.postRequestWithoutParameters(endpoint: endpoint, token: token) { [weak self] (result: Result<PlaceBookmarkResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                print("북마크 요청 성공:", response)
+            case .failure(let error):
+                print("북마크 요청 실패:", error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.restoreBookmarkState(previousState: previousState, previousCount: previousCount)  // 요청 실패 시 복구
                 }
             }
+        }
+    }
+
+    /// API 요청 실패 시 좋아요 상태 복구
+    private func restoreLikeState(previousState: Bool, previousCount: Int) {
+        let imageName = previousState ? "selectedLike" : "like_button"
+        placeDetailView.headerView.likeButton.setImage(UIImage(named: imageName), for: .normal)
+        placeDetailView.headerView.likeLabel.text = "\(previousCount)"
+    }
+
+    /// API 요청 실패 시 북마크 상태 복구
+    private func restoreBookmarkState(previousState: Bool, previousCount: Int) {
+        let imageName = previousState ? "selectedBookmark" : "save_button"
+        placeDetailView.headerView.saveButton.setImage(UIImage(named: imageName), for: .normal)
+        placeDetailView.headerView.saveLabel.text = "\(previousCount)"
     }
     
-    /// 북마크 상태 UI 업데이트
-    private func updateBookmarkUI(saved: Bool) {
-        let imageName = saved ? "liked_button" : "like_button"
+    /// 북마크 버튼 UI 즉시 변경
+    private func updateBookmarkUI(saved: Bool, bookmarkNum: Int) {
+        let imageName = saved ? "selectedBookmark" : "save_button"
         placeDetailView.headerView.saveButton.setImage(UIImage(named: imageName), for: .normal)
+        placeDetailView.headerView.saveLabel.text = "\(bookmarkNum)"
+    }
+
+    /// 좋아요 버튼 클릭
+    @objc private func likeButtonTapped() {
+        let isCurrentlyLiked = placeDetailView.headerView.likeButton.image(for: .normal) == UIImage(named: "selectedLike")
+        
+        // 좋아요 UI 변경
+        toggleLikeButtonUI()
+        let updatedLikeNum = (isCurrentlyLiked ? -1 : 1) + (Int(placeDetailView.headerView.likeLabel.text ?? "0") ?? 0)
+        placeDetailView.headerView.likeLabel.text = "\(updatedLikeNum)" // 좋아요 수 업데이트
+
+        toggleLike(previousState: isCurrentlyLiked, previousCount: updatedLikeNum - (isCurrentlyLiked ? -1 : 1))
+    }
+
+    /// 북마크 버튼 클릭
+    @objc private func bookmarkButtonTapped() {
+        let isCurrentlyBookmarked = placeDetailView.headerView.saveButton.image(for: .normal) == UIImage(named: "selectedBookmark")
+        
+        // 북마크 UI 변경
+        toggleBookmarkButtonUI()
+        let updatedBookmarkNum = (isCurrentlyBookmarked ? -1 : 1) + (Int(placeDetailView.headerView.saveLabel.text ?? "0") ?? 0)
+        placeDetailView.headerView.saveLabel.text = "\(updatedBookmarkNum)" // 북마크 수 업데이트
+
+        toggleBookmark(previousState: isCurrentlyBookmarked, previousCount: updatedBookmarkNum - (isCurrentlyBookmarked ? -1 : 1))
+    }
+
+    /// 좋아요 버튼 UI 즉시 변경
+    private func toggleLikeButtonUI() {
+        let currentImage = placeDetailView.headerView.likeButton.image(for: .normal)
+        let newImage = (currentImage == UIImage(named: "like_button")) ? UIImage(named: "selectedLike") : UIImage(named: "like_button")
+        placeDetailView.headerView.likeButton.setImage(newImage, for: .normal)
+    }
+
+    /// 북마크 버튼 UI 즉시 변경
+    private func toggleBookmarkButtonUI() {
+        let currentImage = placeDetailView.headerView.saveButton.image(for: .normal)
+        let newImage = (currentImage == UIImage(named: "save_button")) ? UIImage(named: "selectedBookmark") : UIImage(named: "save_button")
+        placeDetailView.headerView.saveButton.setImage(newImage, for: .normal)
     }
 }

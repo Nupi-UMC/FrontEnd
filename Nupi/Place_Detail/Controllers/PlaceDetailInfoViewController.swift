@@ -9,6 +9,11 @@ import UIKit
 import KakaoMapsSDK
 
 class PlaceDetailInfoViewController: UIViewController {
+    
+    
+    private var instagramUrl: String?
+    private var mapController: KMController?
+    private var mapContainer : KMViewContainer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +30,6 @@ class PlaceDetailInfoViewController: UIViewController {
         let view = PlaceDetailInfoView()
         return view
     }()
-    
-    private var instagramUrl: String?
-    private var mapController: KMController?
-    private var mapContainer : KMViewContainer?
 
 
     //placeDetailInfoViewController일때 updateUI 함수
@@ -43,7 +44,7 @@ class PlaceDetailInfoViewController: UIViewController {
             
             let latitude = placeDetail.latitude ?? 37.5665
             let longitude = placeDetail.longitude ?? 126.9784
-            //self.setMapLocation(latitude: Double(latitude), longitude: Double(longitude))
+            self.setMapLocation(latitude: latitude, longitude: longitude)
         }
     }
     //인스타아이디 추출 함수
@@ -65,26 +66,35 @@ class PlaceDetailInfoViewController: UIViewController {
 
     }
     
-    /// 지도 위치 설정 함수 (이동 없음, 초기 값만 설정)
+    /// 지도 위치 설정 함수 (안정성 개선)
         private func setMapLocation(latitude: Double, longitude: Double) {
+            guard let controller = mapController else {
+                print("❌ mapController가 nil입니다!")
+                return
+            }
+            
             let newPosition = MapPoint(longitude: longitude, latitude: latitude)
             let mapviewInfo = MapviewInfo(viewName: "simpleMap", viewInfoName: "map", defaultPosition: newPosition)
 
-            if let controller = mapController {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 controller.addView(mapviewInfo)
-                print("지도 중심이 \(latitude), \(longitude)로 설정됨")
-            } else {
-                print("mapController가 nil입니다!")
+                print("✅ 지도 중심이 \(latitude), \(longitude)로 설정됨")
             }
         }
-    //지도 초기화 함수
+
+    // Kakao 지도 초기화 함수 (안전한 `mapContainer` 설정)
         private func setupMapView() {
+            
             mapContainer = placeDetailInfoView.mapImageViewContainer
             mapController = KMController(viewContainer: mapContainer!)
+
+            print("✅ Kakao Maps 엔진 준비 중...")
             mapController?.prepareEngine()
-            // 엔진 활성화 추가
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.mapController?.activateEngine()
-                }
+
+            // ✅ 엔진 활성화 (지연 실행)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.mapController?.activateEngine()
+                print("✅ Kakao Maps 엔진 활성화 완료")
+            }
         }
 }

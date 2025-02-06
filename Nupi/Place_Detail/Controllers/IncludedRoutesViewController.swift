@@ -19,6 +19,7 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
             }
         }*/
     private var routes: [Route] = []
+    private var storeId:Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +27,17 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
         self.view = includedRoutesView
         
         setupDelegate()
-        
-        fetchRoutesContainingPlace(storeId: 50)
-        //storeId가 설정된 경우 자동으로 데이터 요청
-        //if let storeId = storeId {fetchRoutesContainingPlace(storeId: storeId)}
     }
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            
+            if let storeId = storeId {
+                fetchRoutesContainingPlace(storeId: storeId) // 🔹 View가 보일 때 자동으로 데이터 로드
+            }
+        }
+    func setStoreId(_ id: Int) {
+            self.storeId = id
+        }
     
     private lazy var includedRoutesView: IncludedRoutesView = {
         let view = IncludedRoutesView()
