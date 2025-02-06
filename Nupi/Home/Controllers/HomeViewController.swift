@@ -8,18 +8,29 @@
 import UIKit
 
 class HomeViewController: UIViewController {
+    
     private let homeView = HomeView()
+    
     let bannerData = BannerModel.dummy()
     let whatToplayData = WhatToPlayModel.dummy()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = homeView
-                
+        setupActions()
         setupDataSource()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     // MARK: - function
+    private func setupActions() {
+        homeView.searchButton.addTarget(self, action: #selector(searchButtonDidTap), for: .touchUpInside)
+        homeView.myRouteButton.addTarget(self, action: #selector(myRouteButtonDidTap), for: .touchUpInside)
+    }
+    
     private func setupDataSource(){
         homeView.bannerCollectionView.dataSource = self
         //rootView.bannerCollectionView.delegate = self
@@ -30,6 +41,17 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - action
+    @objc
+    private func searchButtonDidTap() {
+        let activityExplorationVC = ActivityExplorationViewController()
+        self.navigationController?.pushViewController(activityExplorationVC, animated: true)
+    }
+    
+    @objc
+    private func myRouteButtonDidTap() {
+        let myRouteVC = MyRouteViewController()
+        self.navigationController?.pushViewController(myRouteVC, animated: true)
+    }
 }
 
 

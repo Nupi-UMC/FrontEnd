@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2BCDD69A2D37C3F500B5CC25 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCDD6992D37C3F500B5CC25 /* SnapKit */; };
-		2BCDD69D2D37C40400B5CC25 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCDD69C2D37C40400B5CC25 /* Then */; };
+		18F743A52D44A38400CB199B /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 18F743A42D44A38400CB199B /* KakaoMapsSDK-SPM */; };
+		2B88F8E32D40067200F091E6 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2B88F8E22D40067200F091E6 /* Then */; };
+		2C3763102D4257510029939D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2C37630F2D4257510029939D /* Alamofire */; };
+		2C77412A2D43683D0099BB6D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C7741292D43683D0099BB6D /* Kingfisher */; };
+		942E06192D2A6611002F8FDE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 942E06182D2A6611002F8FDE /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -16,7 +19,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2B9061C82D316F2A0085BE36 /* Exceptions for "Nupi" folder in "Nupi" target */ = {
+		2C37630D2D4257350029939D /* Exceptions for "Nupi" folder in "Nupi" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -29,7 +32,7 @@
 		94FFAC5B2D290D8D006F4810 /* Nupi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2B9061C82D316F2A0085BE36 /* Exceptions for "Nupi" folder in "Nupi" target */,
+				2C37630D2D4257350029939D /* Exceptions for "Nupi" folder in "Nupi" target */,
 			);
 			path = Nupi;
 			sourceTree = "<group>";
@@ -41,8 +44,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BCDD69A2D37C3F500B5CC25 /* SnapKit in Frameworks */,
-				2BCDD69D2D37C40400B5CC25 /* Then in Frameworks */,
+				2C77412A2D43683D0099BB6D /* Kingfisher in Frameworks */,
+				2C3763102D4257510029939D /* Alamofire in Frameworks */,
+				18F743A52D44A38400CB199B /* KakaoMapsSDK-SPM in Frameworks */,
+				942E06192D2A6611002F8FDE /* SnapKit in Frameworks */,
+				2B88F8E32D40067200F091E6 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,8 +91,11 @@
 			);
 			name = Nupi;
 			packageProductDependencies = (
-				2BCDD6992D37C3F500B5CC25 /* SnapKit */,
-				2BCDD69C2D37C40400B5CC25 /* Then */,
+				942E06182D2A6611002F8FDE /* SnapKit */,
+				2B88F8E22D40067200F091E6 /* Then */,
+				2C37630F2D4257510029939D /* Alamofire */,
+				2C7741292D43683D0099BB6D /* Kingfisher */,
+				18F743A42D44A38400CB199B /* KakaoMapsSDK-SPM */,
 			);
 			productName = Nupi;
 			productReference = 94FFAC592D290D8D006F4810 /* Nupi.app */;
@@ -117,8 +126,11 @@
 			mainGroup = 94FFAC502D290D8D006F4810;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */,
+				942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */,
+				2B88F8E12D40067200F091E6 /* XCRemoteSwiftPackageReference "Then" */,
+				2C37630E2D4257510029939D /* XCRemoteSwiftPackageReference "Alamofire" */,
+				2C7741282D43683D0099BB6D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				18F743A32D44A38400CB199B /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94FFAC5A2D290D8D006F4810 /* Products */;
@@ -348,15 +360,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		18F743A32D44A38400CB199B /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			repositoryURL = "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
+				minimumVersion = 2.12.4;
 			};
 		};
-		2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */ = {
+		2B88F8E12D40067200F091E6 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -364,18 +376,57 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		2C37630E2D4257510029939D /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		2C7741282D43683D0099BB6D /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.3;
+			};
+		};
+		942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2BCDD6992D37C3F500B5CC25 /* SnapKit */ = {
+		18F743A42D44A38400CB199B /* KakaoMapsSDK-SPM */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2BCDD6982D37C3F500B5CC25 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
+			package = 18F743A32D44A38400CB199B /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */;
+			productName = "KakaoMapsSDK-SPM";
 		};
-		2BCDD69C2D37C40400B5CC25 /* Then */ = {
+		2B88F8E22D40067200F091E6 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2BCDD69B2D37C40400B5CC25 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2B88F8E12D40067200F091E6 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		2C37630F2D4257510029939D /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C37630E2D4257510029939D /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		2C7741292D43683D0099BB6D /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C7741282D43683D0099BB6D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		942E06182D2A6611002F8FDE /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 942E06172D2A6611002F8FDE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
