@@ -20,6 +20,7 @@ class PlaceDetailView: UIView {
     }
     
     let headerView = PlaceDetailHeaderView()
+    let placeDetailInfoView = PlaceDetailInfoView()
     
     private let dividerView : UIView = {
         let view = UIView()
@@ -73,6 +74,7 @@ class PlaceDetailView: UIView {
         self.addSubview(segmentedControl)
         self.addSubview(containerView)
         self.addSubview(segmentedControlLineView)
+        self.addSubview(placeDetailInfoView)
 
         
         lineView.snp.makeConstraints { make in

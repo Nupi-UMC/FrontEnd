@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KakaoMapsSDK
 
 class PlaceDetailInfoView: UIView {
 
@@ -61,14 +62,6 @@ class PlaceDetailInfoView: UIView {
         return label
     }()
     
-    lazy var closedLabel : UILabel = {
-        let label = UILabel()
-        label.font = .caption1
-        label.textColor = .rice
-        label.text = "월, 화 휴무"
-        return label
-    }()
-    
     lazy var phoneLabel : UILabel = {
         let label = UILabel()
         label.font = .caption1
@@ -85,11 +78,10 @@ class PlaceDetailInfoView: UIView {
         return label
     }()
     
-    lazy var mapImageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .black
-        imageView.contentMode = .scaleAspectFit
-        return imageView
+    lazy var mapImageViewContainer : KMViewContainer = {
+        let view = KMViewContainer()
+        view.backgroundColor = .black
+        return view
     }()
     
     private func addComponents(){
@@ -102,12 +94,11 @@ class PlaceDetailInfoView: UIView {
         contentView.addSubview(timeIconImageView)
         contentView.addSubview(timeLabel)
         contentView.addSubview(timeDivisionImageView)
-        contentView.addSubview(closedLabel)
         contentView.addSubview(phoneIconImageView)
         contentView.addSubview(phoneLabel)
         contentView.addSubview(instagramIconImageView)
         contentView.addSubview(instagramLabel)
-        contentView.addSubview(mapImageView)
+        contentView.addSubview(mapImageViewContainer)
         
         scrollView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -144,10 +135,6 @@ class PlaceDetailInfoView: UIView {
             make.width.height.equalTo(3)
             make.leading.equalTo(timeLabel.snp.trailing).offset(6)
         }
-        closedLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(timeIconImageView)
-            make.leading.equalTo(timeDivisionImageView.snp.trailing).offset(6)
-        }
         phoneIconImageView.snp.makeConstraints { make in
             make.top.equalTo(timeIconImageView.snp.bottom).offset(13)
             make.leading.equalTo(locationIconImageView)
@@ -169,7 +156,7 @@ class PlaceDetailInfoView: UIView {
             make.leading.equalTo(locationLabel)
         }
         
-        mapImageView.snp.makeConstraints { make in
+        mapImageViewContainer.snp.makeConstraints { make in
             make.top.equalTo(instagramLabel.snp.bottom).offset(28)
             make.centerX.equalToSuperview()
             make.width.equalTo(337)

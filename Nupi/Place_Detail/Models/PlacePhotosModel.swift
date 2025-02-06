@@ -6,26 +6,16 @@
 //
 
 import UIKit
+import Foundation
 
-struct PlacePhotosModel {
-    var image : UIImage
+struct PlacePhotoResponse : Decodable {
+    let isSuccess : Bool
+    let code : String
+    let message : String
+    let result : PlacePhotoResult?
 }
 
-extension PlacePhotosModel {
-    static func dummy() -> [PlacePhotosModel] {
-        return [
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex),
-            PlacePhotosModel(image: .ex)
-        ]
-    }
+struct PlacePhotoResult : Decodable {
+    let storeId : Int
+    let tabImages : [String]?
 }

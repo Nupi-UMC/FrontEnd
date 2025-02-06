@@ -9,6 +9,7 @@ import UIKit
 import Alamofire
 
 class AddProfilePictureViewController: UIViewController {
+    private var selectedImageURL: URL?
     
     private lazy var addProfilePictureView: AddProfilePictureView = {
         let view = AddProfilePictureView()
@@ -74,45 +75,56 @@ class AddProfilePictureViewController: UIViewController {
         addProfilePictureView.startButton.setTitleColor(isEnabled ? .white : .icon2, for: .normal)
     }
     
-    //UIImage를 base64로 인코딩
-    private func encodeImageToBase64(_ image: UIImage?) -> String? {
-        guard let image = image else { return nil }
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return nil }
-        return imageData.base64EncodedString()
-    }
-    
     //회원가입 API
-    private func registerUser(){
-        let profileImage = addProfilePictureView.selectProfileImageButton.imageView?.image
-        let profileImageBase64 = encodeImageToBase64(profileImage) ?? "" // 이미지가 없으면 빈 문자열
-        
-        // Encodable 구조체로 요청 데이터 생성
-            let parameters = SignupRequest(
-                verificationId: verificationId,
-                email: email,
-                password: password,
-                nickname: addProfilePictureView.nicknameTextField.text!,
-                profile: profileImageBase64
-            )
-        
-        APIClient.postRequest(endpoint: "/api/auth/signup", parameters: parameters){ (result: Result<SignupResponse, AFError>) in
-            switch result {
-            case .success(let response):
-                if response.isSuccess{
-                    print("회원가입 성공: \(response.message)")
+    private func registerUser() {
+        let nickname = addProfilePictureView.nicknameTextField.text ?? ""
+        let profileImageData = addProfilePictureView.selectProfileImageButton.imageView?.image?.jpegData(compressionQuality: 0.5)
+
+        let url = "https://api-nupi.shop/api/signup"
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Content-Type": "multipart/form-data"
+        ]
+
+        // JSON으로 보낼 기본 회원가입 데이터
+        let parameters: [String: Any] = [
+            "verificationId": verificationId,
+            "email": email,
+            "password": password,
+            "nickname": nickname
+        ]
+
+        AF.upload(multipartFormData: { multipartFormData in
+            // 1. JSON 데이터를 multipart로 변환하여 추가
+            for (key, value) in parameters {
+                if let data = "\(value)".data(using: .utf8) {
+                    multipartFormData.append(data, withName: key)
+                }
+            }
+
+            // 2. 프로필 이미지가 있으면 multipart로 추가
+            if let imageData = profileImageData {
+                multipartFormData.append(imageData, withName: "profileImage", mimeType: "image/jpeg")
+            }
+        }, to: url, method: .post, headers: headers)
+        .validate()
+        .responseDecodable(of: SignupResponse.self) { response in
+            switch response.result {
+            case .success(let signupResponse):
+                if signupResponse.isSuccess {
+                    print("회원가입 성공: \(signupResponse.message)")
                     DispatchQueue.main.async {
-                        // 회원가입 완료 화면으로 이동
-                        let completeSignupVC = CompleteSignUpViewController()
-                        self.navigationController?.pushViewController(completeSignupVC,animated: true)}
-                }
-                else {
-                    print("회원가입 실패: \(response.message)")
-                    DispatchQueue.main.async{
+                        self.navigationController?.pushViewController(CompleteSignUpViewController(), animated: true)
                     }
+                } else {
+                    print("회원가입 실패: \(signupResponse.message)")
                 }
-                
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                print("회원가입 API 오류: \(error.localizedDescription)")
+                // 서버 응답 데이터 디버깅용 출력
+                            if let data = response.data, let errorMessage = String(data: data, encoding: .utf8) {
+                                print("🚨 서버 응답 데이터: \(errorMessage)")
+                            }
             }
         }
     }
@@ -120,23 +132,18 @@ class AddProfilePictureViewController: UIViewController {
     
 extension AddProfilePictureViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // 이미지 피커에서 이미지를 선택하지 않고 취소했을 때 호출되는 메서드
-
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             picker.dismiss(animated: true)
         }
     //이미지 피커에서 이미지 선택했을 때 호출되는 메서드
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            
-            // 편집된 이미지 선택한 경우
-            if let editedImage = info[.editedImage] as? UIImage {
-                addProfilePictureView.selectProfileImageButton.setImage(editedImage, for: .normal)
-            }
-            // 원본 이미지 선택한 경우
-            else if let originalImage = info[.originalImage] as? UIImage {
-                addProfilePictureView.selectProfileImageButton.setImage(originalImage, for: .normal)
-            }
-            picker.dismiss(animated: true)
+        
+        //이미지 가져오기
+        if let selectedImage = info[.originalImage] as? UIImage {
+            addProfilePictureView.selectProfileImageButton.setImage(selectedImage, for: .normal)
         }
+        picker.dismiss(animated: true)
+    }
     
     // 이미지 선택 메서드
         @objc
