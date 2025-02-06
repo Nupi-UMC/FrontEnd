@@ -13,7 +13,7 @@ class HomeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .bg
+        self.backgroundColor = .white
         setViews()
     }
     
@@ -50,7 +50,7 @@ class HomeView: UIView {
     
     // MARK: 상단버튼
     //놀거리 탐색 버튼
-    lazy var searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("놀거리 탐색", for: .normal)
@@ -74,7 +74,7 @@ class HomeView: UIView {
     }()
     
     //나의 경로 버튼
-    lazy var myRouteButton: UIButton = {
+    private lazy var myPathButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("나의 경로", for: .normal)
@@ -342,7 +342,7 @@ class HomeView: UIView {
         contentView.addSubview(bannerCollectionView)
         contentView.addSubview(logoLabel)
         contentView.addSubview(searchButton)
-        contentView.addSubview(myRouteButton)
+        contentView.addSubview(myPathButton)
         contentView.addSubview(upcommingTitle)
         contentView.addSubview(vectorIcon)
         contentView.addSubview(upcommingButton)
@@ -392,7 +392,7 @@ class HomeView: UIView {
             $0.height.equalTo(41)
         }
         
-        myRouteButton.snp.makeConstraints{
+        myPathButton.snp.makeConstraints{
             $0.top.equalToSuperview().offset(449)
             $0.left.equalTo(searchButton.snp.right).offset(20)
             $0.width.equalTo(131)

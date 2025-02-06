@@ -11,7 +11,7 @@ import SnapKit
 class CreatePasswordView : UIView {
     override init (frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .bg
+        self.backgroundColor = .white
         
         addComponents()
     }
@@ -20,94 +20,50 @@ class CreatePasswordView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var circleView1 : UIView = {
-        let circleView = UIView()
-        circleView.backgroundColor = .blue1
-        circleView.layer.cornerRadius = 4
-        circleView.clipsToBounds = true
-        return circleView
-    }()
-    
-    private lazy var circleView2 : UIView = {
-        let circleView = UIView()
-        circleView.backgroundColor = .blue2
-        circleView.layer.cornerRadius = 6
-        circleView.clipsToBounds = true
-        return circleView
-    }()
-    
-    private lazy var circleView3 : UIView = {
-        let circleView = UIView()
-        circleView.backgroundColor = .blue1
-        circleView.layer.cornerRadius = 4
-        circleView.clipsToBounds = true
-        return circleView
-    }()
-    
     private lazy var passwordLabel : UILabel = {
         let label = UILabel()
         label.text = "비밀번호 입력"
-        label.font = .heading1
-        label.textColor = .blue3
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = .black
         label.textAlignment = .left
         return label
     }()
     
-    lazy var passwordTextField : UITextField = {
+    private lazy var passwordTextField : UITextField = {
         let textField = UITextField()
-        textField.attributedPlaceholder = NSAttributedString(
-            string: "영문, 숫자 조합",
-            attributes: [
-                .font: UIFont.body2,
-                NSAttributedString.Key.foregroundColor: UIColor.grey2
-            ]
-        )
-        textField.font = .body2
-        textField.textColor = .blue3
-        textField.textAlignment = .left
+        textField.placeholder = "영문, 숫자 조합"
         textField.layer.borderColor = UIColor.clear.cgColor
         textField.layer.backgroundColor = UIColor.clear.cgColor
-        
         return textField
     }()
     
     private lazy var line1 : UIView = {
         let view = UIView()
-        view.backgroundColor = .icon2
+        view.backgroundColor = .lightGray
         return view
     }()
     
     private lazy var confirmPasswordLabel : UILabel = {
         let label = UILabel()
         label.text = "비밀번호 확인"
-        label.font = .heading1
-        label.textColor = .blue3
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = .black
         label.textAlignment = .left
 
         return label
     }()
     
-    lazy var confirmPasswordTextField : UITextField = {
+    private lazy var confirmPasswordTextField : UITextField = {
         let textField = UITextField()
-        textField.attributedPlaceholder = NSAttributedString(
-            string: "다시 한번 확인해주세요.",
-            attributes: [
-                .font: UIFont.body2,
-                NSAttributedString.Key.foregroundColor: UIColor.grey2
-            ]
-        )
-        textField.font = .body2
-        textField.textColor = .blue3
-        textField.textAlignment = .left
+        textField.placeholder = "다시 한번 입력해주세요."
         textField.layer.borderColor = UIColor.clear.cgColor
         textField.layer.backgroundColor = UIColor.clear.cgColor
-        
         return textField
     }()
     
     private lazy var line2 : UIView = {
         let view = UIView()
-        view.backgroundColor = .icon2
+        view.backgroundColor = .lightGray
         return view
     }()
     
@@ -115,61 +71,20 @@ class CreatePasswordView : UIView {
         let label = UILabel()
         label.text = "다음이 마지막 단계에요."
         label.font = .systemFont(ofSize: 13, weight: .light)
-        label.textColor = .blue4
+        label.textColor = .lightGray
         return label
     }()
     
-     lazy var continueButton : UIButton = {
+    private lazy var continueButton : UIButton = {
         let button = UIButton()
         button.setTitle("계속하기", for: .normal)
-        button.titleLabel?.font = .heading2
-        button.setTitleColor(.icon2, for: .normal)
-        button.setTitleColor(.white, for: .selected)
-        button.layer.backgroundColor = UIColor.grey2.cgColor
+        button.setTitleColor(.gray, for: .normal)
+        button.layer.backgroundColor = UIColor.lightGray.cgColor
         button.layer.cornerRadius = 23.5
         return button
     }()
     
-    lazy var passwordErrorLabel : UILabel = {
-        let label = UILabel()
-        label.font = .caption2
-        label.textColor = .rice
-        label.textAlignment = .left
-        label.isHidden = true
-        return label
-    }()
-    
-    lazy var confirmPasswordErrorLabel : UILabel = {
-        let label = UILabel()
-        label.font = .caption2
-        label.textColor = .rice
-        label.textAlignment = .left
-        label.isHidden = true
-        return label
-    }()
-    
-    lazy var hidePasswordButton : UIButton = {
-        let button = UIButton()
-        button.setImage(.eye, for: .normal)
-        button.tintColor = .icon2
-        button.isHidden = true
-        return button
-    }()
-    
-    lazy var hideConfirmPasswordButton : UIButton = {
-        let button = UIButton()
-        button.setImage(.eye, for: .normal)
-        button.tintColor = .icon2
-        button.isHidden = true
-        return button
-    }()
-    
-    
     private func addComponents(){
-        self.addSubview(circleView1)
-        self.addSubview(circleView2)
-        self.addSubview(circleView3)
-        
         self.addSubview(passwordLabel)
         self.addSubview(passwordTextField)
         self.addSubview(confirmPasswordLabel)
@@ -179,28 +94,6 @@ class CreatePasswordView : UIView {
         self.addSubview(continueLabel)
         self.addSubview(continueButton)
         
-        self.addSubview(passwordErrorLabel)
-        self.addSubview(confirmPasswordErrorLabel)
-        
-        self.addSubview(hidePasswordButton)
-        self.addSubview(hideConfirmPasswordButton)
-        
-        circleView1.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(96)
-            make.leading.equalToSuperview().offset(321)
-            make.width.height.equalTo(8)
-        }
-        circleView2.snp.makeConstraints { make in
-            make.centerY.equalTo(circleView1)
-            make.width.height.equalTo(12)
-            make.leading.equalTo(circleView1.snp.trailing).offset(8)
-        }
-        circleView3.snp.makeConstraints { make in
-            make.centerY.equalTo(circleView1)
-            make.width.height.equalTo(8)
-            make.leading.equalTo(circleView2.snp.trailing).offset(8)
-        }
-        
         passwordLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(215)
             make.leading.equalToSuperview().offset(32)
@@ -209,7 +102,6 @@ class CreatePasswordView : UIView {
         passwordTextField.snp.makeConstraints { make in
             make.top.equalTo(passwordLabel.snp.bottom).offset(16)
             make.leading.equalTo(passwordLabel).offset(0)
-            make.trailing.equalTo(hidePasswordButton.snp.leading)
         }
         confirmPasswordLabel.snp.makeConstraints { make in
             make.top.equalTo(line1.snp.bottom).offset(32)
@@ -218,7 +110,6 @@ class CreatePasswordView : UIView {
         confirmPasswordTextField.snp.makeConstraints { make in
             make.top.equalTo(confirmPasswordLabel.snp.bottom).offset(16)
             make.leading.equalTo(passwordLabel).offset(0)
-            make.trailing.equalTo(hidePasswordButton.snp.leading)
         }
         line1.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(9)
@@ -243,29 +134,6 @@ class CreatePasswordView : UIView {
             make.centerX.equalToSuperview()
             make.width.equalTo(329)
             make.height.equalTo(47)
-        }
-        
-        passwordErrorLabel.snp.makeConstraints { make in
-            make.top.equalTo(line1.snp.bottom).offset(2)
-            make.leading.equalTo(line1)
-            make.height.equalTo(16)
-        }
-        confirmPasswordErrorLabel.snp.makeConstraints { make in
-            make.top.equalTo(line2.snp.bottom).offset(2)
-            make.leading.equalTo(line2)
-            make.height.equalTo(16)
-        }
-        
-        hidePasswordButton.snp.makeConstraints { make in
-            make.centerY.equalTo(passwordTextField)
-            make.trailing.equalTo(line1.snp.trailing)
-            make.width.height.equalTo(23)
-        }
-        
-        hideConfirmPasswordButton.snp.makeConstraints { make in
-            make.centerY.equalTo(confirmPasswordTextField)
-            make.trailing.equalTo(line1.snp.trailing)
-            make.width.height.equalTo(23)
         }
     }
 }
