@@ -82,10 +82,12 @@ class MyRouteViewController: UIViewController {
             memberId: memberId,
             myRoute: myRoute
         ) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let response):
                 if response.isSuccess {
-                    self?.myRoutes = response.result.routes.map {
+                    self.myRoutes = response.result.routes.map {
                         MyRouteModel(
                             routeId: $0.routeId,
                             routeName: $0.routeName,
@@ -93,15 +95,31 @@ class MyRouteViewController: UIViewController {
                             routePic: $0.routePic)
                     }
                     DispatchQueue.main.async {
-                        self?.myRouteView.routeCollectionView.reloadData()
+                        self.myRouteView.routeCollectionView.reloadData()
+                        self.updateEmptyState(isEmpty: self.myRoutes.isEmpty)
                     }
                 } else {
                     print("Error: \(response.message)")
+                    DispatchQueue.main.async {
+                        self.updateEmptyState(isEmpty: true)
+                    }
                 }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.updateEmptyState(isEmpty: true)
+                }
             }
         }
+    }
+    
+    private func updateEmptyState(isEmpty: Bool) {
+        myRouteView.emptyIconImageView.isHidden = !isEmpty
+        myRouteView.emptyLabel.isHidden = !isEmpty
+        myRouteView.routeCollectionView.isHidden = isEmpty
+        
+        let selectedIndex = myRouteView.segmentedControl.selectedSegmentIndex
+        myRouteView.emptyLabel.text = selectedIndex == 0 ? "생성된 경로가 없습니다." : "저장된 경로가 없습니다."
     }
     
     // MARK: - action
