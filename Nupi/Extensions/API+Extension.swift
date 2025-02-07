@@ -142,6 +142,7 @@ extension APIClient {
             completion(response.result)
         }
     }
+    
     private static func handleResponse<T: Decodable>(
             _ response: AFDataResponse<T>,
             endpoint: String,
@@ -180,25 +181,33 @@ extension APIClient {
 extension APIClient {
     // 나의 경로 API
     static func fetchMyRoutes(
-        memberId: Int,
         myRoute: String,
         completion: @escaping (Result<MyRouteResponse, AFError>) -> Void)
     {
-        let endpoint = "/api/home/\(memberId)/route?myRoute=\(myRoute)"
-        getRequest(endpoint: endpoint, completion: completion)
+        guard let token = KeychainHelper.shared.getToken() else {
+            print("Access Token 없음. 로그인 필요")
+            return
+        }
+        
+        let endpoint = "/api/home/route?myRoute=\(myRoute)"
+        getRequest(endpoint: endpoint, token: token, completion: completion)
     }
     
     // 놀거리 탐색 API
     static func fetchSearchStores(
-        memberId: Int,
         latitude: Double,
         longitude: Double,
         category: Int,
         sort: String,
         completion: @escaping (Result<StoreResponse, AFError>) -> Void)
     {
-        let endpoint = "/api/home/\(memberId)/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
-        getRequest(endpoint: endpoint, completion: completion)
+        guard let token = KeychainHelper.shared.getToken() else {
+            print("Access Token 없음. 로그인 필요")
+            return
+        }
+        
+        let endpoint = "/api/home/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
+        getRequest(endpoint: endpoint, token: token, completion: completion)
     }
     
     // 경로 세부 조회 API
@@ -206,7 +215,12 @@ extension APIClient {
         routeId: Int,
         completion: @escaping (Result<RouteDetailsResponse, AFError>) -> Void)
     {
+        guard let token = KeychainHelper.shared.getToken() else {
+            print("Access Token 없음. 로그인 필요")
+            return
+        }
+        
         let endpoint = "/api/routes/\(routeId)"
-        getRequest(endpoint: endpoint, completion: completion)
+        getRequest(endpoint: endpoint, token: token, completion: completion)
     }
 }

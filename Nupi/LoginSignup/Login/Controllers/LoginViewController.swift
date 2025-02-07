@@ -100,6 +100,8 @@ class LoginViewController: UIViewController {
                             print("Refresh Token: \(loginResult.refreshToken)")
                             print("Token Expiry: \(loginResult.expiresIn)초")
                             
+                            KeychainHelper.shared.saveToken(token: loginResult.accessToken)
+                            
                             DispatchQueue.main.async {
                                 // 로그인 후 메인 화면으로 이동
                                 //let homeVC = HomeViewController()

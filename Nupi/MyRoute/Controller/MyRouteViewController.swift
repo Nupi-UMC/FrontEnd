@@ -80,11 +80,8 @@ class MyRouteViewController: UIViewController {
     }
     
     // 나의 경로 API 호출
-    private func fetchRoutes(myRoute: String) {
-        let memberId = 1 // 추후 토큰으로 대체 예정
-        
+    private func fetchRoutes(myRoute: String) {        
         APIClient.fetchMyRoutes(
-            memberId: memberId,
             myRoute: myRoute
         ) { [weak self] result in
             guard let self = self else { return }
