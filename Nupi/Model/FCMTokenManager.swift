@@ -10,7 +10,7 @@ import Alamofire
 
 // MARK : - 토큰 재발급
 struct RefreshTokenRequest : Codable {
-    let refresh_token : String
+    let refreshToken : String
 }
 
 struct RefreshTokenResponse : Decodable {

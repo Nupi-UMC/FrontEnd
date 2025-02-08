@@ -53,9 +53,12 @@ class AddProfilePictureViewController: UIViewController {
         registerUser()
         
         //프로필 사진, 닉네임 넘겨주기 -> 이 부분은 api 연결하면 생략 ?
-        let completeSignupVC = CompleteSignUpViewController()
-        completeSignupVC.receivedProfileImage = profileImage
-        completeSignupVC.receivedNickName = nickname
+        DispatchQueue.main.async {
+            let completeSignupVC = CompleteSignUpViewController()
+            completeSignupVC.receivedProfileImage = profileImage
+            completeSignupVC.receivedNickName = nickname
+            self.navigationController?.pushViewController(completeSignupVC, animated: true)
+        }
     }
     
     @objc private func nickNameTextFieldDidChange(_ textField: UITextField) {
@@ -80,33 +83,36 @@ class AddProfilePictureViewController: UIViewController {
         let nickname = addProfilePictureView.nicknameTextField.text ?? ""
         let profileImageData = addProfilePictureView.selectProfileImageButton.imageView?.image?.jpegData(compressionQuality: 0.5)
 
-        let url = "https://api-nupi.shop/api/signup"
+        // 1. Create URL with query parameters
+            let baseURL = "https://api-nupi.shop/api/signup"
+            var urlComponents = URLComponents(string: baseURL)!
+            urlComponents.queryItems = [
+                URLQueryItem(name: "verificationId", value: "\(verificationId)"),
+                URLQueryItem(name: "email", value: email),
+                URLQueryItem(name: "password", value: password),
+                URLQueryItem(name: "nickname", value: nickname)
+            ]
+            
+            guard let finalURL = urlComponents.url else {
+                print("Invalid URL")
+                return
+            }
         let headers: HTTPHeaders = [
-            "accept": "application/json",
-            "Content-Type": "multipart/form-data"
-        ]
-
-        // JSON으로 보낼 기본 회원가입 데이터
-        let parameters: [String: Any] = [
-            "verificationId": verificationId,
-            "email": email,
-            "password": password,
-            "nickname": nickname
-        ]
+                "accept": "application/json",
+                "Content-Type": "multipart/form-data"
+            ]
 
         AF.upload(multipartFormData: { multipartFormData in
-            // 1. JSON 데이터를 multipart로 변환하여 추가
-            for (key, value) in parameters {
-                if let data = "\(value)".data(using: .utf8) {
-                    multipartFormData.append(data, withName: key)
+                // Only add image if exists
+                if let imageData = profileImageData {
+                    multipartFormData.append(
+                        imageData,
+                        withName: "profileImage",
+                        fileName: "profile.jpg",
+                        mimeType: "image/jpeg"
+                    )
                 }
-            }
-
-            // 2. 프로필 이미지가 있으면 multipart로 추가
-            if let imageData = profileImageData {
-                multipartFormData.append(imageData, withName: "profileImage", mimeType: "image/jpeg")
-            }
-        }, to: url, method: .post, headers: headers)
+            }, to: finalURL, method: .post, headers: headers)
         .validate()
         .responseDecodable(of: SignupResponse.self) { response in
             switch response.result {
@@ -123,7 +129,7 @@ class AddProfilePictureViewController: UIViewController {
                 print("회원가입 API 오류: \(error.localizedDescription)")
                 // 서버 응답 데이터 디버깅용 출력
                             if let data = response.data, let errorMessage = String(data: data, encoding: .utf8) {
-                                print("🚨 서버 응답 데이터: \(errorMessage)")
+                                print("서버 응답 데이터: \(errorMessage)")
                             }
             }
         }

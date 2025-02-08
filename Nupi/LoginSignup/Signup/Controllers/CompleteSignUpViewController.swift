@@ -49,4 +49,9 @@ class CompleteSignUpViewController: UIViewController {
         //let exitVC = ExitViewController()
         //self.navigationController?.pushViewController(exitVC,animated:true)
     }
+    //기본 프로필 이미지 처리
+    private func setupProfileImage() {
+        let defaultImage = UIImage(named: "defaultProfile") ?? UIImage()
+        completeSignUpView.profilePictureView.image = receivedProfileImage ?? defaultImage
+    }
 }

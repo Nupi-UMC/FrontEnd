@@ -60,7 +60,7 @@ class PlacePhotosViewController: UIViewController, UICollectionViewDataSource {
     //서버에서 사진 리스트 가져오기
     private func fetchPlacePhotos(storeId: Int){
         let endpoint = "/api/stores/\(storeId)/images"
-        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
+        let token = ""
         
         APIClient.getRequest(endpoint: endpoint, token: token){ (result: Result<PlacePhotoResponse, AFError>) in
             switch result {

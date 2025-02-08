@@ -178,7 +178,7 @@ extension PlaceDetailViewController {
         guard let storeId = placeDetail?.id else { return }
 
         let endpoint = "/api/stores/\(storeId)/like"
-        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
+        let token = ""
 
         APIClient.postRequestWithoutParameters(endpoint: endpoint, token: token) { [weak self] (result: Result<PlaceLikeResponse, AFError>) in
             switch result {
