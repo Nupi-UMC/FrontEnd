@@ -51,7 +51,7 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
     // API 요청: 장소 포함 경로 조회
     func fetchRoutesContainingPlace(storeId: Int) {
         let endpoint = "/api/stores/\(storeId)/routes"
-        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
+        let token = ""
             
             APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<IncludedRoutesResponse, AFError>) in
                 switch result {

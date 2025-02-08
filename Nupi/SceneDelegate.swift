@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let coordinator = MainCoordinator(navigationController: navigationController)
         coordinator.start()
         
-        //window?.rootViewController = navigationController
-        window?.rootViewController = PlaceDetailViewController()
+        window?.rootViewController = navigationController
+        //window?.rootViewController = PlaceDetailViewController()
         window?.makeKeyAndVisible()
     }
 

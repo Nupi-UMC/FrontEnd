@@ -22,7 +22,7 @@ class PlaceMapViewController : UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.mapController?.activateEngine()
-            print("✅ Kakao Maps 엔진 활성화 완료")
+            print("Kakao Maps 엔진 활성화 완료")
             self.addMapView()
         }
     }
@@ -34,7 +34,7 @@ class PlaceMapViewController : UIViewController {
         
         mapController = KMController(viewContainer: mapViewContainer)
         mapController?.prepareEngine() // ✅ 엔진 준비
-        print("✅ Kakao Maps 엔진 준비 완료")
+        print("Kakao Maps 엔진 준비 완료")
     }
     
     /// 지도 추가
@@ -43,14 +43,21 @@ class PlaceMapViewController : UIViewController {
         let mapviewInfo = MapviewInfo(viewName: "simpleMap", viewInfoName: "map", defaultPosition: defaultPosition)
         
         guard let controller = mapController else {
-            print("❌ mapController가 nil입니다!")
+            print("mapController가 nil입니다!")
             return
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            controller.addView(mapviewInfo)
-            print("✅ addView() 호출됨: \(defaultPosition)")
-        }
+        /*DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            controller.addView(mapviewInfo) { [weak self] result in
+                switch result {
+                case .success(let view):
+                    guard let mapView = view as? KakaoMap else { return }
+                    let cameraUpdate = CameraUpdateParameters.defaultCamera(for: defaultPosition)
+                    mapView.moveCamera(cameraUpdate)
+                }
+            }
+        }*/
     }
 }
+
 
