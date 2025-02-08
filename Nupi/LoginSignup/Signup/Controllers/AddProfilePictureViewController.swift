@@ -108,7 +108,6 @@ class AddProfilePictureViewController: UIViewController {
                     multipartFormData.append(
                         imageData,
                         withName: "profileImage",
-                        fileName: "profile.jpg",
                         mimeType: "image/jpeg"
                     )
                 }

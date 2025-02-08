@@ -48,45 +48,49 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
         includedRoutesView.includedRoutesCollectionView.dataSource = self
     }
     
-    // API 요청: 장소 포함 경로 조회
+    //경로 호출해오기
     func fetchRoutesContainingPlace(storeId: Int) {
         let endpoint = "/api/stores/\(storeId)/routes"
-        let token = ""
-            
-            APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<IncludedRoutesResponse, AFError>) in
-                switch result {
-                case .success(let response):
-                    print("장소 포함 경로 목록 조회 성공:", response.result ?? [])
-                    guard let routes = response.result?.routes, !routes.isEmpty else { // `routes`가 nil 또는 빈 배열인지 확인
-                                    print(" 장소 포함 경로 데이터가 없습니다.")
-                                    return
-                                }
-                    
-                    DispatchQueue.main.async {
-                        self.routes = routes // 데이터 저장
-                        self.includedRoutesView.includedRoutesCollectionView.reloadData() // UI 업데이트
-                    }
-                    
-                case .failure(let error):
-                    print("장소 포함 경로 목록 조회 실패:", error.localizedDescription)
+        
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+
+        APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<IncludedRoutesResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                print("장소 포함 경로 목록 조회 성공:", response.result ?? [])
+
+                guard let fetchedRoutes = response.result?.routes, !fetchedRoutes.isEmpty else {
+                    print("장소 포함 경로 데이터가 없습니다.")
+                    return
                 }
+
+                DispatchQueue.main.async {
+                    self.routes = fetchedRoutes // 받아온 데이터를 저장
+                    self.includedRoutesView.includedRoutesCollectionView.reloadData() // UI 업데이트
+                }
+
+            case .failure(let error):
+                print("장소 포함 경로 목록 조회 실패:", error.localizedDescription)
             }
         }
+    }
     // UICollectionView DataSource
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return routes.count
         }
         
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IncludedRoutesCollectionViewCell.identifier, for: indexPath) as? IncludedRoutesCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            
-            let route = routes[indexPath.row]
-                cell.updateUI(with: route) // 셀의 UI 업데이트 메서드 호출
-                
-                return cell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IncludedRoutesCollectionViewCell.identifier, for: indexPath) as? IncludedRoutesCollectionViewCell else {
+            return UICollectionViewCell()
         }
+        
+        let route = routes[indexPath.row]
+        cell.updateUI(with: route) // UI 업데이트
+        return cell
+    }
     // 뷰컨트롤러에서 데이터 업데이트를 처리
     func updateRoutes(with routes: [Route]) {
         self.routes = routes // 데이터 저장

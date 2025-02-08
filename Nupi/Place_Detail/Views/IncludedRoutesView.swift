@@ -41,5 +41,4 @@ class IncludedRoutesView: UIView {
             make.bottom.equalToSuperview().inset(28)
         }
     }
-
 }

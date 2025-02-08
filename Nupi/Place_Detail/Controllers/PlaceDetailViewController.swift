@@ -39,6 +39,14 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
     private let reviewsVC = PlaceReviewsViewController()
 
     override func viewDidLoad() {
+        
+        // Keychain에 임시 토큰 직접 저장 (테스트용)
+            let dummyAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEYW5hbGltMDgxOUBuYXZlci5jb20iLCJtZW1iZXJJZCI6MTcsImlhdCI6MTczODk5MjgwOCwiZXhwIjoxNzQwMjAyNDA4fQ.bhFhpI4JjL-QFgrHruCxiC7IdPflvC0Lo26Fci0xVGE"  // 임시 Access Token
+            let dummyRefreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEYW5hbGltMDgxOUBuYXZlci5jb20iLCJpYXQiOjE3Mzg5OTI4MDgsImV4cCI6MTczOTAwMDAwOH0.Hz4Qg0mhAlx8_wdy7fhz6xkVYA92w2r3iLwAEdWSglI" // 임시 Refresh Token
+
+            KeychainService.save(value: dummyAccessToken, for: "accessToken")
+            KeychainService.save(value: dummyRefreshToken, for: "refreshToken")
+        //
         super.viewDidLoad()
         self.view = placeDetailView
         placeDetailView.headerView.imageCollectionView.register(HeaderImageCollectionCell.self, forCellWithReuseIdentifier: HeaderImageCollectionCell.identifier)
@@ -112,10 +120,14 @@ class PlaceDetailViewController: UIViewController, UICollectionViewDelegate, UIC
 extension PlaceDetailViewController {
     //서버에서 장소 상세정보 불러오는 함수
     func fetchPlaceDetail(storeId: Int) {
-            self.storeId = storeId
+        self.storeId = storeId
 
-            let endpoint = "/api/stores/\(storeId)/detail"
-            let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
+        let endpoint = "/api/stores/\(storeId)/detail"
+
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
 
         APIClient.getRequest(endpoint: endpoint, token: token) { (result: Result<PlaceDetailResponse, AFError>) in
                 switch result {
@@ -178,7 +190,11 @@ extension PlaceDetailViewController {
         guard let storeId = placeDetail?.id else { return }
 
         let endpoint = "/api/stores/\(storeId)/like"
-        let token = ""
+
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
 
         APIClient.postRequestWithoutParameters(endpoint: endpoint, token: token) { [weak self] (result: Result<PlaceLikeResponse, AFError>) in
             switch result {
@@ -206,7 +222,11 @@ extension PlaceDetailViewController {
         guard let storeId = placeDetail?.id else { return }
 
         let endpoint = "/api/stores/\(storeId)/bookmark"
-        let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbGltMDgxOUBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MTAsImlhdCI6MTczODczMzE0OCwiZXhwIjoxNzM5OTQyNzQ4fQ.71bgaA4HTzhcNQN4TOV0PgYdJ0TDH983UF-wtErATPM"
+
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
 
         APIClient.postRequestWithoutParameters(endpoint: endpoint, token: token) { [weak self] (result: Result<PlaceBookmarkResponse, AFError>) in
             switch result {

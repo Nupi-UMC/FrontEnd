@@ -15,10 +15,11 @@ class PlaceDetailInfoViewController: UIViewController {
     private var mapContainer: KMViewContainer?
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
         view.backgroundColor = .bg
         self.view = placeDetailInfoView
-        setupMapView()
+        //setupMapView()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openInstagram))
         placeDetailInfoView.instagramLabel.isUserInteractionEnabled = true

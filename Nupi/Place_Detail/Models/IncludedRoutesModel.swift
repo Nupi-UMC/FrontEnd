@@ -6,18 +6,7 @@
 //
 
 import UIKit
-
-struct IncludedRoutesModel {
-    var image : UIImage
-    var routeTitle : String
-    var routeLocation : String
-    var likeCountLabel : String
-    var saveCountLabel : String
-}
-
-
 import Foundation
-
 
 // MARK: - 장소 상세 조회 응답 모델
 struct IncludedRoutesResponse: Decodable {
@@ -39,13 +28,4 @@ struct Route: Decodable {
     let likeNum: Int
     let bookmarkNum: Int
     let images : [String]?
-    // 서버 JSON의 snake_case 키와 Swift의 camelCase 프로퍼티 매핑
-        private enum CodingKeys: String, CodingKey {
-            case routeId = "route_id"
-            case routeName = "route_name"
-            case location
-            case likeNum = "like_num"
-            case bookmarkNum = "bookmark_num"
-            case images
-        }
 }

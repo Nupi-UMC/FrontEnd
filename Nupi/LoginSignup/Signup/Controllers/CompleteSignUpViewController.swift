@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class CompleteSignUpViewController: UIViewController {
     
@@ -23,22 +24,27 @@ class CompleteSignUpViewController: UIViewController {
         self.navigationItem.hidesBackButton = true //back button 숨기기
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false //스와이프로 뒤로 가는 제스쳐 비활성화
         
-        //전달받은 프로필 사진 표시
-        if let profileImage = receivedProfileImage {
-                completeSignUpView.profilePictureView.image = profileImage
-        } else {
-            completeSignUpView.profilePictureView.layer.backgroundColor = UIColor.bg.cgColor
-        }
-        
-        if let nickNameLabel = receivedNickName {
-            completeSignUpView.userNicknameLabel.text = nickNameLabel
-        }
+        // 전달받은 프로필 사진과 닉네임 설정
+        setupProfileInfo()
     }
     
     //전달받을 프로필이미지 변수
     public var receivedProfileImage: UIImage?
     //전달받을 닉네임 변수
     public var receivedNickName : String?
+    
+    // 프로필 정보 설정
+    private func setupProfileInfo() {
+        // 닉네임 표시
+        completeSignUpView.userNicknameLabel.text = receivedNickName ?? "닉네임"
+        
+        // 프로필 이미지 설정 (없으면 기본 이미지)
+        if let profileImage = receivedProfileImage {
+            completeSignUpView.profilePictureView.image = profileImage
+        } else {
+            completeSignUpView.profilePictureView.image = UIImage(named: "defaultProfile") // 기본 프로필 이미지
+        }
+    }
     
     
     @objc private func moveToLoginButtonTap(){
@@ -54,4 +60,5 @@ class CompleteSignUpViewController: UIViewController {
         let defaultImage = UIImage(named: "defaultProfile") ?? UIImage()
         completeSignUpView.profilePictureView.image = receivedProfileImage ?? defaultImage
     }
+
 }
