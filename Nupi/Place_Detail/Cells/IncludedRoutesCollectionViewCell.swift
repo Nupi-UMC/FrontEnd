@@ -203,49 +203,36 @@ class IncludedRoutesCollectionViewCell: UICollectionViewCell {
     }
     @objc private func likeButtonTapped() {
         guard let routeId = routeId else { return }
-        toggleLikeButtonUI()
-        
-        toggleLikeButtonUI()
-        // 🔹 현재 UI 상태 기반으로 좋아요 수 변경
-        let isCurrentlyLiked = (likeButton.image(for: .normal) == UIImage(named: "selectedLike"))
-        let updatedLikeNum = (isCurrentlyLiked ? -1 : 1) + (Int(likeCountLabel.text ?? "0") ?? 0)
-        likeCountLabel.text = "\(updatedLikeNum)"
         
         // 🔹 API 요청 실행
         toggleLike(routeId: routeId) { saved in
             DispatchQueue.main.async {
-                // 🔹 API 응답이 오면 최종 상태 반영
+                // 🔹 API 응답을 기반으로 UI 업데이트
                 let finalImage = saved ? "selectedLike" : "like_button"
                 self.likeButton.setImage(UIImage(named: finalImage), for: .normal)
                 
-                // 🔹 최종 좋아요 수 보정
-                let finalLikeCount = updatedLikeNum + (saved ? 0 : -1)
-                self.likeCountLabel.text = "\(finalLikeCount)"
+                // 🔹 API 응답을 기반으로 숫자 증감 반영
+                let currentLikeCount = Int(self.likeCountLabel.text ?? "0") ?? 0
+                let newLikeCount = saved ? currentLikeCount + 1 : max(currentLikeCount - 1, 0)
+                self.likeCountLabel.text = "\(newLikeCount)"
             }
         }
     }
-    
+
     @objc private func saveButtonTapped() {
         guard let routeId = routeId else { return }
-        
-        // 🔹 버튼 누를 때마다 UI 즉시 변경
-        toggleBookmarkButtonUI()
-        
-        // 🔹 현재 UI 상태 기반으로 북마크 수 변경
-        let isCurrentlySaved = (saveButton.image(for: .normal) == UIImage(named: "selectedBookmark"))
-        let updatedBookmarkNum = (isCurrentlySaved ? -1 : 1) + (Int(saveCountLabel.text ?? "0") ?? 0)
-        saveCountLabel.text = "\(updatedBookmarkNum)"
-        
+
         // 🔹 API 요청 실행
         toggleBookmark(routeId: routeId) { saved in
             DispatchQueue.main.async {
-                // 🔹 API 응답이 오면 최종 상태 반영
+                // 🔹 API 응답을 기반으로 UI 업데이트
                 let finalImage = saved ? "selectedBookmark" : "save_button"
                 self.saveButton.setImage(UIImage(named: finalImage), for: .normal)
                 
-                // 🔹 최종 북마크 수 보정
-                let finalBookmarkCount = updatedBookmarkNum + (saved ? 0 : -1)
-                self.saveCountLabel.text = "\(finalBookmarkCount)"
+                // 🔹 API 응답을 기반으로 숫자 증감 반영
+                let currentSaveCount = Int(self.saveCountLabel.text ?? "0") ?? 0
+                let newSaveCount = saved ? currentSaveCount + 1 : max(currentSaveCount - 1, 0)
+                self.saveCountLabel.text = "\(newSaveCount)"
             }
         }
     }

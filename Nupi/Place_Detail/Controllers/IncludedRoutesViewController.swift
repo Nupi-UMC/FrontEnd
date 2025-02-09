@@ -32,7 +32,7 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
             super.viewWillAppear(animated)
             
             if let storeId = storeId {
-                fetchRoutesContainingPlace(storeId: storeId) // 🔹 View가 보일 때 자동으로 데이터 로드
+                fetchRoutesContainingPlace(storeId: storeId) 
             }
         }
     func setStoreId(_ id: Int) {
@@ -68,9 +68,9 @@ class IncludedRoutesViewController: UIViewController, UICollectionViewDataSource
                 }
 
                 DispatchQueue.main.async {
-                    self.routes = fetchedRoutes // 받아온 데이터를 저장
+                    self.routes = fetchedRoutes.sorted { $0.routeId < $1.routeId } //routeId 기준 정렬
                     self.includedRoutesView.includedRoutesCollectionView.reloadData() // UI 업데이트
-                }
+                            }
 
             case .failure(let error):
                 print("장소 포함 경로 목록 조회 실패:", error.localizedDescription)
