@@ -15,10 +15,11 @@ class PlaceDetailInfoViewController: UIViewController {
     private var mapContainer: KMViewContainer?
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
         view.backgroundColor = .bg
         self.view = placeDetailInfoView
-        setupMapView()
+        //setupMapView()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openInstagram))
         placeDetailInfoView.instagramLabel.isUserInteractionEnabled = true
@@ -36,8 +37,12 @@ class PlaceDetailInfoViewController: UIViewController {
             self.placeDetailInfoView.locationLabel.text = placeDetail.address
             self.placeDetailInfoView.timeLabel.text = placeDetail.businessHours
             self.placeDetailInfoView.phoneLabel.text = placeDetail.number
-            let instagramID = self.extractInstagramID(from: placeDetail.snsUrl)
-            self.placeDetailInfoView.instagramLabel.text = instagramID
+            if let attributedInstagramID = self.extractInstagramID(from: placeDetail.snsUrl) {
+                self.placeDetailInfoView.instagramLabel.attributedText = attributedInstagramID
+            } else {
+                self.placeDetailInfoView.instagramLabel.text = nil
+            }
+                    
             self.instagramUrl = placeDetail.snsUrl
             
             let latitude = placeDetail.latitude ?? 37.5665
@@ -47,13 +52,19 @@ class PlaceDetailInfoViewController: UIViewController {
     }
 
     // 인스타 아이디 추출 함수
-    func extractInstagramID(from url: String) -> String? {
-        let pattern = "https://www\\.instagram\\.com/([^/#?]+)"
+    func extractInstagramID(from url: String) -> NSAttributedString? {
+        let pattern = "https://www\\.instagram\\.com/([a-zA-Z0-9_.]+)"
         let regex = try? NSRegularExpression(pattern: pattern, options: [])
         
         if let match = regex?.firstMatch(in: url, options: [], range: NSRange(location: 0, length: url.utf16.count)) {
             if let range = Range(match.range(at: 1), in: url) {
-                return String(url[range])
+                let username = "@\(url[range])" // 앞에 @ 추가
+                
+                // 🔹 언더라인 스타일 적용
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .underlineStyle: NSUnderlineStyle.single.rawValue
+                ]
+                return NSAttributedString(string: username, attributes: attributes)
             }
         }
         return nil

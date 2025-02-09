@@ -60,7 +60,11 @@ class PlacePhotosViewController: UIViewController, UICollectionViewDataSource {
     //서버에서 사진 리스트 가져오기
     private func fetchPlacePhotos(storeId: Int){
         let endpoint = "/api/stores/\(storeId)/images"
-        let token = ""
+
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
         
         APIClient.getRequest(endpoint: endpoint, token: token){ (result: Result<PlacePhotoResponse, AFError>) in
             switch result {
@@ -72,9 +76,12 @@ class PlacePhotosViewController: UIViewController, UICollectionViewDataSource {
                     return
                 }
                 DispatchQueue.main.async {
-                                    self.imageURLs = photos // 받아온 데이터를 저장
-                                    self.placePhotosView.placePhotosCollectionView.reloadData() // UI 업데이트
+                // 기존 데이터와 비교하여 다를 때만 업데이트
+                    if self.imageURLs != photos {
+                        self.imageURLs = photos
+                        self.placePhotosView.placePhotosCollectionView.reloadData()
                                 }
+                            }
             case .failure(let error) :
                 print("장소 사진 조회 실패: \(error.localizedDescription)")
             }

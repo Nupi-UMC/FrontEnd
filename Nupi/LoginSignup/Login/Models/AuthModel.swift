@@ -36,6 +36,20 @@ struct LogoutResponse : Decodable {
     //let result : null
 }
 
+//MARK : - 사용자 정보 조회
+struct UserInfoResponse : Decodable {
+    let isSuccess : Bool
+    let code : String
+    let message : String
+    let result : UserInfoResult?
+}
+
+struct UserInfoResult : Decodable {
+    let email : String
+    let nickname : String
+    let profile : String
+}
+
 class AuthService {
     static let shared = AuthService()
     
@@ -63,3 +77,4 @@ class AuthService {
             }
     }
 }
+

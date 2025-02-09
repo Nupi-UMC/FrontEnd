@@ -27,7 +27,7 @@ extension APIClient {
             "accept": "*/*",
             "Content-Type": "application/json"
         ]
-         if let accessToken = KeychainService.load(for: "access_token") {
+         if let accessToken = KeychainService.load(for: "accessToken") {
             headers["Authorization"] = "Bearer \(accessToken)"
         }
         return headers
