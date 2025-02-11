@@ -11,15 +11,14 @@ import KakaoMapsSDK
 class PlaceDetailInfoViewController: UIViewController {
     
     private var instagramUrl: String?
-    private var mapController: KMController?
-    private var mapContainer: KMViewContainer?
+    private var mapViewController: PlaceMapViewController!
 
     override func viewDidLoad() {
 
         super.viewDidLoad()
         view.backgroundColor = .bg
         self.view = placeDetailInfoView
-        //setupMapView()
+        //addMapView()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openInstagram))
         placeDetailInfoView.instagramLabel.isUserInteractionEnabled = true
@@ -45,9 +44,9 @@ class PlaceDetailInfoViewController: UIViewController {
                     
             self.instagramUrl = placeDetail.snsUrl
             
-            let latitude = placeDetail.latitude ?? 37.5665
-            let longitude = placeDetail.longitude ?? 126.9784
-            self.setMapLocation(latitude: latitude, longitude: longitude)
+            // 📌 하단 지도 위치 업데이트
+            //self.mapViewController.latitude = placeDetail.latitude ?? 37.5665
+            //self.mapViewController.longitude = placeDetail.longitude ?? 126.9784
         }
     }
 
@@ -76,33 +75,13 @@ class PlaceDetailInfoViewController: UIViewController {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
-    /// 지도 위치 설정 함수 (안정성 개선)
-    private func setMapLocation(latitude: Double, longitude: Double) {
-        guard let controller = mapController,
-              let mapView = controller.getView("detailMapView") as? KakaoMap else { return }
-        
-        let newPosition = MapPoint(longitude: longitude, latitude: latitude)
-        //let cameraUpdate = CameraUpdate(target: newPosition, zoomLevel: 17)
-        
-        //mapView.moveCamera(cameraUpdate)
-        
-        /* 마커 추가 (KMController를 사용)
-                let marker = MapMarker(markerId: "placeMarker", position: newPosition)
-                controller.addMarker(marker)*/
-    }
-
-    // Kakao 지도 초기화 함수
-    private func setupMapView() {
-        mapContainer = placeDetailInfoView.mapImageViewContainer
-        mapController = KMController(viewContainer: mapContainer!)
-        
-        print("Kakao Maps 엔진 준비 중...")
-        mapController?.prepareEngine()
-        
-        // 엔진 활성화 (지연 실행)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.mapController?.activateEngine()
-            print("Kakao Maps 엔진 활성화 완료")
-        }
+    
+    // 🔹 지도 뷰 추가
+    private func addMapView() {
+        mapViewController = PlaceMapViewController()
+        mapViewController.view.frame = placeDetailInfoView.mapImageViewContainer.bounds
+        placeDetailInfoView.mapImageViewContainer.addSubview(mapViewController.view)
+        self.addChild(mapViewController)
+        mapViewController.didMove(toParent: self)
     }
 }
