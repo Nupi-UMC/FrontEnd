@@ -61,14 +61,12 @@ class ActivityExplorationViewController: UIViewController {
     
     // 놀거리 탐색 API 호출
     private func fetchSearchStores() {
-        let memberId = 1 // 추후 토큰으로 대체 예정
         let latitude = 37.5142
         let longitude = 127.8983
         let category = self.selectedCategory
         let sort = self.selectedSort
         
         APIClient.fetchSearchStores(
-            memberId: memberId,
             latitude: latitude,
             longitude: longitude,
             category: category,

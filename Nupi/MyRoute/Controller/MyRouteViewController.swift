@@ -40,6 +40,7 @@ class MyRouteViewController: UIViewController {
     
     private func setupDelegate() {
         myRouteView.routeCollectionView.dataSource = self
+        myRouteView.routeCollectionView.delegate = self
     }
     
     // 네비게이션 바 커스텀 함수
@@ -79,17 +80,16 @@ class MyRouteViewController: UIViewController {
     }
     
     // 나의 경로 API 호출
-    private func fetchRoutes(myRoute: String) {
-        let memberId = 1 // 추후 토큰으로 대체 예정
-        
+    private func fetchRoutes(myRoute: String) {        
         APIClient.fetchMyRoutes(
-            memberId: memberId,
             myRoute: myRoute
         ) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let response):
                 if response.isSuccess {
-                    self?.myRoutes = response.result.routes.map {
+                    self.myRoutes = response.result.routes.map {
                         MyRouteModel(
                             routeId: $0.routeId,
                             routeName: $0.routeName,
@@ -97,15 +97,31 @@ class MyRouteViewController: UIViewController {
                             routePic: $0.routePic)
                     }
                     DispatchQueue.main.async {
-                        self?.myRouteView.routeCollectionView.reloadData()
+                        self.myRouteView.routeCollectionView.reloadData()
+                        self.updateEmptyState(isEmpty: self.myRoutes.isEmpty)
                     }
                 } else {
                     print("Error: \(response.message)")
+                    DispatchQueue.main.async {
+                        self.updateEmptyState(isEmpty: true)
+                    }
                 }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.updateEmptyState(isEmpty: true)
+                }
             }
         }
+    }
+    
+    private func updateEmptyState(isEmpty: Bool) {
+        myRouteView.emptyIconImageView.isHidden = !isEmpty
+        myRouteView.emptyLabel.isHidden = !isEmpty
+        myRouteView.routeCollectionView.isHidden = isEmpty
+        
+        let selectedIndex = myRouteView.segmentedControl.selectedSegmentIndex
+        myRouteView.emptyLabel.text = selectedIndex == 0 ? "생성된 경로가 없습니다." : "저장된 경로가 없습니다."
     }
     
     // MARK: - action
@@ -145,5 +161,18 @@ extension MyRouteViewController: UICollectionViewDataSource {
         cell.routeLocationLabel.text = route.routeLocation
         
         return cell
+    }
+}
+
+extension MyRouteViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedRouteId = myRoutes[indexPath.row].routeId // 선택된 경로 정보
+        let detailViewController = RouteDetailsViewController() // 경로 상세 페이지 VC
+        
+        // 선택된 경로 정보 전달
+        detailViewController.routeId = selectedRouteId
+        
+        // 화면 전환
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
