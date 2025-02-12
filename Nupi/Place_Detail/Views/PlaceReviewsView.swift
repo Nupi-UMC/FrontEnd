@@ -8,7 +8,7 @@
 import UIKit
 
 class PlaceReviewsView: UIView {
-
+    
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .bg
@@ -19,27 +19,62 @@ class PlaceReviewsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var placeReviewsCollectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
-       layout.scrollDirection = .vertical // 세로 스크롤
-       layout.minimumLineSpacing = 10 // 셀 간의 세로 간격
-       layout.itemSize = CGSize(width: 345, height: 207) // 셀 크기
-       
-       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       collectionView.register(PlaceReviewsCollectionViewCell.self, forCellWithReuseIdentifier: PlaceReviewsCollectionViewCell.identifier)
-       collectionView.backgroundColor = .clear // 배경색
-       collectionView.showsHorizontalScrollIndicator = false
-       collectionView.showsVerticalScrollIndicator = false
-       return collectionView
-   }()
+    let writeReviewButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("후기쓰기", for: .normal)
+        button.setTitleColor(.icon2, for: .normal)
+        button.titleLabel?.font = .caption2
+        
+        // 🔹 아이콘 추가
+        let image = UIImage(named: "pencil_icon")?.withRenderingMode(.alwaysOriginal)
+        button.setImage(image, for: .normal)
+        
+        // 🔹 이미지가 오른쪽에 오도록 설정
+        button.semanticContentAttribute = .forceRightToLeft
+        
+        // 🔹 텍스트와 이미지 사이 간격 2pt 설정
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
+
+        return button
+    }()
+    
+    let reviewsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "등록된 후기가 없어요."
+        label.textColor = .icon2
+        label.font = .body4
+        return label
+    }()
+    
+    private let lineView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .icon2
+        return view
+    }()
     
     private func addComponents(){
-        self.addSubview(placeReviewsCollectionView)
-        placeReviewsCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.width.equalToSuperview()
-            make.bottom.equalToSuperview().inset(20)
+        self.addSubview(writeReviewButton)
+        self.addSubview(lineView)
+        self.addSubview(reviewsLabel)
+        
+        writeReviewButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(20)
+        }
+        lineView.snp.makeConstraints { make in
+            make.top.equalTo(writeReviewButton.snp.bottom)
+            make.height.equalTo(1)
+            make.width.equalTo(64)
+            make.leading.equalTo(writeReviewButton)
+            make.trailing.equalToSuperview().inset(24)
+            
+        }
+        reviewsLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
         }
     }
-
+    
+    
 }
