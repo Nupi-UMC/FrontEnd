@@ -16,6 +16,7 @@ class RouteDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.view = routeDetailsView
         setupDelegate()
+        setupActions()
         
         if let routeId = routeId {
             print("Route ID: \(routeId)")
@@ -29,6 +30,11 @@ class RouteDetailsViewController: UIViewController {
     }()
 
     // MARK: - function
+    private func setupActions() {
+        routeDetailsView.likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        routeDetailsView.bookmarkButton.addTarget(self, action: #selector(bookmarkButtonDidTap), for: .touchUpInside)
+    }
+    
     private func setupDelegate() {
         routeDetailsView.routeImageCollectionView.dataSource = self
         routeDetailsView.routePlacesCollectionView.dataSource = self
@@ -66,6 +72,34 @@ class RouteDetailsViewController: UIViewController {
                 }
             case .failure(let error):
                 print("네트워크 오류: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // MARK: - action
+    @objc
+    private func likeButtonDidTap() {
+        guard let routeId = routeId else { return }
+        routeDetailsView.likeButton.isSelected.toggle()
+        
+        APIClient.updateLikeStatus(routeId: routeId) { [weak self] success in
+            guard let self = self else { return }
+            
+            if !success {
+                self.routeDetailsView.likeButton.isSelected.toggle()
+            }
+        }
+    }
+    
+    @objc private func bookmarkButtonDidTap() {
+        guard let routeId = routeId else { return }
+        routeDetailsView.bookmarkButton.isSelected.toggle()
+
+        APIClient.updateBookmarkStatus(routeId: routeId) { [weak self] success in
+            guard let self = self else { return }
+            
+            if !success {
+                self.routeDetailsView.bookmarkButton.isSelected.toggle()
             }
         }
     }

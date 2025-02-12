@@ -223,4 +223,59 @@ extension APIClient {
         let endpoint = "/api/routes/\(routeId)"
         getRequest(endpoint: endpoint, token: token, completion: completion)
     }
+    
+    // 경로 좋아요 API
+    static func updateLikeStatus(routeId: Int, completion: @escaping (Bool) -> Void) {
+        guard let token = KeychainHelper.shared.getToken() else {
+            print("Access Token 없음. 로그인 필요")
+            completion(false)
+            return
+        }
+
+        let endpoint = "/api/routes/\(routeId)/like"
+
+        postRequestWithoutParameters(endpoint: endpoint, token: token) { (result: Result<RouteLikeBookmarkResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("좋아요 상태 변경 성공")
+                    completion(true)
+                } else {
+                    print("좋아요 상태 변경 실패: \(response.message)")
+                    completion(false)
+                }
+            case .failure(let error):
+                print("좋아요 API 호출 실패: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
+    
+    // 경로 북마크 API
+    static func updateBookmarkStatus(routeId: Int, completion: @escaping (Bool) -> Void) {
+        guard let token = KeychainHelper.shared.getToken() else {
+            print("Access Token 없음. 로그인 필요")
+            completion(false)
+            return
+        }
+        
+        let endpoint = "/api/routes/\(routeId)/bookmark"
+        
+        postRequestWithoutParameters(endpoint: endpoint, token: token) { (result: Result<RouteLikeBookmarkResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("북마크 상태 변경 성공")
+                    completion(true)
+                } else {
+                    print("북마크 상태 변경 실패: \(response.message)")
+                    completion(false)
+                }
+            case .failure(let error):
+                
+                print("북마크 API 호출 실패: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
 }
