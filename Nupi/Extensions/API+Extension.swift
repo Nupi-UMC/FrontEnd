@@ -184,8 +184,8 @@ extension APIClient {
         myRoute: String,
         completion: @escaping (Result<MyRouteResponse, AFError>) -> Void)
     {
-        guard let token = KeychainHelper.shared.getToken() else {
-            print("Access Token 없음. 로그인 필요")
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
             return
         }
         
@@ -201,8 +201,8 @@ extension APIClient {
         sort: String,
         completion: @escaping (Result<StoreResponse, AFError>) -> Void)
     {
-        guard let token = KeychainHelper.shared.getToken() else {
-            print("Access Token 없음. 로그인 필요")
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
             return
         }
         
@@ -215,8 +215,8 @@ extension APIClient {
         routeId: Int,
         completion: @escaping (Result<RouteDetailsResponse, AFError>) -> Void)
     {
-        guard let token = KeychainHelper.shared.getToken() else {
-            print("Access Token 없음. 로그인 필요")
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
             return
         }
         
@@ -226,8 +226,8 @@ extension APIClient {
     
     // 경로 좋아요 API
     static func updateLikeStatus(routeId: Int, completion: @escaping (Bool) -> Void) {
-        guard let token = KeychainHelper.shared.getToken() else {
-            print("Access Token 없음. 로그인 필요")
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
             completion(false)
             return
         }
@@ -253,8 +253,8 @@ extension APIClient {
     
     // 경로 북마크 API
     static func updateBookmarkStatus(routeId: Int, completion: @escaping (Bool) -> Void) {
-        guard let token = KeychainHelper.shared.getToken() else {
-            print("Access Token 없음. 로그인 필요")
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
             completion(false)
             return
         }
