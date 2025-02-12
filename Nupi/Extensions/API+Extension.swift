@@ -21,15 +21,15 @@ extension APIClient {
 
     // MARK: Headers
     // 기본 json형식에 맞는 헤더 생성 함수
-     static func getHeaders(withToken token: String? = nil) -> HTTPHeaders {
+     static func getHeaders() -> HTTPHeaders {
         
          var headers: HTTPHeaders = [
             "accept": "*/*",
             "Content-Type": "application/json"
         ]
-        if let token = token {
-            headers["Authorization"] = "Bearer \(token)"
-         }
+         if let accessToken = KeychainService.load(for: "accessToken") {
+            headers["Authorization"] = "Bearer \(accessToken)"
+        }
         return headers
     }
     
@@ -49,7 +49,7 @@ extension APIClient {
     // 공통 GET 요청 함수
     static func getRequest<T: Decodable>(endpoint: String, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .get, headers: headers).responseDecodable(of: T.self) { response in
             handleResponse(response, endpoint: endpoint, completion: completion)
@@ -59,7 +59,7 @@ extension APIClient {
     // 공통 GET 요청 함수 (parameters 추가)
     static func getRequest<T: Decodable>(endpoint: String, parameters: [String: Any]? = nil, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: T.self) { response in
             handleResponse(response, endpoint: endpoint, completion: completion)
@@ -70,7 +70,7 @@ extension APIClient {
     // 공통 POST 요청 함수
     static func postRequest<T: Decodable, U: Encodable>(endpoint: String, parameters: U, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -80,7 +80,7 @@ extension APIClient {
     // 공통 POST 요청 함수 (parameters가 필요없을 때)
     static func postRequestWithoutParameters<T: Decodable>(endpoint: String, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .post, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -105,7 +105,7 @@ extension APIClient {
     static func putRequest<T: Decodable, U: Encodable>(endpoint: String, parameters: U, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .put, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -115,7 +115,7 @@ extension APIClient {
     // 공통 DELETE 요청 함수
     static func deleteRequest<T: Decodable>(endpoint: String, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .delete, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -126,7 +126,7 @@ extension APIClient {
     // 공통 PATCH 요청 함수 (parameters 추가)
     static func patchRequest<T: Decodable, U: Encodable>(endpoint: String, parameters: U, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .patch, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -136,7 +136,7 @@ extension APIClient {
     // 공통 PATCH 요청 함수 (parmeters가 필요없을때)
     static func patchRequestWithoutParameters<T: Decodable>(endpoint: String, token: String? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
         let url = "\(baseURL)\(endpoint)"
-        let headers = getHeaders(withToken: token)
+        let headers = getHeaders()
         
         AF.request(url, method: .patch, headers: headers).responseDecodable(of: T.self) { response in
             completion(response.result)
@@ -164,7 +164,7 @@ extension APIClient {
                         print("새로운 Access Token 발급 완료. API 재요청")
                         
                         // 새로운 토큰으로 재요청
-                        let headers = getHeaders(withToken: newToken)
+                        let headers = getHeaders()
                         AF.request("\(baseURL)\(endpoint)", method: .get, parameters: parameters, headers: headers)
                             .responseDecodable(of: T.self) { retryResponse in
                                 completion(retryResponse.result)
