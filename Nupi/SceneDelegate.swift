@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator.start()
         
         //window?.rootViewController = navigationController
-        window?.rootViewController = PlaceDetailViewController()
+        window?.rootViewController = WhereToPlayViewController()
         window?.makeKeyAndVisible()
     }
 

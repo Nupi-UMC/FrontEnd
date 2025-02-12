@@ -200,4 +200,21 @@ extension APIClient {
         let endpoint = "/api/home/\(memberId)/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
         getRequest(endpoint: endpoint, completion: completion)
     }
+    
+    // 뭐하고 놀지? API
+    // 어디서 놀지? API
+    static func fetchWhereToPlay(
+        //memberId: Int,
+        regionId: Int,
+        latitude: Double,
+        longitude: Double,
+        category: Int?,
+        sort: String?,
+        completion: @escaping (Result<StoreResponse, AFError>) -> Void)
+    {
+        let endpoint = "/api/home/\(regionId)?latitude=\(latitude)&longitude=\(longitude)&category=\(category)&sort=\(sort)"
+        
+        print("[DEBUG] 요청 URL: \(endpoint)")
+        getRequest(endpoint: endpoint, completion: completion)
+    }
 }
