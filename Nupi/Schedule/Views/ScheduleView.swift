@@ -22,9 +22,34 @@ class ScheduleView: UIView {
         view.isHidden = true
         return view
     }()
-
     //일정 카드 (ScheduleCell을 직접 사용)
     let scheduleCell = ScheduleCell()
+    
+    let addRouteButton: UIButton = {
+        
+        var config = UIButton.Configuration.filled()
+        config.title = "일정에 경로 추가"
+        
+        config.baseForegroundColor = .line1
+        config.baseBackgroundColor = .icon1
+        
+        // 폰트 설정
+        let customFont = UIFont.body3
+        config.attributedTitle = AttributedString("일정에 경로 추가", attributes: AttributeContainer([.font: customFont]))
+        
+        config.image = UIImage(named: "addRoute")
+        config.imagePlacement = .leading
+        config.imagePadding = 8
+        
+        let button = UIButton(configuration: config)
+        
+        button.layer.cornerRadius = 19
+        button.layer.borderWidth = 1.25
+        button.layer.borderColor = UIColor.bg.cgColor
+        button.clipsToBounds = true
+        
+        return button
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,14 +62,28 @@ class ScheduleView: UIView {
 
     private func setupView() {
         backgroundColor = .bg
+        
+        addSubview(addRouteButton)
+        addRouteButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(665)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(40)
+            make.width.equalTo(173)
+        }
 
         setupMenuButton()
         setupHeaderLabel()
         setupCalendar()
         setupEventView()
     }
+    
+    // `eventView`가 보이면 버튼 숨기기 / 없으면 버튼 다시 보이기
+    func updateEventViewVisibility(isEventVisible: Bool) {
+        eventView.isHidden = !isEventVisible
+        addRouteButton.isHidden = isEventVisible
+    }
 
-    /// 햄버거 버튼 UI 설정 (UIButton 사용)
+    // 햄버거 버튼 UI 설정 (UIButton 사용)
     private func setupMenuButton() {
         menuButton.setImage(UIImage(named: "hamburger"), for: .normal)  // "hamburger" 이미지 사용
         menuButton.imageView?.contentMode = .scaleAspectFit  // 이미지 비율 유지
@@ -129,17 +168,17 @@ class ScheduleView: UIView {
         }
     }
     //`eventView` 안에 `ScheduleCell` 추가
-        private func setupEventView() {
-            addSubview(eventView)
-            eventView.addSubview(scheduleCell)
-
-            eventView.snp.makeConstraints { make in
-                make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(191)
-            }
-            scheduleCell.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
+    private func setupEventView() {
+        addSubview(eventView)
+        eventView.addSubview(scheduleCell)
+        
+        eventView.snp.makeConstraints { make in
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(191)
         }
+        scheduleCell.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
 }
