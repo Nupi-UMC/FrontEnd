@@ -22,7 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator.start()
         
         window?.rootViewController = navigationController
-//        window?.rootViewController = PlaceDetailViewController()
+        //window?.rootViewController = PlaceDetailViewController()
+        //window?.rootViewController = ScheduleViewController()
         window?.makeKeyAndVisible()
     }
 
