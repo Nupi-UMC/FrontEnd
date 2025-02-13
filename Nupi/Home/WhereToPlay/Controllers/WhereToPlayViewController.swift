@@ -48,7 +48,6 @@ class WhereToPlayViewController: UIViewController {
     
     // 어디서 놀지? API 호출
       private func fetchWhereToPlay() {
-          //let memberId = 1 // 추후 토큰으로 대체 예정
           let regionId = 1
           let latitude = 37.5541
           let longitude = 127.4612
@@ -56,7 +55,6 @@ class WhereToPlayViewController: UIViewController {
           let sort = self.selectedSort
 
           APIClient.fetchWhereToPlay(
-              //memberId: memberId,
               regionId: regionId,
               latitude: latitude,
               longitude: longitude,

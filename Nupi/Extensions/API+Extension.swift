@@ -142,6 +142,7 @@ extension APIClient {
             completion(response.result)
         }
     }
+    
     private static func handleResponse<T: Decodable>(
             _ response: AFDataResponse<T>,
             endpoint: String,
@@ -180,25 +181,102 @@ extension APIClient {
 extension APIClient {
     // 나의 경로 API
     static func fetchMyRoutes(
-        memberId: Int,
         myRoute: String,
         completion: @escaping (Result<MyRouteResponse, AFError>) -> Void)
     {
-        let endpoint = "/api/home/\(memberId)/route?myRoute=\(myRoute)"
-        getRequest(endpoint: endpoint, completion: completion)
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+        
+        let endpoint = "/api/home/route?myRoute=\(myRoute)"
+        getRequest(endpoint: endpoint, token: token, completion: completion)
     }
     
     // 놀거리 탐색 API
     static func fetchSearchStores(
-        memberId: Int,
         latitude: Double,
         longitude: Double,
         category: Int,
         sort: String,
         completion: @escaping (Result<StoreResponse, AFError>) -> Void)
     {
-        let endpoint = "/api/home/\(memberId)/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
-        getRequest(endpoint: endpoint, completion: completion)
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+        
+        let endpoint = "/api/home/search?latitude=\(latitude)&longitude=\(latitude)&category=\(category)&sort=\(sort)"
+        getRequest(endpoint: endpoint, token: token, completion: completion)
+    }
+    
+    // 경로 세부 조회 API
+    static func fetchRouteDetails(
+        routeId: Int,
+        completion: @escaping (Result<RouteDetailsResponse, AFError>) -> Void)
+    {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+        
+        let endpoint = "/api/routes/\(routeId)"
+        getRequest(endpoint: endpoint, token: token, completion: completion)
+    }
+    
+    // 경로 좋아요 API
+    static func updateLikeStatus(routeId: Int, completion: @escaping (Bool) -> Void) {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            completion(false)
+            return
+        }
+
+        let endpoint = "/api/routes/\(routeId)/like"
+
+        postRequestWithoutParameters(endpoint: endpoint, token: token) { (result: Result<RouteLikeBookmarkResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("좋아요 상태 변경 성공")
+                    completion(true)
+                } else {
+                    print("좋아요 상태 변경 실패: \(response.message)")
+                    completion(false)
+                }
+            case .failure(let error):
+                print("좋아요 API 호출 실패: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
+    
+    // 경로 북마크 API
+    static func updateBookmarkStatus(routeId: Int, completion: @escaping (Bool) -> Void) {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            completion(false)
+            return
+        }
+        
+        let endpoint = "/api/routes/\(routeId)/bookmark"
+        
+        postRequestWithoutParameters(endpoint: endpoint, token: token) { (result: Result<RouteLikeBookmarkResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("북마크 상태 변경 성공")
+                    completion(true)
+                } else {
+                    print("북마크 상태 변경 실패: \(response.message)")
+                    completion(false)
+                }
+            case .failure(let error):
+                
+                print("북마크 API 호출 실패: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
     }
     
     // 뭐하고 놀지? API
@@ -206,14 +284,18 @@ extension APIClient {
         groupName: String,
         completion: @escaping (Result<StoreResponse, AFError>) -> Void)
     {
-        let endpoint = "/api/home/\(groupName))"
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+            
+        let endpoint = "/api/home/group/\(groupName)"
         
         print("[DEBUG] 요청 URL: \(endpoint)")
-        getRequest(endpoint: endpoint, completion: completion)
+        getRequest(endpoint: endpoint, token: token, completion: completion)
     }
     // 어디서 놀지? API
     static func fetchWhereToPlay(
-        //memberId: Int,
         regionId: Int,
         latitude: Double,
         longitude: Double,
@@ -221,9 +303,13 @@ extension APIClient {
         sort: String,
         completion: @escaping (Result<StoreResponse, AFError>) -> Void)
     {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
         let endpoint = "/api/home/\(regionId)?latitude=\(latitude)&longitude=\(longitude)&category=\(category)&sort=\(sort)"
         
         print("[DEBUG] 요청 URL: \(endpoint)")
-        getRequest(endpoint: endpoint, completion: completion)
+        getRequest(endpoint: endpoint, token: token, completion: completion)
     }
 }

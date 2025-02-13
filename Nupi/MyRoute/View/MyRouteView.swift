@@ -71,6 +71,15 @@ class MyRouteView: UIView {
         $0.register(RouteCollectionViewCell.self, forCellWithReuseIdentifier: RouteCollectionViewCell.identifier)
     }
     
+    let emptyIconImageView = UIImageView().then {
+        $0.image = .emptyFolderIcon
+    }
+    
+    let emptyLabel = UILabel().then {
+        $0.font = .body4
+        $0.textColor = .icon2
+    }
+    
     // 세그먼트 밑줄 위치 업데이트 함수
     func updateUnderlinePosition(selectedIndex: Int) {
         let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
@@ -91,6 +100,8 @@ class MyRouteView: UIView {
         contentView.addSubview(segmentedControl)
         contentView.addSubview(segmentUnderlineView)
         contentView.addSubview(routeCollectionView)
+        contentView.addSubview(emptyIconImageView)
+        contentView.addSubview(emptyLabel)
         
         // 레이아웃 설정
         scrollView.snp.makeConstraints {
@@ -118,6 +129,17 @@ class MyRouteView: UIView {
             $0.top.equalTo(segmentUnderlineView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(500)
+        }
+        
+        emptyIconImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(40)
+            $0.height.equalTo(32)
+        }
+        
+        emptyLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(emptyIconImageView.snp.bottom).offset(18)
         }
     }
 }

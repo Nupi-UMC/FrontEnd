@@ -17,6 +17,7 @@ class WhatToPlayViewController: UIViewController {
         
         setupDataSource()
         setupNavigationBar()
+        fetchWhatToPlay()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +53,7 @@ class WhatToPlayViewController: UIViewController {
     
     // 뭐하고 놀지? API 호출
     private func fetchWhatToPlay() {
-        let groupName = "izakaya"
+        let groupName = "일식당"
         
         APIClient.fetchWhatToPlay(
             groupName: groupName
