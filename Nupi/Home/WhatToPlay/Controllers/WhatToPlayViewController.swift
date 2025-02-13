@@ -9,6 +9,7 @@ import UIKit
 import Then
 
 class WhatToPlayViewController: UIViewController {
+    private var stores: [StoreModel] = [] // 장소 정보 배열
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,15 +50,52 @@ class WhatToPlayViewController: UIViewController {
         self.navigationItem.titleView = titleLabel
     }
     
-    // MARK: - Action
+    // 뭐하고 놀지? API 호출
+    private func fetchWhatToPlay() {
+        let groupName = "izakaya"
+        
+        APIClient.fetchWhatToPlay(
+            groupName: groupName
+        ) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    self?.stores = response.result.stores.map {
+                        StoreModel(
+                            storeId: $0.storeId,
+                            storeName: $0.storeName,
+                            storePic: $0.storePic,
+                            storePlace: $0.storePlace,
+                            saved: $0.saved
+                        )
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self?.whatToPlayView
+                            .hotPlaceCollectionView
+                            .reloadData()
+                    }
+                } else {
+                    print("API 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("네트워크 오류: \(error.localizedDescription)")
+                if let responseCode = error.responseCode {
+                    print("HTTP 상태 코드: \(responseCode)")
+                }
+            }
+        }
+    }
 }
 
+// MARK: - Action
+    
 extension WhatToPlayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == whatToPlayView.placeCollectionView{
             return IzakayaModel.dummy().count
         } else if collectionView == whatToPlayView.hotPlaceCollectionView{
-            return HotIzakayaModel.dummy().count
+            return stores.count
         }
         return 0
     }
@@ -78,10 +116,15 @@ extension WhatToPlayViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HotIzakayaCollectionViewCell.identifier, for: indexPath) as? HotIzakayaCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            let list = HotIzakayaModel.dummy()
-            cell.placeImageView.image = list[indexPath.row].image
-            cell.placeLabel.text = list[indexPath.row].place
-            cell.stationLabel.text = list[indexPath.row].station
+            let store = stores[indexPath.row]
+            
+            if let storePic = store.storePic, let url = URL(string: storePic) {
+                cell.placeImageView.kf.setImage(with: url)
+            } else {
+                cell.placeImageView.image = UIImage(named: "banner_image1") // 기본 이미지 설정
+            }
+            cell.placeLabel.text = store.storeName
+            cell.stationLabel.text = store.storePlace
             return cell
         }
         return UICollectionViewCell()

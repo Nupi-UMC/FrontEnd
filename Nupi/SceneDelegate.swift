@@ -16,13 +16,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
+        
         // UINavigationController를 사용하여 루트 설정
         let navigationController = UINavigationController()
         let coordinator = MainCoordinator(navigationController: navigationController)
         coordinator.start()
+         
         
         //window?.rootViewController = navigationController
-        window?.rootViewController = WhereToPlayViewController()
+        window?.rootViewController = WhatToPlayViewController()
         window?.makeKeyAndVisible()
     }
 
