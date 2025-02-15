@@ -33,7 +33,9 @@ class MyPageView: UIView {
     // 버튼 영역
     
     // 상단 구분선
-    
+    private let separatorLine = UIView().then{
+        $0.backgroundColor = .line1
+    }
     
     // 메뉴 영역
     
@@ -41,12 +43,18 @@ class MyPageView: UIView {
     // MARK: 컴포넌트 추가
     private func setViews(){
         addSubview(profileCollectionView)
-        //addSubview(separatorLine)
+        addSubview(separatorLine)
         
         profileCollectionView.snp.makeConstraints{
             $0.top.equalTo(safeAreaLayoutGuide).offset(11)
             $0.left.right.equalToSuperview().inset(24)
             $0.height.equalTo(80)
+        }
+        
+        separatorLine.snp.makeConstraints{
+            $0.top.equalTo(profileCollectionView.snp.bottom).offset(113)
+            $0.width.equalTo(UIScreen.main.bounds.width)
+            $0.height.equalTo(1)
         }
     }
 }
