@@ -70,6 +70,9 @@ class MyPageView: UIView {
     }
     
     // 하단 구분선
+    private let separatorLine2 = UIView().then{
+        $0.backgroundColor = .line1
+    }
     
     // MARK: 컴포넌트 추가
     private func setViews(){
@@ -79,6 +82,7 @@ class MyPageView: UIView {
         addSubview(menuButtonBackground)
         addSubview(menuButtonCollectionView)
         addSubview(settingMenuCollectionView)
+        addSubview(separatorLine2)
         
         titleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(71)
@@ -112,9 +116,16 @@ class MyPageView: UIView {
         }
         
         settingMenuCollectionView.snp.makeConstraints{
-            $0.top.equalTo(separatorLine.snp.top).offset(40)
+            $0.top.equalTo(separatorLine.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview().inset(24)
             $0.height.equalTo(227)
         }
+        
+        separatorLine2.snp.makeConstraints{
+            $0.top.equalTo(settingMenuCollectionView.snp.bottom).offset(56)
+            $0.width.equalTo(UIScreen.main.bounds.width)
+            $0.height.equalTo(1)
+        }
+        
     }
 }
