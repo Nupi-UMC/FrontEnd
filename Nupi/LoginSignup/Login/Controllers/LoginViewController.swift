@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class LoginViewController: UIViewController {
 
@@ -22,6 +23,7 @@ class LoginViewController: UIViewController {
         self.view = loginView
         loginView.loginButton.addTarget(self, action: #selector(loginButtonTap), for: .touchUpInside)
         loginView.signUpButton.addTarget(self, action: #selector(signUpButtonTap), for: .touchUpInside)
+        //둘러보기 버튼 동작
         loginView.browseButton.addTarget(self, action: #selector(browseButtonTap), for: .touchUpInside)
         // 비밀번호 입력값 변경 감지
         loginView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)
@@ -67,7 +69,8 @@ class LoginViewController: UIViewController {
     @objc
     private func loginButtonTap(){
         validatePasswordInfo()
-        coordinator?.showBaseViewController()
+        fetchLogin()
+        //self.coordinator?.showBaseViewController()
     }
     
     //회원가입 버튼 동작
@@ -76,9 +79,50 @@ class LoginViewController: UIViewController {
         let signUpVC = BeginSignUpViewController()
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
-    /// 둘러보기 버튼 동작
+    //둘러보기 버튼 동작
     @objc private func browseButtonTap() {
-        let tabBarVC = BaseViewController()
-        self.navigationController?.setViewControllers([tabBarVC], animated: true)
+        let homeVC = HomeViewController()
+        self.navigationController?.pushViewController(homeVC, animated: true)
+    }
+    
+    private func fetchLogin() {
+        let parameters = LoginRequest(
+            email: loginView.emailTextField.text ?? "",
+            password: loginView.passwordTextField.text ?? ""
+        )
+
+        APIClient.postRequest(endpoint: "/api/auth/login", parameters: parameters) { (result: Result<LoginResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess, let loginResult = response.result {
+                    print("로그인 성공: \(response.message)")
+
+                    // Access Token & Refresh Token을 Keychain에 저장
+                    KeychainService.save(value: loginResult.accessToken, for: "accessToken")
+                    KeychainService.save(value: loginResult.refreshToken, for: "refreshToken")
+                    // 저장된 토큰 확인
+                    if let savedAccessToken = KeychainService.load(for: "accessToken") {
+                        print("저장된 Access Token: \(savedAccessToken)")
+                    } else {
+                        print("Access Token 저장 실패")
+                    }
+
+                    if let savedRefreshToken = KeychainService.load(for: "refreshToken") {
+                        print("저장된 Refresh Token: \(savedRefreshToken)")
+                    } else {
+                        print("Refresh Token 저장 실패")
+                    }
+
+                    DispatchQueue.main.async {
+                        // 메인 화면으로 이동
+                        self.coordinator?.showBaseViewController()
+                    }
+                } else {
+                    print(" 로그인 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("API 호출 중 오류 발생: \(error.localizedDescription)")
+            }
+        }
     }
 }

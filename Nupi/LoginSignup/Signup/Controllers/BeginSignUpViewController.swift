@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class BeginSignUpViewController: UIViewController {
     
@@ -34,6 +35,7 @@ class BeginSignUpViewController: UIViewController {
     @objc private func continueButtonTap(){
         let emailVerifyVC = VerifyEmailViewController()
         emailVerifyVC.email = self.email // 이메일 전달
+        requestVerificationCodeFromServer(email: email)
         self.navigationController?.pushViewController(emailVerifyVC, animated: true)
         print("데이터 전송 = email : \(email)")
     }
@@ -62,5 +64,31 @@ class BeginSignUpViewController: UIViewController {
         beginSignUpView.continueButton.isEnabled = isEnabled
         beginSignUpView.continueButton.backgroundColor = isEnabled ? .blue3 : .grey2 //유효하면 blue3
         beginSignUpView.continueButton.setTitleColor(isEnabled ? .white : .icon2, for: .normal) // 유효할 때 흰색
+    }
+    
+    //서버로 이메일 전달해서 코드 요청
+    private func requestVerificationCodeFromServer(email: String) {
+        let parameters = EmailVerificationCodeRequest(email: email)
+        
+        APIClient.postRequest(endpoint: "/api/auth/requestVerification", parameters: parameters) { (result: Result<EmailVerificationCodeResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("인증 요청 보내짐: \(email)")
+                    DispatchQueue.main.async {
+                    }
+                } else {
+                    print("인증 요청 실패: \(response.message)")
+                    DispatchQueue.main.async {
+                        //self.handleErrorMessage(message: response.message ?? "요청에 실패했습니다.")
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    //self.handleErrorMessage(message: "네트워크 오류가 발생했습니다. 다시 시도해주세요.")
+                }
+            }
+        }
     }
 }

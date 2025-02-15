@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class VerifyEmailViewController: UIViewController {
     
@@ -36,17 +37,98 @@ class VerifyEmailViewController: UIViewController {
     private var limitTime: Int = 300 // 초기 5분
     
     @objc private func verifyEmailButtonTap(){
-        let createPasswordVC = CreatePasswordViewController()
-        createPasswordVC.email = self.email! // 이메일 전달
-        self.navigationController?.pushViewController(createPasswordVC, animated: true)
+        guard let email = self.email, !email.isEmpty else {
+                print("이메일이 입력되지 않았습니다.")
+                return
+            }
+        //API 호출
+        checkVerificationCodeFromServer(email: email, verificationCode: verifyEmailView.verificationCodeTextField.text!)
+    }
+    
+    
+    // 인증번호 형식 검증 함수 (숫자 6자리 여부 확인)
+    private func validateVerificationCodeFormat(_ code: String) -> Bool {
+        let codeRegex = "^[0-9]{6}$" // 6자리 숫자 정규식
+        let predicate = NSPredicate(format: "SELF MATCHES %@", codeRegex)
+        return predicate.evaluate(with: code)
+    }
+    
+    //서버에서 인증코드 확인
+    private func checkVerificationCodeFromServer(email: String, verificationCode: String) {
+        guard validateVerificationCodeFormat(verificationCode) else {
+                print("올바른 인증번호를 입력해주세요.")
+                return
+            }
+
+        let parameters = EmailVerificationCodeConfirmRequest(email: email, verificationCode: verificationCode)
+        
+        // 디버깅용 JSON 출력
+        if let jsonData = try? JSONEncoder().encode(parameters),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("Request Body: \(jsonString)")
+        }
+
+        // API 요청
+        APIClient.postRequest(endpoint: "/api/auth/verifyCode", parameters: parameters) {
+            (result: Result<EmailVerificationCodeConfirmResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("인증 성공")
+                    if let verificationId = response.result?.verificationId {
+                        print("verificationId: \(verificationId)") // 디버깅용
+                        DispatchQueue.main.async {
+                            let createPasswordVC = CreatePasswordViewController()
+                            createPasswordVC.email = email
+                            createPasswordVC.verificationId = verificationId
+                            self.navigationController?.pushViewController(createPasswordVC, animated: true)
+                        }
+                    }
+                        
+                } else {
+                    print("인증 요청 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
     
     @objc private func resendVerificationCodeButtonTap() {
-        // 재발송 로직
+        guard let email = self.email, !email.isEmpty else {
+            print("이메일이 입력되지 않았습니다.")
+            return }
+        requestVerificationCodeFromServer(email: email)
         print("인증번호 재발송")
         // 토스트 메시지 표시
         showToastPopup()
         resetTimer()
+    }
+    
+    //서버로 코드 요청
+    private func requestVerificationCodeFromServer(email: String) {
+        let parameters = EmailVerificationCodeRequest(email: email)
+        
+        APIClient.postRequest(endpoint: "/api/auth/requestVerification", parameters: parameters) { (result: Result<EmailVerificationCodeResponse, AFError>) in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    print("인증 요청 보내짐: \(email)")
+                    DispatchQueue.main.async {
+                    }
+                } else {
+                    print("인증 요청 실패: \(response.message)")
+                    DispatchQueue.main.async {
+                        self.errorUpdateUI(for: self.verifyEmailView.verificationCodeTextField, errorLabel: self.verifyEmailView.codeErrorLabel, message: response.message, isValid: false)
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.errorUpdateUI(for: self.verifyEmailView.verificationCodeTextField, errorLabel: self.verifyEmailView.codeErrorLabel, message: "서버 오류가 발생했습니다. 다시 시도해주세요.", isValid: false)
+                }
+            }
+        }
     }
     
     //textfield에 값 들어오는지 확인하는 함수
@@ -57,7 +139,7 @@ class VerifyEmailViewController: UIViewController {
     //인증번호 일치하는지 확인하는 함수
     @objc private func validateCodeInfo(){
         let codeText = verifyEmailView.verificationCodeTextField.text ?? ""
-        let isValidCode = !codeText.isEmpty // 비어있지 않으면 true
+        let isValidCode = validateVerificationCodeFormat(codeText) // 인증번호 형식 검증
         updateEmailVerifyButton(isEnabled: isValidCode)
         errorUpdateUI(for: verifyEmailView.verificationCodeTextField, errorLabel: verifyEmailView.codeErrorLabel, message: "인증번호를 확인해주세요.", isValid: isValidCode)
     }

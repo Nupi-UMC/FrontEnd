@@ -44,6 +44,7 @@ class CreatePasswordViewController: UIViewController, AddProfilePictureViewContr
     }
     
     var email: String = ""
+    var verificationId : Int = 0
     
     @objc private func passwordTextFieldDidChange(_ textField: UITextField) {
         validatePasswordInfo()
@@ -101,6 +102,7 @@ class CreatePasswordViewController: UIViewController, AddProfilePictureViewContr
         addProfilePictureVC.delegate = self // Delegate 설정
         addProfilePictureVC.email = email
         addProfilePictureVC.password = password
+        addProfilePictureVC.verificationId = self.verificationId
         self.navigationController?.pushViewController(addProfilePictureVC, animated: true)
         print("데이터 전송 = email : \(email), password : \(password)")
         }
