@@ -14,7 +14,6 @@ class MyPageViewController: UIViewController {
         self.view = myPageView
         setupActions()
         setupDelegates()
-        setupNavigationBar()
     }
     
     private lazy var myPageView: MyPageView = {
@@ -28,22 +27,6 @@ class MyPageViewController: UIViewController {
     
     private func setupDelegates() {
         myPageView.profileCollectionView.dataSource = self
-    }
-    
-    // 네비게이션바 추가
-    private func setupNavigationBar() {
-        self.navigationController?.navigationBar.barTintColor = .naviBar
-        self.navigationController?.navigationBar.tintColor = .icon1
-        self.navigationController?.navigationBar.topItem?.title = ""
-        
-        let titleLabel = UILabel().then {
-            $0.text = "MY Page"
-            $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
-            $0.textColor = .icon1
-        }
-        
-        self.navigationItem.titleView = titleLabel
-        self.navigationItem.hidesBackButton = true //네비게이션바 뒤로가기버튼 숨기기
     }
 }
     
