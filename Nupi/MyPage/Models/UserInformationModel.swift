@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+struct UserInformationResponse: Decodable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: UserInformationModel
+}
+
+struct UserInformationModel: Decodable {
+    let email: String
+    let nickname: String
+    let profile: String?
+}

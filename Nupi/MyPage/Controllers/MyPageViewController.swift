@@ -8,12 +8,14 @@
 import UIKit
 
 class MyPageViewController: UIViewController {
+    private var userInfo: UserInformationModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = myPageView
         setupActions()
         setupDelegates()
+        fetchUserInfo()
     }
     
     private lazy var myPageView: MyPageView = {
@@ -31,13 +33,43 @@ class MyPageViewController: UIViewController {
         //myPageView.menuButtonCollectionView.delegate = self
         myPageView.settingMenuCollectionView.dataSource = self
     }
+    
+    // 사용자 정보 API 호출
+    private func fetchUserInfo() {
+        APIClient.fetchUserInfo(
+        ) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    self?.userInfo = UserInformationModel(
+                        email: response.result.email,
+                        nickname: response.result.nickname,
+                        profile: response.result.profile
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self?.myPageView
+                            .profileCollectionView
+                            .reloadData()
+                    }
+                } else {
+                    print("API 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("네트워크 오류: \(error.localizedDescription)")
+                if let responseCode = error.responseCode {
+                    print("HTTP 상태 코드: \(responseCode)")
+                }
+            }
+        }
+    }
 }
     
 
 extension MyPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == myPageView.profileCollectionView{
-            return 1
+            return userInfo == nil ? 0 : 1
         } else if collectionView == myPageView.menuButtonCollectionView{
             return MenuButtonModel.dummy().count
         } else if collectionView == myPageView.settingMenuCollectionView{
@@ -51,11 +83,13 @@ extension MyPageViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCollectionViewCell.identifier, for: indexPath) as? ProfileCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            
-            cell.profileImageView.image = UIImage(named: "steady_popular_spot_image1") // 기본 프로필 이미지
-            cell.nicknameLabel.text = "스눕도기독"
-            cell.emailLabel.text = "arcticmon..."
-            
+            if let profileURL = userInfo?.profile, let url = URL(string: profileURL) {
+                cell.profileImageView.kf.setImage(with: url)
+            } else {
+                cell.profileImageView.image = UIImage(named: "banner_image1")
+            }
+            cell.nicknameLabel.text = userInfo?.nickname ?? "닉네임 없음"
+            cell.emailLabel.text = userInfo?.email ?? "이메일 없음"
             return cell
         } else if collectionView == myPageView.menuButtonCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuButtonCollectionViewCell.identifier, for: indexPath) as? MenuButtonCollectionViewCell else {
