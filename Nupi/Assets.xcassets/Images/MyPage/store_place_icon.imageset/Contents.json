@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "store_place_icon.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

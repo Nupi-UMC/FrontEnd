@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Then
 
 class MyPageView: UIView {
 
@@ -28,7 +29,7 @@ class MyPageView: UIView {
         $0.font = UIFont(name: "WantedSans-Medium", size: 17)
     }
     
-    // 프로필 영역
+    // 프로필 컬렉션뷰
     let profileCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
         $0.estimatedItemSize = .init(width: 345, height: 80)}).then{
             $0.backgroundColor = .clear
@@ -36,21 +37,38 @@ class MyPageView: UIView {
             $0.register(ProfileCollectionViewCell.self, forCellWithReuseIdentifier: ProfileCollectionViewCell.identifier)
         }
     
-    // 버튼 영역
+    // 메뉴 버튼 컬렉션뷰
+    private let menuButtonBackground = UIView().then {
+        $0.backgroundColor = .line1
+        $0.layer.cornerRadius = 15
+    }
+
+    public let menuButtonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .horizontal
+        $0.estimatedItemSize = .init(width: 49, height: 51)
+        $0.minimumLineSpacing = 124
+    }).then {
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = false
+        $0.register(MenuButtonCollectionViewCell.self, forCellWithReuseIdentifier: MenuButtonCollectionViewCell.identifier)
+    }
     
     // 상단 구분선
     private let separatorLine = UIView().then{
         $0.backgroundColor = .line1
     }
     
-    // 메뉴 영역
+    // 메뉴 컬렉션뷰
     
     // 하단 구분선
+    
     // MARK: 컴포넌트 추가
     private func setViews(){
         addSubview(titleLabel)
         addSubview(profileCollectionView)
         addSubview(separatorLine)
+        addSubview(menuButtonBackground)
+        addSubview(menuButtonCollectionView)
         
         titleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(71)
@@ -64,8 +82,21 @@ class MyPageView: UIView {
             $0.height.equalTo(80)
         }
         
+        menuButtonBackground.snp.makeConstraints{
+            $0.top.equalTo(profileCollectionView.snp.bottom).offset(14)
+            $0.horizontalEdges.equalToSuperview().inset(24)
+            $0.height.equalTo(79)
+        }
+        
+        menuButtonCollectionView.snp.makeConstraints {
+            $0.top.equalTo(menuButtonBackground.snp.top).offset(14)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(229)
+            $0.height.equalTo(51)
+        }
+        
         separatorLine.snp.makeConstraints{
-            $0.top.equalTo(profileCollectionView.snp.bottom).offset(113)
+            $0.top.equalTo(menuButtonBackground.snp.bottom).offset(20)
             $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(1)
         }

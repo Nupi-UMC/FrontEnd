@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Then
 
 class ProfileCollectionViewCell: UICollectionViewCell {
     static let identifier = "ProfileCollectionViewCell"
