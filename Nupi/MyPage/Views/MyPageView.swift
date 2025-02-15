@@ -74,6 +74,13 @@ class MyPageView: UIView {
         $0.backgroundColor = .line1
     }
     
+    // 로그인, 로그아웃 버튼
+    private let logoutButton = UIButton().then{
+        $0.setTitle("로그아웃", for: .normal)
+        $0.setTitleColor(UIColor.icon1, for: .normal)
+        $0.titleLabel?.font = UIFont(name: "WantedSans-Regular", size: 15)
+    }
+    
     // MARK: 컴포넌트 추가
     private func setViews(){
         addSubview(titleLabel)
@@ -83,6 +90,7 @@ class MyPageView: UIView {
         addSubview(menuButtonCollectionView)
         addSubview(settingMenuCollectionView)
         addSubview(separatorLine2)
+        addSubview(logoutButton)
         
         titleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(71)
@@ -125,6 +133,12 @@ class MyPageView: UIView {
             $0.top.equalTo(settingMenuCollectionView.snp.bottom).offset(56)
             $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(1)
+        }
+        
+        logoutButton.snp.makeConstraints{
+            $0.top.equalTo(separatorLine2.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(19)
         }
         
     }

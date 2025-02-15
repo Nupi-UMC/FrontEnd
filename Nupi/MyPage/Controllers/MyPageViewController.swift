@@ -28,7 +28,7 @@ class MyPageViewController: UIViewController {
     private func setupDelegates() {
         myPageView.profileCollectionView.dataSource = self
         myPageView.menuButtonCollectionView.dataSource = self
-        myPageView.menuButtonCollectionView.delegate = self
+        //myPageView.menuButtonCollectionView.delegate = self
         myPageView.settingMenuCollectionView.dataSource = self
     }
 }
