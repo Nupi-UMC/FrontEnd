@@ -28,6 +28,8 @@ class MyPageViewController: UIViewController {
     private func setupDelegates() {
         myPageView.profileCollectionView.dataSource = self
         myPageView.menuButtonCollectionView.dataSource = self
+        myPageView.menuButtonCollectionView.delegate = self
+        myPageView.settingMenuCollectionView.dataSource = self
     }
 }
     
@@ -38,6 +40,8 @@ extension MyPageViewController: UICollectionViewDataSource {
             return 1
         } else if collectionView == myPageView.menuButtonCollectionView{
             return MenuButtonModel.dummy().count
+        } else if collectionView == myPageView.settingMenuCollectionView{
+            return SettingMenuModel.dummy().count
         }
         return 0
     }
@@ -61,8 +65,15 @@ extension MyPageViewController: UICollectionViewDataSource {
             cell.menuIcon.image = list[indexPath.row].menuIcon
             cell.menuLabel.text = list[indexPath.row].menuLabel
             return cell
+        } else if collectionView == myPageView.settingMenuCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsMenuCollectionViewCell.identifier, for: indexPath) as? SettingsMenuCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let list = SettingMenuModel.dummy()
+            cell.menuIcon.image = list[indexPath.row].menuIcon
+            cell.menuLabel.text = list[indexPath.row].menuLabel
+            return cell
         }
-            
         return UICollectionViewCell()
     }
 }

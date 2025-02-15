@@ -59,6 +59,15 @@ class MyPageView: UIView {
     }
     
     // 메뉴 컬렉션뷰
+    public let settingMenuCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .vertical
+        $0.estimatedItemSize = .init(width: 345, height: 23)
+        $0.minimumLineSpacing = 28
+    }).then {
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = false
+        $0.register(SettingsMenuCollectionViewCell.self, forCellWithReuseIdentifier: SettingsMenuCollectionViewCell.identifier)
+    }
     
     // 하단 구분선
     
@@ -69,6 +78,7 @@ class MyPageView: UIView {
         addSubview(separatorLine)
         addSubview(menuButtonBackground)
         addSubview(menuButtonCollectionView)
+        addSubview(settingMenuCollectionView)
         
         titleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(71)
@@ -99,6 +109,12 @@ class MyPageView: UIView {
             $0.top.equalTo(menuButtonBackground.snp.bottom).offset(20)
             $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(1)
+        }
+        
+        settingMenuCollectionView.snp.makeConstraints{
+            $0.top.equalTo(separatorLine.snp.top).offset(40)
+            $0.horizontalEdges.equalToSuperview().inset(24)
+            $0.height.equalTo(227)
         }
     }
 }
