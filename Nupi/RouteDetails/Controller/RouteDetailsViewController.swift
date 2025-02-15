@@ -52,7 +52,9 @@ class RouteDetailsViewController: UIViewController {
                             RouteStoresModel(
                                 storeId: $0.storeId,
                                 storeName: $0.storeName,
-                                image: $0.image
+                                image: $0.image,
+                                latitude: $0.latitude,
+                                longitude: $0.longitude
                             )
                         }
                         
@@ -63,7 +65,8 @@ class RouteDetailsViewController: UIViewController {
                             bookmarkNum: response.result.bookmarkNum,
                             content: response.result.content,
                             isLiked: response.result.isLiked,
-                            isBookmarked: response.result.isBookmarked
+                            isBookmarked: response.result.isBookmarked,
+                            nickname: response.result.nickname
                         )
                         self?.routeDetailsView.routePlacesCollectionView.reloadData()
                     }

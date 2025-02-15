@@ -277,7 +277,8 @@ class RouteDetailsView: UIView {
             bookmarkNum: Int,
             content: String,
             isLiked: Bool,
-            isBookmarked: Bool
+            isBookmarked: Bool,
+            nickname: String
         ) {
             routeTitleLabel.text = routeName
             routeLocationLabel.text = location
@@ -286,5 +287,6 @@ class RouteDetailsView: UIView {
             routeDescriptionContentLabel.text = content
             likeButton.isSelected = isLiked
             bookmarkButton.isSelected = isBookmarked
+            routeCreatorLabel.text = nickname
         }
 }
