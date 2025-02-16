@@ -11,6 +11,7 @@ import Kingfisher
 class MyRouteViewController: UIViewController {
     
     private var myRoutes: [MyRouteModel] = []
+    var defaultSegmentIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,13 +20,21 @@ class MyRouteViewController: UIViewController {
         setupAction()
         setupNavigationBar()
         
-        let defaultRoute = "created"
+        myRouteView.segmentedControl.selectedSegmentIndex = defaultSegmentIndex
+        myRouteView.updateUnderlinePosition(selectedIndex: defaultSegmentIndex)
+        
+        let defaultRoute = defaultSegmentIndex == 0 ? "created" : "saved"
         fetchRoutes(myRoute: defaultRoute)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        myRouteView.updateUnderlinePosition(selectedIndex: myRouteView.segmentedControl.selectedSegmentIndex)
     }
     
     private lazy var myRouteView: MyRouteView = {
@@ -80,7 +89,7 @@ class MyRouteViewController: UIViewController {
     }
     
     // 나의 경로 API 호출
-    private func fetchRoutes(myRoute: String) {        
+    private func fetchRoutes(myRoute: String) {
         APIClient.fetchMyRoutes(
             myRoute: myRoute
         ) { [weak self] result in
@@ -156,7 +165,7 @@ extension MyRouteViewController: UICollectionViewDataSource {
         } else {
             cell.routeImageView.image = UIImage(named: "banner_image1") // 기본 이미지 설정
         }
-
+        
         cell.routeNameLabel.text = route.routeName
         cell.routeLocationLabel.text = route.routeLocation
         

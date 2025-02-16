@@ -30,7 +30,7 @@ class MyPageViewController: UIViewController {
     private func setupDelegates() {
         myPageView.profileCollectionView.dataSource = self
         myPageView.menuButtonCollectionView.dataSource = self
-        //myPageView.menuButtonCollectionView.delegate = self
+        myPageView.menuButtonCollectionView.delegate = self
         myPageView.settingMenuCollectionView.dataSource = self
     }
     
@@ -64,7 +64,7 @@ class MyPageViewController: UIViewController {
         }
     }
 }
-    
+
 
 extension MyPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -109,5 +109,20 @@ extension MyPageViewController: UICollectionViewDataSource {
             return cell
         }
         return UICollectionViewCell()
+    }
+}
+
+extension MyPageViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == myPageView.menuButtonCollectionView {
+            if indexPath.row == 0 { // 저장 장소 버튼 클릭
+                let BookmarkedStoreVC = BookmarkedStoreViewController() // 저장 장소 페이지로 이동
+                navigationController?.pushViewController(BookmarkedStoreVC, animated: true)
+            } else if indexPath.row == 1 { // 저장 경로 버튼 클릭
+                let myRouteVC = MyRouteViewController() // 저장 경로 페이지로 이동
+                myRouteVC.defaultSegmentIndex = 1
+                navigationController?.pushViewController(myRouteVC, animated: true)
+            }
+        }
     }
 }

@@ -279,6 +279,19 @@ extension APIClient {
         }
     }
     
+    // 저장된 장소 API
+    static func fetchBookmarkedStores(
+        completion: @escaping (Result<BookmarkedStoreResponse, AFError>) -> Void)
+    {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+
+        let endpoint = "/api/members/stores"
+        getRequest(endpoint: endpoint, token: token, completion: completion)
+    }
+    
     // 사용자 정보 API
     static func fetchUserInfo(
         completion: @escaping (Result<UserInformationResponse, AFError>) -> Void)
