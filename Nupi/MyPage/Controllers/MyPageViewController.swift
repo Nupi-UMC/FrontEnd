@@ -88,8 +88,8 @@ extension MyPageViewController: UICollectionViewDataSource {
             } else {
                 cell.profileImageView.image = UIImage(named: "banner_image1")
             }
-            cell.nicknameLabel.text = userInfo?.nickname ?? "닉네임 없음"
-            cell.emailLabel.text = userInfo?.email ?? "이메일 없음"
+            cell.nicknameLabel.text = userInfo?.nickname ?? "로그인을 해주세요."
+            cell.emailLabel.text = userInfo?.email ?? " "
             return cell
         } else if collectionView == myPageView.menuButtonCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuButtonCollectionViewCell.identifier, for: indexPath) as? MenuButtonCollectionViewCell else {

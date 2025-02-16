@@ -42,7 +42,12 @@ class MyPageView: UIView {
         $0.backgroundColor = .line1
         $0.layer.cornerRadius = 15
     }
-
+    
+    // 메뉴 버튼 구분선
+    private let separatorLine = UIView().then{
+        $0.backgroundColor = .blue4
+    }
+    
     public let menuButtonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
         $0.estimatedItemSize = .init(width: 49, height: 51)
@@ -54,7 +59,7 @@ class MyPageView: UIView {
     }
     
     // 상단 구분선
-    private let separatorLine = UIView().then{
+    private let separatorLine1 = UIView().then{
         $0.backgroundColor = .line1
     }
     
@@ -85,9 +90,10 @@ class MyPageView: UIView {
     private func setViews(){
         addSubview(titleLabel)
         addSubview(profileCollectionView)
-        addSubview(separatorLine)
         addSubview(menuButtonBackground)
+        addSubview(separatorLine)
         addSubview(menuButtonCollectionView)
+        addSubview(separatorLine1)
         addSubview(settingMenuCollectionView)
         addSubview(separatorLine2)
         addSubview(logoutButton)
@@ -110,6 +116,13 @@ class MyPageView: UIView {
             $0.height.equalTo(79)
         }
         
+        separatorLine.snp.makeConstraints{
+            $0.centerX.equalTo(menuButtonBackground.snp.centerX)
+            $0.top.equalTo(menuButtonBackground.snp.top).inset(15)
+            $0.bottom.equalTo(menuButtonBackground.snp.bottom).inset(15)
+            $0.width.equalTo(1)
+        }
+        
         menuButtonCollectionView.snp.makeConstraints {
             $0.top.equalTo(menuButtonBackground.snp.top).offset(14)
             $0.centerX.equalToSuperview()
@@ -117,14 +130,14 @@ class MyPageView: UIView {
             $0.height.equalTo(51)
         }
         
-        separatorLine.snp.makeConstraints{
+        separatorLine1.snp.makeConstraints{
             $0.top.equalTo(menuButtonBackground.snp.bottom).offset(20)
             $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(1)
         }
         
         settingMenuCollectionView.snp.makeConstraints{
-            $0.top.equalTo(separatorLine.snp.bottom).offset(40)
+            $0.top.equalTo(separatorLine1.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview().inset(24)
             $0.height.equalTo(227)
         }
