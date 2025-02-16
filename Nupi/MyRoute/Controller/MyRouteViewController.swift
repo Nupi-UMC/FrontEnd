@@ -23,10 +23,10 @@ class MyRouteViewController: UIViewController {
         fetchRoutes(myRoute: defaultRoute)
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     
     private lazy var myRouteView: MyRouteView = {
         let view = MyRouteView()
