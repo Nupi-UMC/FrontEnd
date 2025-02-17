@@ -31,6 +31,7 @@ class RouteOverlayView: UIView {
             searchBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             searchBar.heightAnchor.constraint(equalToConstant: 46)
         ])
+
         
         // ✅ '이 지역 전체 보기' 버튼
         let showAreaButton = createShowAreaButton()
@@ -55,8 +56,8 @@ class RouteOverlayView: UIView {
     }
     
     // 🔹 검색 바
-    private func createSearchBar() -> UIView {
-        let searchBar = UIView()
+    private func createSearchBar() -> UITextField {
+        let searchBar = UITextField()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.backgroundColor = UIColor(red: 0.973, green: 0.98, blue: 0.992, alpha: 1)
         searchBar.layer.cornerRadius = 23
