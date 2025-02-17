@@ -278,8 +278,8 @@ extension APIClient {
             }
         }
     }
-    
-    // 저장된 장소 API
+  
+      // 저장된 장소 API
     static func fetchBookmarkedStores(
         completion: @escaping (Result<BookmarkedStoreResponse, AFError>) -> Void)
     {
@@ -302,6 +302,40 @@ extension APIClient {
         }
         
         let endpoint = "/api/members/"
+        
+        print("[DEBUG] 요청 URL: \(endpoint)")
+        getRequest(endpoint: endpoint, token: token, completion: completion)
+    }
+    
+    // 뭐하고 놀지? API
+    static func fetchWhatToPlay(
+        groupName: String,
+        completion: @escaping (Result<StoreResponse, AFError>) -> Void)
+    {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+        let endpoint = "/api/home/group/\(groupName)"
+        
+        print("[DEBUG] 요청 URL: \(endpoint)")
+        getRequest(endpoint: endpoint, token: token, completion: completion)
+    }
+  
+    // 어디서 놀지? API
+    static func fetchWhereToPlay(
+        regionId: Int,
+        latitude: Double,
+        longitude: Double,
+        category: Int,
+        sort: String,
+        completion: @escaping (Result<StoreResponse, AFError>) -> Void)
+    {
+        guard let token = KeychainService.load(for: "accessToken") else {
+            print("Access Token 없음. 로그인이 필요합니다.")
+            return
+        }
+        let endpoint = "/api/home/\(regionId)?latitude=\(latitude)&longitude=\(longitude)&category=\(category)&sort=\(sort)"
         
         print("[DEBUG] 요청 URL: \(endpoint)")
         getRequest(endpoint: endpoint, token: token, completion: completion)

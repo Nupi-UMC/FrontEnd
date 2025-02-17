@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class WhereToPlayView: UIView {
     
@@ -98,8 +99,7 @@ class WhereToPlayView: UIView {
         
         placeCollectionView.snp.makeConstraints{
             $0.top.equalToSuperview().offset(10)
-            $0.left.right.equalToSuperview().inset(24)
-            $0.width.equalTo(345)
+            $0.leading.trailing.equalTo(contentView).inset(24)
             $0.height.equalTo(880)
         }
         
@@ -129,8 +129,7 @@ class WhereToPlayView: UIView {
         
         placeSortedCollectionView.snp.makeConstraints{
             $0.top.equalTo(dropdownButton.snp.bottom).offset(28)
-            $0.left.right.equalToSuperview().inset(28)
-            $0.width.equalTo(337)
+            $0.leading.trailing.equalTo(contentView).inset(28)
             $0.height.equalTo(368)
         }
     }

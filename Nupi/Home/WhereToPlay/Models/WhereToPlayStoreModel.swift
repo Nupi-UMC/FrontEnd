@@ -1,5 +1,5 @@
 //
-//  HongdaeSortedModel.swift
+//  WhereToPlayStoreModel.swift
 //  Nupi
 //
 //  Created by 김건 on 1/25/25.
@@ -7,11 +7,13 @@
 
 import UIKit
 
+/*
 struct HongdaeSortedModel{
     let image: UIImage
     let place: String
     let station: String
 }
+
 
 extension HongdaeSortedModel{
     static func dummy() -> [HongdaeSortedModel]{
@@ -25,6 +27,7 @@ extension HongdaeSortedModel{
         ]
     }
 }
+ */
 
 
 

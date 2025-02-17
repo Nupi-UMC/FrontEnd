@@ -7,6 +7,7 @@
 
 import UIKit
 
+/*
 struct HotIzakayaModel{
     let image: UIImage
     let place: String
@@ -26,4 +27,4 @@ extension HotIzakayaModel{
         ]
     }
 }
-
+*/
