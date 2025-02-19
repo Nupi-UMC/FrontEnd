@@ -99,8 +99,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc
-    private func whatToPlayButtonDidTap() {
-        let whatToPlayVC = WhatToPlayViewController()
+    private func whatToPlayButtonDidTap(_ sender: UIButton) {
+        let groupIndex = sender.tag
+        let selectedGroup = whatToPlayData[groupIndex]
+        
+        let whatToPlayVC = WhatToPlayViewController(groupName: selectedGroup.groupName)
         self.navigationController?.pushViewController(whatToPlayVC, animated: true)
     }
     
@@ -152,11 +155,12 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             let list = WhatToPlayModel.dummy()
             let group = whatToPlayData[indexPath.row]
             
-            cell.placeButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
-            cell.placeLabel.text = group.groupName
+            cell.whatToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
+            cell.whatToPlayLabel.text = group.groupName
             
-            //액션 추가
-            cell.placeButton.addTarget(self, action: #selector(whatToPlayButtonDidTap), for: .touchUpInside)
+            // 버튼에 indexPath.row를 태그로 추가하여 구분 가능하도록 설정
+            cell.whatToPlayButton.tag = indexPath.row
+            cell.whatToPlayButton.addTarget(self, action: #selector(whatToPlayButtonDidTap(_:)), for: .touchUpInside)
                     
             return cell
         } else if collectionView == homeView.whereToPlayCollectionView {

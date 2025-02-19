@@ -10,12 +10,23 @@ import Then
 
 class WhatToPlayViewController: UIViewController {
     private var stores: [StoreModel] = [] // 장소 정보 배열
+    private let groupName: String
+
+    init(groupName: String) {
+        self.groupName = groupName
+        super.init(nibName: nil, bundle: nil)
+       }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = whatToPlayView
         
         setupDataSource()
+        setupUI()
         setupNavigationBar()
         fetchWhatToPlay()
     }
@@ -36,6 +47,10 @@ class WhatToPlayViewController: UIViewController {
         whatToPlayView.hotPlaceCollectionView.dataSource = self
     }
     
+    private func setupUI() {
+            whatToPlayView.updateGroupName(groupName)
+        }
+    
     // 네비게이션바 추가
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.barTintColor = .white
@@ -43,7 +58,7 @@ class WhatToPlayViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.title = ""
         
         let titleLabel = UILabel().then {
-            $0.text = "izakaya"
+            $0.text = groupName
             $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
             $0.textColor = .icon1
         }
@@ -53,7 +68,7 @@ class WhatToPlayViewController: UIViewController {
     
     // 뭐하고 놀지? API 호출
     private func fetchWhatToPlay() {
-        let groupName = "일식당"
+        let groupName = groupName
         
         APIClient.fetchWhatToPlay(
             groupName: groupName
