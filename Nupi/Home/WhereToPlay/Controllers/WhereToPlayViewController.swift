@@ -12,6 +12,18 @@ class WhereToPlayViewController: UIViewController {
     private var selectedCategory: Int = 0 // 선택된 카테고리
     private var selectedSort: String = "default" // 정렬 방식
     private var stores: [StoreModel] = [] // 장소 정보 배열
+    private let regionId: Int
+    private let regionName: String
+
+    init(regionId: Int, regionName: String) {
+        self.regionId = regionId
+        self.regionName = regionName
+        super.init(nibName: nil, bundle: nil)
+       }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +60,7 @@ class WhereToPlayViewController: UIViewController {
     
     // 어디서 놀지? API 호출
       private func fetchWhereToPlay() {
-          let regionId = 1
+          let regionId = regionId
           let latitude = 37.5541
           let longitude = 127.4612
           let category = self.selectedCategory
@@ -98,7 +110,7 @@ class WhereToPlayViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.title = ""
         
         let titleLabel = UILabel().then {
-            $0.text = "Hongdae"
+            $0.text = self.regionName
             $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
             $0.textColor = .icon1
         }

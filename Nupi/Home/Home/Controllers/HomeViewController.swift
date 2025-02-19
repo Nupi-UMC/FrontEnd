@@ -21,6 +21,7 @@ class HomeViewController: UIViewController {
         setupDataSource()
         fetchHome()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -50,10 +51,6 @@ class HomeViewController: UIViewController {
             switch result {
             case .success(let response):
                 if response.isSuccess {
-                    print("API 데이터 가져오기 성공 ✅")
-                    print("groupList: \(response.result.groupList)")
-                    print("regions: \(response.result.regions)")
-                    
                     //let upcomingEvent = response.result.upcomming
                     //let steadySpots = response.result.steadySpots
                     self?.whatToPlayData = response.result.groupList.prefix(5).map{
@@ -108,8 +105,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc
-    private func whereToPlayButtonDidTap() {
-        let whereToPlayVC = WhereToPlayViewController()
+    private func whereToPlayButtonDidTap(_ sender: UIButton) {
+        let regionIndex = sender.tag
+        let selectedRegion = whereToPlayData[regionIndex]
+        
+        let whereToPlayVC = WhereToPlayViewController(regionId: selectedRegion.regionId, regionName: selectedRegion.regionName)
         self.navigationController?.pushViewController(whereToPlayVC, animated: true)
     }
     
@@ -169,8 +169,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.whereToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
             cell.whereToPlayLabel.text = region.regionName
             
-            //액션 추가
-            cell.whereToPlayButton.addTarget(self, action: #selector(whereToPlayButtonDidTap), for: .touchUpInside)
+            // 버튼에 indexPath.row를 태그로 추가하여 구분 가능하도록 설정
+            cell.whereToPlayButton.tag = indexPath.row
+            cell.whereToPlayButton.addTarget(self, action: #selector(whereToPlayButtonDidTap(_:)), for: .touchUpInside)
+            
             
             return cell
         } else if collectionView == homeView.ourMemoriesCollectionView {
