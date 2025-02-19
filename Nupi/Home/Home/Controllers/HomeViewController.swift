@@ -10,16 +10,18 @@ import UIKit
 class HomeViewController: UIViewController {
     
     private let homeView = HomeView()
-    
     let bannerData = BannerModel.dummy()
-    let whatToplayData = WhatToPlayModel.dummy()
+    private var whatToPlayData: [Group] = []
+    private var whereToPlayData: [Region] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = homeView
         setupActions()
         setupDataSource()
+        fetchHome()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -41,7 +43,48 @@ class HomeViewController: UIViewController {
         homeView.whereToPlayCollectionView.dataSource = self
         homeView.ourMemoriesCollectionView.dataSource = self
     }
-    
+        
+    // 홈화면 API 호출
+    private func fetchHome() {
+        APIClient.fetchHome(
+        ) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.isSuccess {
+                    //let upcomingEvent = response.result.upcomming
+                    //let steadySpots = response.result.steadySpots
+                    self?.whatToPlayData = response.result.groupList.prefix(5).map{
+                        Group(
+                            groupName: $0.groupName
+                        )
+                    }
+                    self?.whereToPlayData = response.result.regions.map{
+                        Region(
+                            regionId: $0.regionId,
+                            regionName: $0.regionName
+                        )
+                    }
+
+                    DispatchQueue.main.async {
+                        self?.homeView
+                            .whatToPlayCollectionView
+                            .reloadData()
+                        self?.homeView
+                            .whereToPlayCollectionView
+                            .reloadData()
+                    }
+                } else {
+                    print("API 실패: \(response.message)")
+                }
+            case .failure(let error):
+                print("네트워크 오류: \(error.localizedDescription)")
+                if let responseCode = error.responseCode {
+                    print("HTTP 상태 코드: \(responseCode)")
+                }
+            }
+        }
+    }
+
     // MARK: - action
     @objc
     private func searchButtonDidTap() {
@@ -56,14 +99,20 @@ class HomeViewController: UIViewController {
     }
     
     @objc
-    private func whatToPlayButtonDidTap() {
-        let whatToPlayVC = WhatToPlayViewController()
+    private func whatToPlayButtonDidTap(_ sender: UIButton) {
+        let groupIndex = sender.tag
+        let selectedGroup = whatToPlayData[groupIndex]
+        
+        let whatToPlayVC = WhatToPlayViewController(groupName: selectedGroup.groupName)
         self.navigationController?.pushViewController(whatToPlayVC, animated: true)
     }
     
     @objc
-    private func whereToPlayButtonDidTap() {
-        let whereToPlayVC = WhereToPlayViewController()
+    private func whereToPlayButtonDidTap(_ sender: UIButton) {
+        let regionIndex = sender.tag
+        let selectedRegion = whereToPlayData[regionIndex]
+        
+        let whereToPlayVC = WhereToPlayViewController(regionId: selectedRegion.regionId, regionName: selectedRegion.regionName)
         self.navigationController?.pushViewController(whereToPlayVC, animated: true)
     }
     
@@ -80,11 +129,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == homeView.bannerCollectionView {
             return BannerModel.dummy().count
         } else if collectionView == homeView.whatToPlayCollectionView {
-            return WhatToPlayModel.dummy().count
+            return whatToPlayData.count
+        } else if collectionView == homeView.whereToPlayCollectionView {
+            return whereToPlayData.count
         } else if collectionView == homeView.ourMemoriesCollectionView {
             return OurMemoriesModel.dummy().count
-        } else if collectionView == homeView.whereToPlayCollectionView {
-            return WhereToPlayModel.dummy().count
         }
         return 0
     }
@@ -104,11 +153,14 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 return UICollectionViewCell()
             }
             let list = WhatToPlayModel.dummy()
-            cell.placeButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
-            cell.placeLabel.text = list[indexPath.row].place
+            let group = whatToPlayData[indexPath.row]
             
-            //액션 추가
-            cell.placeButton.addTarget(self, action: #selector(whatToPlayButtonDidTap), for: .touchUpInside)
+            cell.whatToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
+            cell.whatToPlayLabel.text = group.groupName
+            
+            // 버튼에 indexPath.row를 태그로 추가하여 구분 가능하도록 설정
+            cell.whatToPlayButton.tag = indexPath.row
+            cell.whatToPlayButton.addTarget(self, action: #selector(whatToPlayButtonDidTap(_:)), for: .touchUpInside)
                     
             return cell
         } else if collectionView == homeView.whereToPlayCollectionView {
@@ -116,11 +168,15 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 return UICollectionViewCell()
             }
             let list = WhereToPlayModel.dummy()
-            cell.whereToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
-            cell.whereToPlayLabel.text = list[indexPath.row].place
+            let region = whereToPlayData[indexPath.row]
             
-            //액션 추가
-            cell.whereToPlayButton.addTarget(self, action: #selector(whereToPlayButtonDidTap), for: .touchUpInside)
+            cell.whereToPlayButton.setImage(UIImage(named:list[indexPath.row].image), for: .normal)
+            cell.whereToPlayLabel.text = region.regionName
+            
+            // 버튼에 indexPath.row를 태그로 추가하여 구분 가능하도록 설정
+            cell.whereToPlayButton.tag = indexPath.row
+            cell.whereToPlayButton.addTarget(self, action: #selector(whereToPlayButtonDidTap(_:)), for: .touchUpInside)
+            
             
             return cell
         } else if collectionView == homeView.ourMemoriesCollectionView {

@@ -25,6 +25,7 @@ class HomeView: UIView {
     // MARK: 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
+        $0.contentInsetAdjustmentBehavior = .never //contentInsetAdjustmentBehavior 속성 
     }
     
     private let contentView = UIView()
@@ -327,7 +328,8 @@ class HomeView: UIView {
     private func setViews(){
         addSubview(scrollView)
         scrollView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(-UIApplication.shared.statusBarFrame.height)
+            //$0.top.equalToSuperview().offset(-UIApplication.shared.statusBarFrame.height)
+            $0.top.equalToSuperview()
             $0.left.right.bottom.equalToSuperview()
         }
         
