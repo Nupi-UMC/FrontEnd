@@ -30,10 +30,10 @@ class WhatToPlayCollectionViewCell: UICollectionViewCell {
     
     //장소 이름
     let placeLabel = UILabel().then{
+        $0.text = "izakaya"
         $0.font = UIFont(name: "WantedSans-Regular", size: 15)
         $0.font = .systemFont(ofSize: 15, weight: .semibold)
         $0.textColor = .white
-        $0.text = "izakaya"
     }
     
     // MARK: 컴포넌트 추가
