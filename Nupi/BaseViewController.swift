@@ -34,7 +34,7 @@ class BaseViewController: UITabBarController {
     private func setupViewControllers(){
         //         let homeVC = HomeViewController()
         let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let routeVC = RouteViewController()
+        let routeVC = UINavigationController(rootViewController: RouteViewController())
         let myPageVC = UINavigationController(rootViewController: MyPageViewController())
         let scheduleVC = ScheduleViewController()
         

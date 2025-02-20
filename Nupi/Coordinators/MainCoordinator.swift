@@ -29,4 +29,10 @@ class MainCoordinator: Coordinator {
                 sceneDelegate.window?.makeKeyAndVisible()
             }
     }
+    
+    func showCreateRoute() {
+        print("showCreateRoute.push")
+        let createVC = CreateRouteViewController()
+        self.navigationController.pushViewController(createVC, animated: true)
+    }
 }
