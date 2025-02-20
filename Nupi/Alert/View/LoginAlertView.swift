@@ -53,7 +53,7 @@ class LoginAlertView: UIView {
     }
 
     // 삭제 버튼
-    let deleteButton = UIButton().then {
+    let loginButton = UIButton().then {
         $0.setTitle("로그인", for: .normal)
         $0.setTitleColor(UIColor.blue5, for: .normal)
         $0.titleLabel?.font = .tabbar1
