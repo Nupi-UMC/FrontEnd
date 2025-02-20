@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
     let bannerData = BannerModel.dummy()
     private var whatToPlayData: [Group] = []
     private var whereToPlayData: [Region] = []
+    private var steadySpotDate: [SteadySpot] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +43,7 @@ class HomeViewController: UIViewController {
         //rootView.whatToPlayCollectionView.delegate = self
         homeView.whereToPlayCollectionView.dataSource = self
         homeView.ourMemoriesCollectionView.dataSource = self
+        homeView.steadySpotCollectionView.dataSource = self
     }
         
     // 홈화면 API 호출
@@ -52,7 +54,6 @@ class HomeViewController: UIViewController {
             case .success(let response):
                 if response.isSuccess {
                     //let upcomingEvent = response.result.upcomming
-                    //let steadySpots = response.result.steadySpots
                     self?.whatToPlayData = response.result.groupList.prefix(5).map{
                         Group(
                             groupName: $0.groupName
@@ -64,13 +65,24 @@ class HomeViewController: UIViewController {
                             regionName: $0.regionName
                         )
                     }
-
+                    self?.steadySpotDate = response.result.steadySpots.map{
+                        SteadySpot(
+                            name: $0.name,
+                            place: $0.place,
+                            location: $0.location,
+                            description: $0.description
+                        )
+                    }
+                    
                     DispatchQueue.main.async {
                         self?.homeView
                             .whatToPlayCollectionView
                             .reloadData()
                         self?.homeView
                             .whereToPlayCollectionView
+                            .reloadData()
+                        self?.homeView
+                            .steadySpotCollectionView
                             .reloadData()
                     }
                 } else {
@@ -134,6 +146,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return whereToPlayData.count
         } else if collectionView == homeView.ourMemoriesCollectionView {
             return OurMemoriesModel.dummy().count
+        } else if collectionView == homeView.steadySpotCollectionView {
+            return steadySpotDate.count
         }
         return 0
     }
@@ -188,7 +202,22 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.memoriesimageView.image = list[indexPath.row].image
             cell.dateLabel.text = list[indexPath.row].date
             return cell
+        } else if collectionView == homeView.steadySpotCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SteadySpotsCollectionViewCell.identifier, for: indexPath) as?
+                    SteadySpotsCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let list = SteadySpotModel.dummy()
+            let steadySpot = steadySpotDate[indexPath.row]
+            cell.placeImageView.image = list[indexPath.row].image
+            
+            cell.placeName.text = steadySpot.name
+            cell.placeAddress.text = steadySpot.place
+            cell.placeStation.text = steadySpot.location
+            cell.placeDescription.text = steadySpot.description
+            return cell
         }
+            
         return UICollectionViewCell()
     }
 }

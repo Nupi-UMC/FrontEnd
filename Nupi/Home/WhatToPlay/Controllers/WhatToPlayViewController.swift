@@ -10,6 +10,7 @@ import Then
 
 class WhatToPlayViewController: UIViewController {
     private var stores: [StoreModel] = [] // 장소 정보 배열
+    private var featuredStores: [StoreDetail] = [] // 배너에 표시할 장소 정보
     private let groupName: String
 
     init(groupName: String) {
@@ -76,6 +77,15 @@ class WhatToPlayViewController: UIViewController {
             switch result {
             case .success(let response):
                 if response.isSuccess {
+                    // 배너에 표시할 장소 2개
+                    let featuredOptions: [StoreDetail] = Array(
+                        [response.result.best, response.result.ad, response.result.new]
+                            .compactMap { $0 }
+                            .shuffled()
+                            .prefix(2)
+                    )
+                    self?.featuredStores = Array(featuredOptions)
+                    
                     self?.stores = response.result.stores.map {
                         StoreModel(
                             storeId: $0.storeId,
@@ -87,6 +97,9 @@ class WhatToPlayViewController: UIViewController {
                     }
                     
                     DispatchQueue.main.async {
+                        self?.whatToPlayView
+                            .placeCollectionView
+                            .reloadData()
                         self?.whatToPlayView
                             .hotPlaceCollectionView
                             .reloadData()
@@ -109,7 +122,7 @@ class WhatToPlayViewController: UIViewController {
 extension WhatToPlayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == whatToPlayView.placeCollectionView{
-            return IzakayaModel.dummy().count
+            return featuredStores.count
         } else if collectionView == whatToPlayView.hotPlaceCollectionView{
             return stores.count
         }
@@ -122,11 +135,14 @@ extension WhatToPlayViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let list = IzakayaModel.dummy()
+            let store = featuredStores[indexPath.row]
+            
             cell.placeImageView.image = list[indexPath.row].image
             cell.tagLabel.text = list[indexPath.row].tag
-            cell.placeLabel.text = list[indexPath.row].place
-            cell.stationLabel.text = list[indexPath.row].station
-            cell.descriptionLabel.text = list[indexPath.row].description
+            
+            cell.placeLabel.text = store.name
+            cell.stationLabel.text = store.location
+            cell.descriptionLabel.text = store.description
             return cell
         } else if collectionView == whatToPlayView.hotPlaceCollectionView{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HotIzakayaCollectionViewCell.identifier, for: indexPath) as? HotIzakayaCollectionViewCell else {

@@ -221,108 +221,17 @@ class HomeView: UIView {
         $0.font = UIFont(name: "WantedSans-Medium", size: 20)
     }
     
-    //스팟 1
-    //spot1 이미지
-    let spot1ImageView = UIImageView().then {
-        $0.image = UIImage(named: "steady_popular_spot_image1")
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 11
-    }
+    // 컬렉션뷰
+    let steadySpotCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then{
+        //$0.scrollDirection = .vertical
+        $0.estimatedItemSize = .init(width: 345, height: 427)
+        $0.minimumLineSpacing = 32}).then{
+            $0.backgroundColor = .clear
+            $0.showsHorizontalScrollIndicator = false
+            $0.isScrollEnabled = false
+            $0.register(SteadySpotsCollectionViewCell.self, forCellWithReuseIdentifier: SteadySpotsCollectionViewCell.identifier)
+        }
     
-    //spot1 이름
-    let spot1Name = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-SemiBold", size: 23)
-        $0.textColor = .black
-        $0.numberOfLines = 0
-        $0.text = "Gentle Monster house, \nDosan"
-    }
-    
-    //spot1 아이콘 이미지
-    let spot1Icon = UIImageView().then {
-        $0.image = UIImage(named:"spot_icon")
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-    }
-    
-    //spot1 주소
-    let spot1Address = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-Medium", size: 14)
-        $0.textColor = .text1
-        $0.text = "강남"
-    }
-    
-    //원 이미지
-    let circle1Image = UIImageView().then {
-        $0.image = UIImage(systemName: "circlebadge.fill")
-        $0.tintColor = .blue4
-    }
-    
-    //spot1 역
-    let spot1Station = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-Medium", size: 14)
-        $0.textColor = .text1
-        $0.text = "압구정로데오역 5번 출구"
-    }
-    
-    //spot1 설명
-    let spot1Description = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-Medium", size: 15)
-        $0.textColor = .icon1
-        $0.numberOfLines = 0
-        $0.text = "해당 공간에는 젠틀몬스터와 더불어 감각적인 아름다움\n을 지향하는 코스메틱 브랜드 '탬버린즈'와 디저트를 통\n해 새로운 판타지를 구현하는 '누데이크'가 함께 입점했\n습니다."
-    }
-    
-    //스팟 2
-    //spot2 이미지
-    let spot2ImageView = UIImageView().then {
-        $0.image = UIImage(named: "steady_popular_spot_image2")
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 11
-    }
-    
-    //spot2 이름
-    let spot2Name = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-SemiBold", size: 23)
-        $0.textColor = .black
-        $0.text = "RANDOM DIVERSITY"
-    }
-    
-    //spot2 아이콘 이미지
-    let spot2Icon = UIImageView().then {
-        $0.image = UIImage(named:"spot_icon")
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-    }
-    
-    //spot2 주소
-    let spot2Address = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-Medium", size: 14)
-        $0.textColor = .text1
-        $0.text = "노들섬"
-    }
-    
-    //원 이미지
-    let circle2Image = UIImageView().then {
-        $0.image = UIImage(systemName: "circlebadge.fill")
-        $0.tintColor = .blue4
-    }
-    //spot2 역
-    let spot2Station = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-Medium", size: 14)
-        $0.textColor = .text1
-        $0.text = "노들역 2번 출구"
-    }
-    
-    //spot2 설명
-    let spot2Description = UILabel().then {
-        $0.font = UIFont(name: "WantedSans-Medium", size: 15)
-        $0.textColor = .icon1
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byWordWrapping
-        $0.text = "'랜덤 다이버시티'는 특정 기억이나 감정을 색이나 향, 소\n리 등 또 다른 감각으로 치환하는 참여형 미디어 아트 작\n품으로 큰 인기를 얻고 있으며, 매년 각기 다른 주제를 선\n택하여 새로운 전시를 선보입니다."
-    }
     
     // MARK: 컴포넌트 추가
     private func setViews(){
@@ -338,7 +247,7 @@ class HomeView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(2357)
+            $0.height.equalTo(2457)
         }
         
         self.addSubview(scrollToTopButton)
@@ -360,22 +269,8 @@ class HomeView: UIView {
         contentView.addSubview(ourMemoriesTitle)
         contentView.addSubview(vectorIcon2)
         contentView.addSubview(ourMemoriesCollectionView)
-        
         contentView.addSubview(steadyTitle)
-        contentView.addSubview(spot1ImageView)
-        contentView.addSubview(spot1Name)
-        contentView.addSubview(spot1Icon)
-        contentView.addSubview(spot1Address)
-        contentView.addSubview(circle1Image)
-        contentView.addSubview(spot1Station)
-        contentView.addSubview(spot1Description)
-        contentView.addSubview(spot2ImageView)
-        contentView.addSubview(spot2Name)
-        contentView.addSubview(spot2Icon)
-        contentView.addSubview(spot2Station)
-        contentView.addSubview(circle2Image)
-        contentView.addSubview(spot2Address)
-        contentView.addSubview(spot2Description)
+        contentView.addSubview(steadySpotCollectionView)
         
         scrollToTopButton.snp.makeConstraints{
             $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-17)
@@ -501,94 +396,11 @@ class HomeView: UIView {
             $0.height.equalTo(24)
         }
         
-        spot1ImageView.snp.makeConstraints {
+        steadySpotCollectionView.snp.makeConstraints{
             $0.top.equalTo(steadyTitle.snp.bottom).offset(17)
-            $0.left.right.equalToSuperview().inset(24)
+            $0.left.equalToSuperview().offset(24)
             $0.width.equalTo(345)
-            $0.height.equalTo(265)
-        }
-        
-        spot1Name.snp.makeConstraints {
-            $0.top.equalTo(spot1ImageView.snp.bottom).offset(12)
-            $0.left.equalToSuperview().offset(28)
-            $0.width.equalTo(315)
-            $0.height.equalTo(62)
-        }
-        spot1Icon.snp.makeConstraints {
-            $0.top.equalTo(spot1Name.snp.bottom).offset(11)
-            $0.left.equalToSuperview().offset(28)
-            $0.width.equalTo(20)
-            $0.height.equalTo(20)
-        }
-        
-        spot1Address.snp.makeConstraints {
-            $0.top.equalTo(spot1Name.snp.bottom).offset(12.5)
-            $0.left.equalTo(spot1Icon.snp.right).offset(6)
-        }
-        
-        circle1Image.snp.makeConstraints{
-            $0.top.equalTo(spot1Name.snp.top).offset(19.5)
-            $0.left.equalTo(spot1Address.snp.right).offset(7)
-            $0.width.equalTo(3)
-            $0.height.equalTo(3)
-        }
-        
-        spot1Station.snp.makeConstraints {
-            $0.top.equalTo(spot1Name.snp.bottom).offset(12.5)
-            $0.left.equalTo(spot1Address.snp.right).offset(13)
-        }
-        
-        spot1Description.snp.makeConstraints {
-            $0.top.equalTo(spot1Address.snp.bottom).offset(8)
-            $0.left.equalToSuperview().offset(28)
-            $0.right.equalToSuperview().inset(33)
-            $0.width.equalTo(331)
-            $0.height.equalTo(72)
-        }
-        
-        spot2ImageView.snp.makeConstraints {
-            $0.top.equalTo(spot1Description.snp.bottom).offset(32)
-            $0.left.right.equalToSuperview().inset(24)
-            $0.width.equalTo(345)
-            $0.height.equalTo(265)
-        }
-        
-        spot2Name.snp.makeConstraints {
-            $0.top.equalTo(spot2ImageView.snp.bottom).offset(12)
-            $0.left.equalToSuperview().offset(28)
-            $0.width.equalTo(232)
-            $0.height.equalTo(35)
-        }
-        spot2Icon.snp.makeConstraints {
-            $0.top.equalTo(spot2Name.snp.bottom).offset(11)
-            $0.left.equalToSuperview().offset(28)
-            $0.width.equalTo(20)
-            $0.height.equalTo(20)
-        }
-        
-        spot2Address.snp.makeConstraints {
-            $0.top.equalTo(spot2Name.snp.bottom).offset(12.5)
-            $0.left.equalTo(spot2Icon.snp.right).offset(6)
-        }
-        
-        circle2Image.snp.makeConstraints{
-            $0.top.equalTo(spot2Name.snp.top).offset(19.5)
-            $0.left.equalTo(spot2Address.snp.right).offset(7)
-            $0.width.equalTo(3)
-            $0.height.equalTo(3)
-        }
-        
-        spot2Station.snp.makeConstraints {
-            $0.top.equalTo(spot2Name.snp.bottom).offset(12.5)
-            $0.left.equalTo(spot2Address.snp.right).offset(13)
-        }
-        
-        spot2Description.snp.makeConstraints {
-            $0.top.equalTo(spot2Address.snp.bottom).offset(8)
-            $0.left.equalToSuperview().offset(28)
-            $0.right.equalToSuperview().inset(33)
-            $0.width.equalTo(332)
-            $0.height.equalTo(76)
+            $0.height.equalTo(886)
         }
     }
 }
