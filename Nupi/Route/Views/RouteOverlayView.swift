@@ -6,8 +6,15 @@
 //
 import UIKit
 
+protocol RouteOverlayViewDelegate: AnyObject {
+    func didTapAddButton()
+}
+
 class RouteOverlayView: UIView {
-    private let bottomModal = UIView()
+    
+    // private let bottomModal = UIView()
+    
+    weak var delegate: RouteOverlayViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,6 +24,20 @@ class RouteOverlayView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+
+        let hitView = super.hitTest(point, with: event)
+        
+        if let hitView = hitView {
+            if hitView is UIButton || hitView is UITextField {
+                return hitView
+            } else {
+                return nil
+            }
+        }
+        return nil
     }
     
     private func setupUI() {
@@ -53,6 +74,7 @@ class RouteOverlayView: UIView {
             addButton.heightAnchor.constraint(equalToConstant: 51)
         ])
         
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
     // 🔹 검색 바
@@ -156,27 +178,13 @@ class RouteOverlayView: UIView {
         button.layer.borderWidth = 1.25
         button.layer.borderColor = UIColor.bg.cgColor
         
-        button.addTarget(self, action: #selector(navigateToRouteCreation), for: .touchUpInside)
         return button
     }
     
-    @objc private func navigateToRouteCreation() {
-        if let parentVC = self.parentViewController {
-            // let routeCreationVC = RouteCreationViewController()
-            // parentVC.present(routeCreationVC, animated: true, completion: nil)
-        }
+    @objc private func addButtonTapped() {
+            delegate?.didTapAddButton()
     }
+    
 }
 
-extension UIView {
-    var parentViewController: UIViewController? {
-        var responder: UIResponder? = self
-        while let nextResponder = responder?.next {
-            if let viewController = nextResponder as? UIViewController {
-                return viewController
-            }
-            responder = nextResponder
-        }
-        return nil
-    }
-}
+

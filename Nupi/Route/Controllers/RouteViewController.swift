@@ -69,6 +69,7 @@ class RouteViewController: UIViewController {
 
         if let controller = mapController {
             controller.addView(mapviewInfo)
+            print("✅ addView executed successfully")
         } else {
             print("❌ mapController가 nil입니다!")
         }
@@ -230,7 +231,7 @@ class RouteViewController: UIViewController {
             NSLayoutConstraint.activate([
                 nearbyVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 nearbyVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                nearbyVC.view.heightAnchor.constraint(equalToConstant: 900),
+                nearbyVC.view.heightAnchor.constraint(equalToConstant: 700),
                 nearbyVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
 

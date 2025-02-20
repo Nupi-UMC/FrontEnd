@@ -38,7 +38,7 @@ class PoiManager {
             "클래스": UIImage.classPoiIcon,
             "보드카페": UIImage.boardPoiIcon,
         ]
-        return iconMapping[category] ?? UIImage.ricePoiIcon
+        return iconMapping[category]?.resized(to: CGSize(width: 33, height: 33)) ?? UIImage.ricePoiIcon.resized(to: CGSize(width: 33, height: 33))
     }
     
 

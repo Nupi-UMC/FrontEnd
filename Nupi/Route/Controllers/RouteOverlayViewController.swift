@@ -8,17 +8,20 @@
 import UIKit
 
 class RouteOverlayViewController: UIViewController {
+    
+    weak var coordinator: MainCoordinator?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.clear
-        view.isUserInteractionEnabled = false
         setupOverlayView()
+        
     }
 
     private func setupOverlayView() {
         let overlayView = RouteOverlayView(frame: view.bounds)
         overlayView.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = false
+        overlayView.backgroundColor = .clear
         view.addSubview(overlayView)
 
         NSLayoutConstraint.activate([
@@ -31,4 +34,11 @@ class RouteOverlayViewController: UIViewController {
     
 }
 
-
+extension RouteOverlayViewController: RouteOverlayViewDelegate {
+    func didTapAddButton() {
+        let createVC = CreateRouteViewController()
+        createVC.modalPresentationStyle = .fullScreen
+        self.present(createVC, animated: true, completion: nil)
+        print("presented createVC modally")
+    }
+}
