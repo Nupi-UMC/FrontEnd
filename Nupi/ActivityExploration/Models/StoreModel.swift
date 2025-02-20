@@ -15,7 +15,17 @@ struct StoreResponse: Decodable {
 }
 
 struct StoreResult: Decodable {
+    let best: StoreDetail?
+    let ad: StoreDetail?
+    let new: StoreDetail?
     let stores: [StoreModel]
+}
+
+// 태그 매장 정보 (best, ad, new)
+struct StoreDetail: Decodable {
+    let name: String
+    let location: String
+    let description: String
 }
 
 struct StoreModel: Decodable {
