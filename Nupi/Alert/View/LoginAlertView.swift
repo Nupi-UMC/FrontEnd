@@ -29,8 +29,8 @@ class LoginAlertView: UIView {
     // 제목 레이블
     let titleLabel = UILabel().then {
         $0.text = "로그인 하시겠습니까?"
-        $0.textColor = .text1
-        $0.font = .blue3
+        $0.textColor = .blue3
+        $0.font = .body3
     }
     
     let subtitleLabel = UILabel().then {
@@ -53,7 +53,7 @@ class LoginAlertView: UIView {
     }
 
     // 삭제 버튼
-    let deleteButton = UIButton().then {
+    let loginButton = UIButton().then {
         $0.setTitle("로그인", for: .normal)
         $0.setTitleColor(UIColor.blue5, for: .normal)
         $0.titleLabel?.font = .tabbar1
@@ -77,7 +77,7 @@ class LoginAlertView: UIView {
         loginAlertView.addSubview(divider2)
 
         buttonStackView.addArrangedSubview(dismissButton)
-        buttonStackView.addArrangedSubview(deleteButton)
+        buttonStackView.addArrangedSubview(loginButton)
 
         loginAlertView.snp.makeConstraints {
             $0.center.equalToSuperview()
