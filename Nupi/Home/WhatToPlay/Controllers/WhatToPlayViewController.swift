@@ -84,8 +84,7 @@ class WhatToPlayViewController: UIViewController {
                             .shuffled()
                             .prefix(2)
                     )
-                                    
-                        self?.featuredStores = Array(featuredOptions)
+                    self?.featuredStores = Array(featuredOptions)
                     
                     self?.stores = response.result.stores.map {
                         StoreModel(
