@@ -11,8 +11,7 @@ protocol RouteOverlayViewDelegate: AnyObject {
 }
 
 class RouteOverlayView: UIView {
-    
-    // private let bottomModal = UIView()
+
     
     weak var delegate: RouteOverlayViewDelegate?
     

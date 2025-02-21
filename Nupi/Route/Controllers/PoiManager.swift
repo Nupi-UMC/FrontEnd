@@ -30,15 +30,15 @@ class PoiManager {
     
     private func getIconForCategory(_ category: String) -> UIImage {
         let iconMapping: [String: UIImage] = [
-            "맛집": UIImage.ricePoiIcon,
-            "카페": UIImage.coffeePoiIcon,
-            "팝업": UIImage.popupPoiIcon,
-            "테마카페": UIImage.exhiPoiIcon,
-            "소품샵": UIImage.sopoomPoiIcon,
-            "클래스": UIImage.classPoiIcon,
-            "보드카페": UIImage.boardPoiIcon,
+            "맛집": UIImage.riceMarker,
+            "카페": UIImage.cafeMarker,
+            "팝업": UIImage.popupMarker,
+            "전시": UIImage.exhiMarker,
+            "소품샵": UIImage.sopoomMarker,
+            "클래스": UIImage.classMarker,
+            "테마카페": UIImage.themeCafeMarker,
         ]
-        return iconMapping[category]?.resized(to: CGSize(width: 33, height: 33)) ?? UIImage.ricePoiIcon.resized(to: CGSize(width: 33, height: 33))
+        return iconMapping[category]?.resized(to: CGSize(width: 39, height: 46)) ?? UIImage.riceMarker.resized(to: CGSize(width: 39, height: 46))
     }
     
 

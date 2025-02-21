@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "theme_cafe_marker.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
