@@ -36,7 +36,7 @@ class BaseViewController: UITabBarController {
         let homeVC = UINavigationController(rootViewController: HomeViewController())
         let routeVC = UINavigationController(rootViewController: RouteViewController())
         let myPageVC = UINavigationController(rootViewController: MyPageViewController())
-        let scheduleVC = ScheduleViewController()
+        let scheduleVC = UINavigationController(rootViewController: ScheduleViewController(monthString: "02"))
         
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
         routeVC.tabBarItem = UITabBarItem(title: "경로", image: UIImage(systemName: "map"), tag: 1)
