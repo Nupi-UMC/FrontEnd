@@ -341,6 +341,21 @@ extension APIClient {
         getRequest(endpoint: endpoint, token: token, completion: completion)
     }
     
+    static func fetchCalendarRoutes(
+           month: String,
+           completion: @escaping (Result<CalendarResponse, AFError>) -> Void
+       ) {
+           guard let token = KeychainService.load(for: "accessToken") else {
+               print("Access Token 없음. 로그인이 필요합니다.")
+               return
+           }
+           
+           let endpoint = "/api/routes/calendar"
+           let parameters: [String: Any] = ["month": month]
+           
+           getRequest(endpoint: endpoint, parameters: parameters, token: token, completion: completion)
+       }
+  
     // 홈화면 API
     static func fetchHome(
         completion: @escaping (Result<HomeResponse, AFError>) -> Void)
