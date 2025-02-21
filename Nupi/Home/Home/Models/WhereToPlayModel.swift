@@ -9,18 +9,17 @@ import UIKit
 
 struct WhereToPlayModel{
     let image: String
-    let place: String
 }
 
 extension WhereToPlayModel{
     static func dummy() -> [WhereToPlayModel]{
         return [
             
-         WhereToPlayModel(image: "around_me_image",place: "내 주변"),
-         WhereToPlayModel(image: "hongdae_image",place: "홍대"),
-         WhereToPlayModel(image: "seongsu_image",place: "성수"),
-         WhereToPlayModel(image: "euljiro_image",place: "을지로"),
-         WhereToPlayModel(image: "myeongdong_image",place: "안국")
+         WhereToPlayModel(image: "around_me_image"),
+         WhereToPlayModel(image: "hongdae_image"),
+         WhereToPlayModel(image: "seongsu_image"),
+         WhereToPlayModel(image: "euljiro_image"),
+         WhereToPlayModel(image: "myeongdong_image")
          
         ]
     }

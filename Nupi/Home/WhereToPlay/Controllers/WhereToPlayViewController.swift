@@ -12,6 +12,19 @@ class WhereToPlayViewController: UIViewController {
     private var selectedCategory: Int = 0 // 선택된 카테고리
     private var selectedSort: String = "default" // 정렬 방식
     private var stores: [StoreModel] = [] // 장소 정보 배열
+    private var featuredStores: [StoreDetail] = [] // 배너에 표시할 장소 정보
+    private let regionId: Int
+    private let regionName: String
+
+    init(regionId: Int, regionName: String) {
+        self.regionId = regionId
+        self.regionName = regionName
+        super.init(nibName: nil, bundle: nil)
+       }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +61,7 @@ class WhereToPlayViewController: UIViewController {
     
     // 어디서 놀지? API 호출
       private func fetchWhereToPlay() {
-          let regionId = 1
+          let regionId = regionId
           let latitude = 37.5541
           let longitude = 127.4612
           let category = self.selectedCategory
@@ -64,6 +77,15 @@ class WhereToPlayViewController: UIViewController {
               switch result {
               case .success(let response):
                   if response.isSuccess {
+                      // 배너에 표시할 장소 2개
+                      let featuredOptions: [StoreDetail] = Array(
+                          [response.result.best, response.result.ad, response.result.new]
+                              .compactMap { $0 }
+                              .shuffled()
+                              .prefix(2)
+                      )
+                      self?.featuredStores = Array(featuredOptions)
+                      
                       self?.stores = response.result.stores.map {
                           StoreModel(
                               storeId: $0.storeId,
@@ -77,6 +99,9 @@ class WhereToPlayViewController: UIViewController {
                       DispatchQueue.main.async {
                           self?.whereToPlayView
                               .placeSortedCollectionView
+                              .reloadData()
+                          self?.whereToPlayView
+                              .placeCollectionView
                               .reloadData()
                       }
                   } else {
@@ -98,7 +123,7 @@ class WhereToPlayViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.title = ""
         
         let titleLabel = UILabel().then {
-            $0.text = "Hongdae"
+            $0.text = self.regionName
             $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
             $0.textColor = .icon1
         }
@@ -151,7 +176,7 @@ class WhereToPlayViewController: UIViewController {
 extension WhereToPlayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == whereToPlayView.placeCollectionView{
-            return HongdaeModel.dummy().count
+            return featuredStores.count
         } else if collectionView == whereToPlayView.placeSortedCollectionView{
             return stores.count
         } else if collectionView == whereToPlayView.categoryButtonCollectionView{
@@ -166,11 +191,14 @@ extension WhereToPlayViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let list = HongdaeModel.dummy()
+            let store = featuredStores[indexPath.row]
+            
             cell.placeImageView.image = list[indexPath.row].image
             cell.tagLabel.text = list[indexPath.row].tag
-            cell.placeLabel.text = list[indexPath.row].place
-            cell.stationLabel.text = list[indexPath.row].station
-            cell.descriptionLabel.text = list[indexPath.row].description
+            
+            cell.placeLabel.text = store.name
+            cell.stationLabel.text = store.location
+            cell.descriptionLabel.text = store.description
             return cell
         } else if collectionView == whereToPlayView.categoryButtonCollectionView {
             guard let cell = collectionView.dequeueReusableCell(

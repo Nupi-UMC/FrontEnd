@@ -8,6 +8,7 @@
 import UIKit
 
 class WhatToPlayView: UIView {
+    private var groupName: String = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,7 +44,7 @@ class WhatToPlayView: UIView {
     
     // 지금 핫한 이자카야 타이틀
     private let subTitleLabel = UILabel().then {
-        $0.text = "지금 핫한 이자카야 🔥"
+        //$0.text = "지금 핫한🔥"
         $0.textColor = .black
         $0.font = UIFont(name: "WantedSans-SemiBold", size: 22)
     }
@@ -101,6 +102,13 @@ class WhatToPlayView: UIView {
             $0.width.equalTo(337)
             $0.height.equalTo(562)
         }
+    }
+    
+    // MARK: function
+    // groupName 업데이트 함수 추가
+    func updateGroupName(_ name: String) {
+        groupName = name
+        subTitleLabel.text = "지금 핫한 \(groupName) 🔥"
     }
 }
 

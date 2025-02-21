@@ -10,12 +10,24 @@ import Then
 
 class WhatToPlayViewController: UIViewController {
     private var stores: [StoreModel] = [] // 장소 정보 배열
+    private var featuredStores: [StoreDetail] = [] // 배너에 표시할 장소 정보
+    private let groupName: String
+
+    init(groupName: String) {
+        self.groupName = groupName
+        super.init(nibName: nil, bundle: nil)
+       }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = whatToPlayView
         
         setupDataSource()
+        setupUI()
         setupNavigationBar()
         fetchWhatToPlay()
     }
@@ -36,6 +48,10 @@ class WhatToPlayViewController: UIViewController {
         whatToPlayView.hotPlaceCollectionView.dataSource = self
     }
     
+    private func setupUI() {
+            whatToPlayView.updateGroupName(groupName)
+        }
+    
     // 네비게이션바 추가
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.barTintColor = .white
@@ -43,7 +59,7 @@ class WhatToPlayViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.title = ""
         
         let titleLabel = UILabel().then {
-            $0.text = "izakaya"
+            $0.text = groupName
             $0.font = UIFont(name: "WantedSans-SemiBold", size: 17)
             $0.textColor = .icon1
         }
@@ -53,7 +69,7 @@ class WhatToPlayViewController: UIViewController {
     
     // 뭐하고 놀지? API 호출
     private func fetchWhatToPlay() {
-        let groupName = "일식당"
+        let groupName = groupName
         
         APIClient.fetchWhatToPlay(
             groupName: groupName
@@ -61,6 +77,15 @@ class WhatToPlayViewController: UIViewController {
             switch result {
             case .success(let response):
                 if response.isSuccess {
+                    // 배너에 표시할 장소 2개
+                    let featuredOptions: [StoreDetail] = Array(
+                        [response.result.best, response.result.ad, response.result.new]
+                            .compactMap { $0 }
+                            .shuffled()
+                            .prefix(2)
+                    )
+                    self?.featuredStores = Array(featuredOptions)
+                    
                     self?.stores = response.result.stores.map {
                         StoreModel(
                             storeId: $0.storeId,
@@ -72,6 +97,9 @@ class WhatToPlayViewController: UIViewController {
                     }
                     
                     DispatchQueue.main.async {
+                        self?.whatToPlayView
+                            .placeCollectionView
+                            .reloadData()
                         self?.whatToPlayView
                             .hotPlaceCollectionView
                             .reloadData()
@@ -94,7 +122,7 @@ class WhatToPlayViewController: UIViewController {
 extension WhatToPlayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == whatToPlayView.placeCollectionView{
-            return IzakayaModel.dummy().count
+            return featuredStores.count
         } else if collectionView == whatToPlayView.hotPlaceCollectionView{
             return stores.count
         }
@@ -107,11 +135,14 @@ extension WhatToPlayViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let list = IzakayaModel.dummy()
+            let store = featuredStores[indexPath.row]
+            
             cell.placeImageView.image = list[indexPath.row].image
             cell.tagLabel.text = list[indexPath.row].tag
-            cell.placeLabel.text = list[indexPath.row].place
-            cell.stationLabel.text = list[indexPath.row].station
-            cell.descriptionLabel.text = list[indexPath.row].description
+            
+            cell.placeLabel.text = store.name
+            cell.stationLabel.text = store.location
+            cell.descriptionLabel.text = store.description
             return cell
         } else if collectionView == whatToPlayView.hotPlaceCollectionView{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HotIzakayaCollectionViewCell.identifier, for: indexPath) as? HotIzakayaCollectionViewCell else {
