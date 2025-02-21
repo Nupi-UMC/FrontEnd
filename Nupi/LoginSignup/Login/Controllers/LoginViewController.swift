@@ -81,8 +81,9 @@ class LoginViewController: UIViewController {
     }
     //둘러보기 버튼 동작
     @objc private func browseButtonTap() {
-        let homeVC = HomeViewController()
-        self.navigationController?.pushViewController(homeVC, animated: true)
+        self.coordinator?.showBaseViewController()
+        //let homeVC = HomeViewController()
+        //self.navigationController?.pushViewController(homeVC, animated: true)
     }
     
     private func fetchLogin() {

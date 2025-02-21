@@ -22,6 +22,10 @@
 		2C37630D2D4257350029939D /* Exceptions for "Nupi" folder in "Nupi" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Home/Fonts/EF_jejudoldam.otf,
+				"Home/Fonts/WantedSans-Medium.otf",
+				"Home/Fonts/WantedSans-Regular.otf",
+				"Home/Fonts/WantedSans-SemiBold.otf",
 				Info.plist,
 			);
 			target = 94FFAC582D290D8D006F4810 /* Nupi */;
